@@ -11,7 +11,7 @@ import {
   ValidateFunction,
   ValidateFunctionReturn,
 } from "./faces";
-import { toBytes } from "./utils/arweave";
+import { fromBytes, toBytes } from "./utils/arweave";
 import Pool from "./utils/pool";
 
 class KYVE {
@@ -82,6 +82,7 @@ class KYVE {
 
         // TODO: Add node version to tag.
         transaction.addTag("Application", "KYVE - Testnet");
+        transaction.addTag("Pool", this.pool.address);
         transaction.addTag("Content-Type", "application/json");
 
         await this.client.transactions.sign(transaction, this.keyfile);
@@ -97,8 +98,33 @@ class KYVE {
   }
 
   private async listener(): Promise<Observable<ListenFunctionReturn>> {
-    // TODO
-    return new Observable<ListenFunctionReturn>();
+    return new Observable<ListenFunctionReturn>((subscriber) => {
+      this.pool.on(
+        "ProposalStart",
+        async (
+          _transactionIndexed: string,
+          _transaction: string,
+          _bytes: number
+        ) => {
+          const transaction = fromBytes(_transaction);
+          const _data = (await this.client.transactions.getData(transaction, {
+            decode: true,
+          })) as Uint8Array;
+
+          const bytes = _data.byteLength;
+          const bundle = JSON.parse(_data.toString()) as Bundle;
+
+          if (_bytes === bytes) {
+            subscriber.next({
+              transaction,
+              bundle,
+            });
+          } else {
+            await this.pool.vote(_transaction, false);
+          }
+        }
+      );
+    });
   }
 
   private async validator<ConfigType>(
@@ -112,7 +138,7 @@ class KYVE {
     });
 
     node.subscribe((item) => {
-      // TODO
+      this.pool.vote(toBytes(item.transaction), item.valid);
     });
   }
 }
