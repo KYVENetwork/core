@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "ethers": "^5.4.7",
+    "rxjs": "^7.4.0",
+    "tslog": "^3.2.2"
+  },
+  "devDependencies": {
+    "prettier": "^2.4.1",
+    "typescript": "^4.4.3"
+  }
+}
