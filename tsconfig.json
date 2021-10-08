@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["ESNext"],
+    "esModuleInterop": true
+  },
+  "files": ["src/index.ts"]
+}
