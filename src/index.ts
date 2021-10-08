@@ -1,24 +1,40 @@
+import Arweave from "arweave";
+import { JWKInterface } from "arweave/node/lib/wallet";
 import { Contract, Wallet } from "ethers";
 import { Observable } from "rxjs";
 import { Logger } from "tslog";
 import {
+  Bundle,
   ListenFunctionReturn,
   UploadFunction,
   UploadFunctionReturn,
   ValidateFunction,
   ValidateFunctionReturn,
 } from "./faces";
+import { toBytes } from "./utils/arweave";
 import Pool from "./utils/pool";
 
 class KYVE {
   private pool: Contract;
   private wallet: Wallet;
+  private keyfile: JWKInterface;
   // TODO: Figure out configuration.
   private logger = new Logger();
 
-  constructor(poolAddress: string, wallet: Wallet) {
+  private buffer: Bundle = [];
+  // TODO: Listen to contract changes.
+  // @ts-ignore
+  private bundleSize: number;
+
+  private client = new Arweave({
+    host: "arweave.net",
+    protocol: "https",
+  });
+
+  constructor(poolAddress: string, wallet: Wallet, keyfile: JWKInterface) {
     this.pool = Pool(poolAddress, wallet);
     this.wallet = wallet;
+    this.keyfile = keyfile;
   }
 
   async run<ConfigType>(
@@ -49,10 +65,34 @@ class KYVE {
       uploadFunction(subscriber, config);
     });
 
-    node.subscribe((item) => {
-      // - Push item to buffer.
-      // - If buffer is bigger than bundleSize, push to Arweave.
-      // - And create a new vote.
+    node.subscribe(async (item) => {
+      // Push item to buffer.
+      this.buffer.push(item);
+
+      // Check buffer length.
+      if (this.buffer.length >= this.bundleSize) {
+        // Clear the buffer.
+        const tempBuffer = this.buffer;
+        this.buffer = [];
+
+        // Upload buffer to Arweave.
+        const transaction = await this.client.createTransaction({
+          data: JSON.stringify(tempBuffer),
+        });
+
+        // TODO: Add node version to tag.
+        transaction.addTag("Application", "KYVE - Testnet");
+        transaction.addTag("Content-Type", "application/json");
+
+        await this.client.transactions.sign(transaction, this.keyfile);
+        await this.client.transactions.post(transaction);
+
+        // Create a new vote.
+        await this.pool.register(
+          toBytes(transaction.id),
+          +transaction.data_size
+        );
+      }
     });
   }
 
