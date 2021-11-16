@@ -75,16 +75,19 @@ class KYVE {
     endpoint?: string,
     gasMultiplier: string = "1"
   ) {
-    this.wallet = new Wallet(
-      privateKey,
-      new ethers.providers.WebSocketProvider(
-        endpoint || "wss://moonbeam-alpha.api.onfinality.io/public-ws",
-        {
-          chainId: 1287,
-          name: "moonbase-alphanet",
-        }
-      )
+    const provider = new ethers.providers.WebSocketProvider(
+      endpoint || "wss://moonbeam-alpha.api.onfinality.io/public-ws",
+      {
+        chainId: 1287,
+        name: "moonbase-alphanet",
+      }
     );
+    provider._websocket.on("ping", () => {
+      logger.debug("Received ping ...");
+      provider._websocket.pong();
+    });
+
+    this.wallet = new Wallet(privateKey, provider);
 
     this.pool = Pool(poolAddress, this.wallet);
     this.node = null;

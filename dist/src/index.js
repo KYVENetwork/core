@@ -35,10 +35,15 @@ class KYVE {
             host: "arweave.net",
             protocol: "https",
         });
-        this.wallet = new ethers_1.Wallet(privateKey, new ethers_1.ethers.providers.WebSocketProvider(endpoint || "wss://moonbeam-alpha.api.onfinality.io/public-ws", {
+        const provider = new ethers_1.ethers.providers.WebSocketProvider(endpoint || "wss://moonbeam-alpha.api.onfinality.io/public-ws", {
             chainId: 1287,
             name: "moonbase-alphanet",
-        }));
+        });
+        provider._websocket.on("ping", () => {
+            logger_1.default.debug("Received ping ...");
+            provider._websocket.pong();
+        });
+        this.wallet = new ethers_1.Wallet(privateKey, provider);
         this.pool = (0, helpers_1.Pool)(poolAddress, this.wallet);
         this.node = null;
         this.runtime = runtime;
