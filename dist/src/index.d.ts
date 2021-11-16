@@ -28,6 +28,7 @@ declare class KYVE {
     private listener;
     private validator;
     private vote;
+    private loadWallet;
     private logNodeInfo;
     private setupListeners;
     private fetchPoolState;

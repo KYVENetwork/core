@@ -35,16 +35,8 @@ class KYVE {
             host: "arweave.net",
             protocol: "https",
         });
-        const provider = new ethers_1.ethers.providers.WebSocketProvider(endpoint || "wss://moonbeam-alpha.api.onfinality.io/public-ws", {
-            chainId: 1287,
-            name: "moonbase-alphanet",
-        });
-        provider._websocket.on("ping", () => {
-            logger_1.default.debug("Received ping ...");
-            provider._websocket.pong();
-        });
-        this.wallet = new ethers_1.Wallet(privateKey, provider);
-        this.pool = (0, helpers_1.Pool)(poolAddress, this.wallet);
+        const wallet = this.loadWallet(privateKey, endpoint);
+        this.pool = (0, helpers_1.Pool)(poolAddress, wallet);
         this.node = null;
         this.runtime = runtime;
         this.version = version;
@@ -55,7 +47,7 @@ class KYVE {
             this.name = name;
         }
         else {
-            const r = new prando_1.default(this.wallet.address + this.pool.address);
+            const r = new prando_1.default(wallet.address + this.pool.address);
             this.name = (0, unique_names_generator_1.uniqueNamesGenerator)({
                 dictionaries: [unique_names_generator_1.adjectives, unique_names_generator_1.starWars],
                 separator: "-",
@@ -259,6 +251,18 @@ class KYVE {
         catch (error) {
             voteLogger.error("❌ Received an error while trying to vote:", error);
         }
+    }
+    loadWallet(privateKey, endpoint) {
+        const provider = new ethers_1.ethers.providers.WebSocketProvider(endpoint || "wss://moonbeam-alpha.api.onfinality.io/public-ws", {
+            chainId: 1287,
+            name: "moonbase-alphanet",
+        });
+        provider._websocket.on("close", () => {
+            provider._websocket.terminate();
+            this.loadWallet(privateKey, endpoint);
+        });
+        this.wallet = new ethers_1.Wallet(privateKey, provider);
+        return this.wallet;
     }
     logNodeInfo() {
         const formatInfoLogs = (input) => {

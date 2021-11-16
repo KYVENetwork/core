@@ -49,6 +49,7 @@ class KYVE {
   private runtime: string;
   private version: string;
   private stake: string;
+  // @ts-ignore
   private wallet: Wallet;
   private keyfile?: JWKInterface;
   private name: string;
@@ -75,21 +76,9 @@ class KYVE {
     endpoint?: string,
     gasMultiplier: string = "1"
   ) {
-    const provider = new ethers.providers.WebSocketProvider(
-      endpoint || "wss://moonbeam-alpha.api.onfinality.io/public-ws",
-      {
-        chainId: 1287,
-        name: "moonbase-alphanet",
-      }
-    );
-    provider._websocket.on("ping", () => {
-      logger.debug("Received ping ...");
-      provider._websocket.pong();
-    });
+    const wallet = this.loadWallet(privateKey, endpoint);
 
-    this.wallet = new Wallet(privateKey, provider);
-
-    this.pool = Pool(poolAddress, this.wallet);
+    this.pool = Pool(poolAddress, wallet);
     this.node = null;
     this.runtime = runtime;
     this.version = version;
@@ -100,7 +89,7 @@ class KYVE {
     if (name) {
       this.name = name;
     } else {
-      const r = new Prando(this.wallet.address + this.pool.address);
+      const r = new Prando(wallet.address + this.pool.address);
 
       this.name = uniqueNamesGenerator({
         dictionaries: [adjectives, starWars],
@@ -394,6 +383,23 @@ class KYVE {
     } catch (error) {
       voteLogger.error("❌ Received an error while trying to vote:", error);
     }
+  }
+
+  private loadWallet(privateKey: string, endpoint?: string) {
+    const provider = new ethers.providers.WebSocketProvider(
+      endpoint || "wss://moonbeam-alpha.api.onfinality.io/public-ws",
+      {
+        chainId: 1287,
+        name: "moonbase-alphanet",
+      }
+    );
+    provider._websocket.on("close", () => {
+      provider._websocket.terminate();
+      this.loadWallet(privateKey, endpoint);
+    });
+
+    this.wallet = new Wallet(privateKey, provider);
+    return this.wallet;
   }
 
   private logNodeInfo() {
