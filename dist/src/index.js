@@ -35,8 +35,7 @@ class KYVE {
             host: "arweave.net",
             protocol: "https",
         });
-        const wallet = this.loadWallet(privateKey, endpoint);
-        this.pool = (0, helpers_1.Pool)(poolAddress, wallet);
+        const { wallet, pool } = this.loadWallet(poolAddress, privateKey, endpoint);
         this.node = null;
         this.runtime = runtime;
         this.version = version;
@@ -47,7 +46,7 @@ class KYVE {
             this.name = name;
         }
         else {
-            const r = new prando_1.default(wallet.address + this.pool.address);
+            const r = new prando_1.default(wallet.address + pool.address);
             this.name = (0, unique_names_generator_1.uniqueNamesGenerator)({
                 dictionaries: [unique_names_generator_1.adjectives, unique_names_generator_1.starWars],
                 separator: "-",
@@ -93,7 +92,6 @@ class KYVE {
         await this.checkVersionRequirements();
         await this.checkRuntimeRequirements();
         await this.setupNodeContract();
-        await this.setupListeners();
         if (((_a = this.node) === null || _a === void 0 ? void 0 : _a.address) === this.settings.uploader) {
             if (this.keyfile) {
                 if (await this.pool.paused()) {
@@ -252,17 +250,19 @@ class KYVE {
             voteLogger.error("❌ Received an error while trying to vote:", error);
         }
     }
-    loadWallet(privateKey, endpoint) {
+    loadWallet(poolAddress, privateKey, endpoint) {
         const provider = new ethers_1.ethers.providers.WebSocketProvider(endpoint || "wss://moonbeam-alpha.api.onfinality.io/public-ws", {
             chainId: 1287,
             name: "moonbase-alphanet",
         });
         provider._websocket.on("close", () => {
             provider._websocket.terminate();
-            this.loadWallet(privateKey, endpoint);
+            this.loadWallet(poolAddress, privateKey, endpoint);
         });
         this.wallet = new ethers_1.Wallet(privateKey, provider);
-        return this.wallet;
+        this.pool = (0, helpers_1.Pool)(poolAddress, this.wallet);
+        this.setupListeners();
+        return { wallet: this.wallet, pool: this.pool };
     }
     logNodeInfo() {
         const formatInfoLogs = (input) => {
@@ -271,7 +271,7 @@ class KYVE {
         };
         logger_1.default.info(`🚀 Starting node ...\n\t${formatInfoLogs("Name")} = ${this.name}\n\t${formatInfoLogs("Address")} = ${this.wallet.address}\n\t${formatInfoLogs("Pool")} = ${this.pool.address}\n\t${formatInfoLogs("Desired Stake")} = ${this.stake} $KYVE\n\n\t${formatInfoLogs("@kyve/core")} = v${package_json_1.version}\n\t${formatInfoLogs(this.runtime)} = v${this.version}`);
     }
-    async setupListeners() {
+    setupListeners() {
         var _a, _b, _c;
         // Listen to new contract changes.
         this.pool.on("ConfigChanged", () => {

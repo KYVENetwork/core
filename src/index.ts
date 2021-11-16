@@ -44,6 +44,7 @@ import { version } from "../package.json";
 export * from "./utils";
 
 class KYVE {
+  // @ts-ignore
   private pool: Contract;
   private node: Contract | null;
   private runtime: string;
@@ -76,9 +77,8 @@ class KYVE {
     endpoint?: string,
     gasMultiplier: string = "1"
   ) {
-    const wallet = this.loadWallet(privateKey, endpoint);
+    const { wallet, pool } = this.loadWallet(poolAddress, privateKey, endpoint);
 
-    this.pool = Pool(poolAddress, wallet);
     this.node = null;
     this.runtime = runtime;
     this.version = version;
@@ -89,7 +89,7 @@ class KYVE {
     if (name) {
       this.name = name;
     } else {
-      const r = new Prando(wallet.address + this.pool.address);
+      const r = new Prando(wallet.address + pool.address);
 
       this.name = uniqueNamesGenerator({
         dictionaries: [adjectives, starWars],
@@ -159,7 +159,6 @@ class KYVE {
     await this.checkRuntimeRequirements();
 
     await this.setupNodeContract();
-    await this.setupListeners();
 
     if (this.node?.address === this.settings.uploader) {
       if (this.keyfile) {
@@ -385,7 +384,11 @@ class KYVE {
     }
   }
 
-  private loadWallet(privateKey: string, endpoint?: string) {
+  private loadWallet(
+    poolAddress: string,
+    privateKey: string,
+    endpoint?: string
+  ) {
     const provider = new ethers.providers.WebSocketProvider(
       endpoint || "wss://moonbeam-alpha.api.onfinality.io/public-ws",
       {
@@ -395,11 +398,15 @@ class KYVE {
     );
     provider._websocket.on("close", () => {
       provider._websocket.terminate();
-      this.loadWallet(privateKey, endpoint);
+      this.loadWallet(poolAddress, privateKey, endpoint);
     });
 
     this.wallet = new Wallet(privateKey, provider);
-    return this.wallet;
+    this.pool = Pool(poolAddress, this.wallet);
+
+    this.setupListeners();
+
+    return { wallet: this.wallet, pool: this.pool };
   }
 
   private logNodeInfo() {
@@ -421,7 +428,7 @@ class KYVE {
     );
   }
 
-  private async setupListeners() {
+  private setupListeners() {
     // Listen to new contract changes.
     this.pool.on("ConfigChanged", () => {
       logger.warn("⚠️  Config changed. Exiting ...");
