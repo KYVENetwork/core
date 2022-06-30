@@ -403,14 +403,15 @@ class KYVE {
       }
 
       let startHeight: number;
-      let key: string =
-        this.pool.bundle_proposal.to_key || this.pool.current_key;
+      let key: string;
 
       // determine from which height to continue caching
       if (await this.cache.exists(toHeight - 1)) {
         startHeight = toHeight;
+        key = this.pool.bundle_proposal.to_key;
       } else {
         startHeight = currentHeight;
+        key = this.pool.current_key;
       }
 
       this.logger.debug(
