@@ -57,7 +57,7 @@ export async function runCache(this: KyveCore): Promise<void> {
             key = this.pool.start_key;
           }
 
-          const item = await this.runtime.getDataItem(key);
+          const item = await this.runtime.getDataItem(key, this.poolConfig);
 
           await this.cache.put(height.toString(), item);
           await sleep(50);
