@@ -7,10 +7,10 @@ async function proposeBundle() {
     const fromHeight = +this.pool.bundle_proposal.to_height || +this.pool.current_height;
     const toHeight = +this.pool.max_bundle_size + fromHeight;
     const fromKey = this.pool.bundle_proposal.to_key || this.pool.current_key;
-    const { bundle, toKey, toValue } = await this.loadBundle(fromHeight, toHeight);
-    if (bundle.length) {
+    const bundleProposal = await this.loadBundle(fromHeight, toHeight);
+    if (bundleProposal.bundle.length) {
         // upload bundle to Arweave
-        const bundleCompressed = (0, zlib_1.gzipSync)(Buffer.from(JSON.stringify(bundle)));
+        const bundleCompressed = (0, zlib_1.gzipSync)(Buffer.from(JSON.stringify(bundleProposal.bundle)));
         const tags = [
             ["Application", "KYVE"],
             ["Network", this.network],
@@ -19,15 +19,15 @@ async function proposeBundle() {
             [this.runtime.name, this.runtime.version],
             ["Uploader", this.client.account.address],
             ["FromHeight", fromHeight.toString()],
-            ["ToHeight", toHeight.toString()],
+            ["ToHeight", bundleProposal.toHeight.toString()],
             ["FromKey", fromKey],
-            ["ToKey", toKey],
-            ["Value", toValue],
+            ["ToKey", bundleProposal.toKey],
+            ["Value", bundleProposal.toValue],
         ];
         try {
             const bundleId = await this.storageProvider.saveBundle(bundleCompressed, tags);
             this.logger.info(`Saved bundle on ${this.storageProvider.name} with ID ${bundleId}`);
-            await this.submitBundleProposal(bundleId, bundleCompressed.byteLength, fromHeight, toHeight, fromKey, toKey, toValue);
+            await this.submitBundleProposal(bundleId, bundleCompressed.byteLength, fromHeight, bundleProposal.toHeight, fromKey, bundleProposal.toKey, bundleProposal.toValue);
         }
         catch {
             this.logger.warn(` Failed to save bundle on ${this.storageProvider.name}`);

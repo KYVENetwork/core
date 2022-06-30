@@ -8,14 +8,13 @@ export async function proposeBundle(this: KyveCore): Promise<void> {
   const toHeight = +this.pool.max_bundle_size + fromHeight;
   const fromKey = this.pool.bundle_proposal!.to_key || this.pool.current_key;
 
-  const { bundle, toKey, toValue } = await this.loadBundle(
-    fromHeight,
-    toHeight
-  );
+  const bundleProposal = await this.loadBundle(fromHeight, toHeight);
 
-  if (bundle.length) {
+  if (bundleProposal.bundle.length) {
     // upload bundle to Arweave
-    const bundleCompressed = gzipSync(Buffer.from(JSON.stringify(bundle)));
+    const bundleCompressed = gzipSync(
+      Buffer.from(JSON.stringify(bundleProposal.bundle))
+    );
     const tags: [string, string][] = [
       ["Application", "KYVE"],
       ["Network", this.network],
@@ -24,10 +23,10 @@ export async function proposeBundle(this: KyveCore): Promise<void> {
       [this.runtime.name, this.runtime.version],
       ["Uploader", this.client.account.address],
       ["FromHeight", fromHeight.toString()],
-      ["ToHeight", toHeight.toString()],
+      ["ToHeight", bundleProposal.toHeight.toString()],
       ["FromKey", fromKey],
-      ["ToKey", toKey],
-      ["Value", toValue],
+      ["ToKey", bundleProposal.toKey],
+      ["Value", bundleProposal.toValue],
     ];
 
     try {
@@ -43,10 +42,10 @@ export async function proposeBundle(this: KyveCore): Promise<void> {
         bundleId,
         bundleCompressed.byteLength,
         fromHeight,
-        toHeight,
+        bundleProposal.toHeight,
         fromKey,
-        toKey,
-        toValue
+        bundleProposal.toKey,
+        bundleProposal.toValue
       );
     } catch {
       this.logger.warn(
