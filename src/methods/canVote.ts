@@ -1,4 +1,4 @@
-import KyveCore from "../main";
+import KyveCore from "..";
 
 export async function canVote(this: KyveCore): Promise<boolean> {
   if (!this.pool.bundle_proposal!.uploader) {

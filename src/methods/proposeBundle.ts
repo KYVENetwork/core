@@ -1,5 +1,5 @@
 import { gzipSync } from "zlib";
-import KyveCore from "../main";
+import KyveCore from "..";
 import { KYVE_NO_DATA_BUNDLE } from "../utils/constants";
 
 export async function proposeBundle(this: KyveCore): Promise<void> {

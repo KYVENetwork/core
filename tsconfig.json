@@ -8,5 +8,5 @@
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
-  "files": ["src/main.ts"]
+  "files": ["src/index.ts"]
 }

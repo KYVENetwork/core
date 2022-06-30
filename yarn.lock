@@ -475,7 +475,7 @@
 
 "@kyve/proto@git+ssh://git@github.com:KYVENetwork/proto.git#v0.5.0":
   version "1.0.0"
-  resolved "git+ssh://git@github.com:KYVENetwork/proto.git#1944031261d9679f78b61cd9b1f5f4c5a9aff019"
+  resolved "git+ssh://git@github.com:KYVENetwork/proto.git#dcd7e0995cc15e23c64216cadf6de57114a44b2d"
   dependencies:
     "@protobufs/cosmos" "^0.0.9"
     "@protobufs/gogoproto" "^0.0.9"
@@ -484,7 +484,7 @@
 
 "@kyve/sdk@git+ssh://git@github.com:KYVENetwork/sdk.git#feature/v2":
   version "2.0.0"
-  resolved "git+ssh://git@github.com:KYVENetwork/sdk.git#f2ed6f1a9f0a1246a504b17e48707919f4fc99bc"
+  resolved "git+ssh://git@github.com:KYVENetwork/sdk.git#99fc1a8a2a3477e2a8219e1d1eead8df1d40e6da"
   dependencies:
     "@cosmjs/amino" "0.28.3"
     "@cosmjs/crypto" "0.27.1"
@@ -644,9 +644,9 @@
   integrity sha512-s3nugnZumCC//n4moGGe6tkNMyYEdaDBitVjwPxXmR5lnMG5dHePinH2EdxkG3Rh1ghFHHixAG4NJhpJW1rthQ==
 
 "@types/node@^16.10.3":
-  version "16.11.41"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.11.41.tgz#88eb485b1bfdb4c224d878b7832239536aa2f813"
-  integrity sha512-mqoYK2TnVjdkGk8qXAVGc/x9nSaTpSrFaGFm43BUH3IdoBV0nta6hYaGmdOvIMlbHJbUEVen3gvwpwovAZKNdQ==
+  version "16.11.42"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.11.42.tgz#d2a75c58e9b0902b82dc54bd4c13f8ef12bd1020"
+  integrity sha512-iwLrPOopPy6V3E+1yHTpJea3bdsNso0b0utLOJJwaa/PLzqBt3GZl3stMcakc/gr89SfcNk2ki3z7Gvue9hYGQ==
 
 "@types/object-hash@^1.3.0":
   version "1.3.4"

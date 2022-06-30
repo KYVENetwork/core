@@ -1,4 +1,4 @@
-import KyveCore from "../main";
+import KyveCore from "..";
 
 export function logNodeInfo(this: KyveCore): void {
   this.logger.info("Starting node ...\n");

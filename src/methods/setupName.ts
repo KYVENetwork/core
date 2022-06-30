@@ -5,7 +5,7 @@ import {
   colors,
   uniqueNamesGenerator,
 } from "unique-names-generator";
-import KyveCore from "../main";
+import KyveCore from "..";
 
 export function setupName(this: KyveCore): string {
   const r = new Prando(`${this.poolId}-${this.mnemonic}-${this.coreVersion}`);

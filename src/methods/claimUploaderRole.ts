@@ -1,4 +1,4 @@
-import KyveCore from "../main";
+import KyveCore from "..";
 
 export async function claimUploaderRole(this: KyveCore): Promise<boolean> {
   // check if next uploader is free to claim

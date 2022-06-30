@@ -1,5 +1,5 @@
 import { gzipSync } from "zlib";
-import KyveCore from "../main";
+import KyveCore from "..";
 import { sleep } from "../utils/helpers";
 import { VOTE } from "../utils/constants";
 import { DataItem } from "../types";

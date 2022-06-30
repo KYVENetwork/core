@@ -1,10 +1,22 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Arweave_1 = __importDefault(require("./storage/Arweave"));
-const JsonFileCache_1 = __importDefault(require("./cache/JsonFileCache"));
 const package_json_1 = require("../package.json");
 const methods_1 = require("./methods");
 const commander_1 = __importDefault(require("./commander"));
@@ -135,29 +147,30 @@ class Node {
         this.runCache();
     }
 }
-// integration runtime should be implemented on the integration repo
-class EVM {
-    constructor() {
-        this.name = "@kyve/evm";
-        this.version = "1.2.0";
-    }
-    async getDataItem(key) {
-        return {
-            key,
-            value: `${key}value`,
-        };
-    }
-    async getNextKey(key) {
-        return `${key}+1`;
-    }
-    async getFormattedValueFromDataItem(item) {
-        return item.hash;
-    }
-}
-// inject runtime and storage provider
-new Node()
-    .addRuntime(new EVM())
-    .addStorageProvider(new Arweave_1.default())
-    .addCache(new JsonFileCache_1.default())
-    .start();
+// // integration runtime should be implemented on the integration repo
+// class EVM implements IRuntime {
+//   public name = "@kyve/evm";
+//   public version = "1.2.0";
+//   async getDataItem(key: string) {
+//     return {
+//       key,
+//       value: `${key}value`,
+//     };
+//   }
+//   async getNextKey(key: string) {
+//     return `${key}+1`;
+//   }
+//   async getFormattedValueFromDataItem(item: any) {
+//     return item.hash;
+//   }
+// }
+// // inject runtime and storage provider
+// new Node()
+//   .addRuntime(new EVM())
+//   .addStorageProvider(new Arweave())
+//   .addCache(new JsonFileCache())
+//   .start();
 exports.default = Node;
+__exportStar(require("./types"), exports);
+__exportStar(require("./storage"), exports);
+__exportStar(require("./cache"), exports);

@@ -1,4 +1,4 @@
-import KyveCore from "../main";
+import KyveCore from "..";
 import { sleep } from "../utils/helpers";
 
 export async function runNode(this: KyveCore): Promise<void> {

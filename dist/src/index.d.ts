@@ -112,3 +112,6 @@ declare class Node {
     start(): Promise<void>;
 }
 export default Node;
+export * from "./types";
+export * from "./storage";
+export * from "./cache";

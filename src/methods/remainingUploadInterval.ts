@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import KyveCore from "../main";
+import KyveCore from "..";
 
 export function remainingUploadInterval(this: KyveCore): BigNumber {
   const unixNow = new BigNumber(Math.floor(Date.now() / 1000));

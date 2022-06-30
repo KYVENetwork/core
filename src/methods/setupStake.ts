@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import KyveCore from "../main";
+import KyveCore from "..";
 import { callWithBackoffStrategy, toHumanReadable } from "../utils/helpers";
 
 export async function setupStake(this: KyveCore): Promise<void> {

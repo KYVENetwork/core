@@ -1,6 +1,6 @@
 import { appendFileSync, existsSync, mkdirSync } from "fs";
 import { ILogObject, Logger } from "tslog";
-import KyveCore from "../main";
+import KyveCore from "..";
 
 export function setupLogger(this: KyveCore): Logger {
   if (!existsSync("./logs")) {

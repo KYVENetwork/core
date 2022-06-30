@@ -1,4 +1,4 @@
-import KyveCore from "../main";
+import KyveCore from "..";
 
 export function shouldIdle(this: KyveCore): boolean {
   // check if pool is upgrading

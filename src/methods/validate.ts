@@ -1,4 +1,4 @@
-import KyveCore from "../main";
+import KyveCore from "..";
 
 export function validateRuntime(this: KyveCore): void {
   this.logger.debug(`Attempting to validate pool runtime`);

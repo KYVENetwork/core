@@ -1,4 +1,4 @@
-import KyveCore from "../main";
+import KyveCore from "..";
 
 export async function submitBundleProposal(
   this: KyveCore,

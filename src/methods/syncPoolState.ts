@@ -1,4 +1,4 @@
-import KyveCore from "../main";
+import KyveCore from "..";
 import { callWithBackoffStrategy } from "../utils/helpers";
 
 export async function syncPoolState(this: KyveCore): Promise<void> {

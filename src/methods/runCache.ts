@@ -1,4 +1,4 @@
-import KyveCore from "../main";
+import KyveCore from "..";
 import { sleep } from "../utils/helpers";
 
 // TODO: strongly test

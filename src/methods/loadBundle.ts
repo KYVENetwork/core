@@ -1,4 +1,4 @@
-import KyveCore from "../main";
+import KyveCore from "..";
 import { Bundle } from "../types";
 
 export async function loadBundle(
