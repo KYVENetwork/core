@@ -1,6 +1,7 @@
 import KyveCore from "../main";
 import { sleep } from "../utils/helpers";
 
+// TODO: strongly test
 export async function runCache(this: KyveCore): Promise<void> {
   let createdAt = 0;
   let currentHeight = 0;
@@ -34,14 +35,15 @@ export async function runCache(this: KyveCore): Promise<void> {
     }
 
     let startHeight: number;
-    let key: string =
-      this.pool.bundle_proposal!.to_key || this.pool.current_key;
+    let key: string;
 
     // determine from which height to continue caching
     if (await this.cache.exists((toHeight - 1).toString())) {
       startHeight = toHeight;
+      key = this.pool.bundle_proposal!.to_key;
     } else {
       startHeight = currentHeight;
+      key = this.pool.current_key;
     }
 
     this.logger.debug(`Caching from height ${startHeight} to ${maxHeight} ...`);

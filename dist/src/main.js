@@ -35,7 +35,10 @@ class Node {
         this.setupStake = methods_1.setupStake;
         this.shouldIdle = methods_1.shouldIdle;
         this.claimUploaderRole = methods_1.claimUploaderRole;
+        this.loadBundle = methods_1.loadBundle;
         this.canVote = methods_1.canVote;
+        this.validateBundleProposal = methods_1.validateBundleProposal;
+        this.voteBundleProposal = methods_1.voteBundleProposal;
         this.runNode = methods_1.runNode;
         this.runCache = methods_1.runCache;
         // define program

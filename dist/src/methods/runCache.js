@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.runCache = void 0;
 const helpers_1 = require("../utils/helpers");
+// TODO: strongly test
 async function runCache() {
     let createdAt = 0;
     let currentHeight = 0;
@@ -30,13 +31,15 @@ async function runCache() {
             }
         }
         let startHeight;
-        let key = this.pool.bundle_proposal.to_key || this.pool.current_key;
+        let key;
         // determine from which height to continue caching
         if (await this.cache.exists((toHeight - 1).toString())) {
             startHeight = toHeight;
+            key = this.pool.bundle_proposal.to_key;
         }
         else {
             startHeight = currentHeight;
+            key = this.pool.current_key;
         }
         this.logger.debug(`Caching from height ${startHeight} to ${maxHeight} ...`);
         for (let height = startHeight; height < maxHeight; height++) {

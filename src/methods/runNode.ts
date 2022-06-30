@@ -5,7 +5,10 @@ export async function runNode(this: KyveCore): Promise<void> {
   while (true) {
     await this.syncPoolState();
 
-    if (await this.shouldIdle()) {
+    const createdAt = +this.pool.bundle_proposal!.created_at;
+
+    if (this.shouldIdle()) {
+      await sleep("1m");
       continue;
     }
 
@@ -26,7 +29,7 @@ export async function runNode(this: KyveCore): Promise<void> {
     }
 
     if (await this.canVote()) {
-      // validateBundleProposal
+      this.validateBundleProposal(createdAt);
     }
 
     await sleep(10 * 1000);

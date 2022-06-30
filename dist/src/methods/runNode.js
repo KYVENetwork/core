@@ -5,7 +5,9 @@ const helpers_1 = require("../utils/helpers");
 async function runNode() {
     while (true) {
         await this.syncPoolState();
-        if (await this.shouldIdle()) {
+        const createdAt = +this.pool.bundle_proposal.created_at;
+        if (this.shouldIdle()) {
+            await (0, helpers_1.sleep)("1m");
             continue;
         }
         if (await this.claimUploaderRole()) {
@@ -18,7 +20,7 @@ async function runNode() {
             this.logger.info(`Starting bundle proposal round ${this.pool.total_bundles} as Validator`);
         }
         if (await this.canVote()) {
-            // validateBundleProposal
+            this.validateBundleProposal(createdAt);
         }
         await (0, helpers_1.sleep)(10 * 1000);
     }

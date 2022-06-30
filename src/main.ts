@@ -17,6 +17,9 @@ import {
   shouldIdle,
   claimUploaderRole,
   canVote,
+  validateBundleProposal,
+  voteBundleProposal,
+  loadBundle,
 } from "./methods";
 import program from "./commander";
 import KyveSDK, { KyveClient, KyveLCDClientType } from "@kyve/sdk";
@@ -76,7 +79,10 @@ class Node {
   protected setupStake = setupStake;
   protected shouldIdle = shouldIdle;
   protected claimUploaderRole = claimUploaderRole;
+  protected loadBundle = loadBundle;
   protected canVote = canVote;
+  protected validateBundleProposal = validateBundleProposal;
+  protected voteBundleProposal = voteBundleProposal;
   protected runNode = runNode;
   protected runCache = runCache;
 
