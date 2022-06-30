@@ -8,6 +8,7 @@ const zlib_1 = require("zlib");
 const helpers_1 = require("../utils/helpers");
 const constants_1 = require("../utils/constants");
 const object_hash_1 = __importDefault(require("object-hash"));
+// TODO: exit after remaining upload interval if node is uploader
 async function validateBundleProposal(createdAt) {
     var _a;
     this.logger.info(`Validating bundle ${this.pool.bundle_proposal.bundle_id}`);

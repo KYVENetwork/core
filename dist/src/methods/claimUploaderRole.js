@@ -20,8 +20,9 @@ async function claimUploaderRole() {
             return false;
         }
     }
-    catch {
-        this.logger.error("Failed to claim uploader role. Skipping ...");
+    catch (error) {
+        this.logger.warn(" Failed to claim uploader role. Continuing ...");
+        this.logger.debug(error);
         return false;
     }
 }

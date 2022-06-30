@@ -20,6 +20,11 @@ import {
   validateBundleProposal,
   voteBundleProposal,
   loadBundle,
+  remainingUploadInterval,
+  waitForNextBundleProposal,
+  canPropose,
+  submitBundleProposal,
+  proposeBundle,
 } from "./methods";
 import program from "./commander";
 import KyveSDK, { KyveClient, KyveLCDClientType } from "@kyve/sdk";
@@ -83,6 +88,11 @@ class Node {
   protected canVote = canVote;
   protected validateBundleProposal = validateBundleProposal;
   protected voteBundleProposal = voteBundleProposal;
+  protected remainingUploadInterval = remainingUploadInterval;
+  protected waitForNextBundleProposal = waitForNextBundleProposal;
+  protected canPropose = canPropose;
+  protected submitBundleProposal = submitBundleProposal;
+  protected proposeBundle = proposeBundle;
   protected runNode = runNode;
   protected runCache = runCache;
 

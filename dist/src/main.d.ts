@@ -1,5 +1,5 @@
 import { IRuntime, IStorageProvider, ICache } from "./types";
-import { setupLogger, setupName, logNodeInfo, syncPoolState, validateRuntime, validateVersion, validateActiveNode, setupStake, runNode, runCache, asyncSetup, shouldIdle, claimUploaderRole, canVote, validateBundleProposal, voteBundleProposal, loadBundle } from "./methods";
+import { setupLogger, setupName, logNodeInfo, syncPoolState, validateRuntime, validateVersion, validateActiveNode, setupStake, runNode, runCache, asyncSetup, shouldIdle, claimUploaderRole, canVote, validateBundleProposal, voteBundleProposal, loadBundle, remainingUploadInterval, waitForNextBundleProposal, canPropose, submitBundleProposal, proposeBundle } from "./methods";
 import KyveSDK, { KyveClient, KyveLCDClientType } from "@kyve/sdk";
 import { Logger } from "tslog";
 import { kyve } from "@kyve/proto";
@@ -49,6 +49,11 @@ declare class Node {
     protected canVote: typeof canVote;
     protected validateBundleProposal: typeof validateBundleProposal;
     protected voteBundleProposal: typeof voteBundleProposal;
+    protected remainingUploadInterval: typeof remainingUploadInterval;
+    protected waitForNextBundleProposal: typeof waitForNextBundleProposal;
+    protected canPropose: typeof canPropose;
+    protected submitBundleProposal: typeof submitBundleProposal;
+    protected proposeBundle: typeof proposeBundle;
     protected runNode: typeof runNode;
     protected runCache: typeof runCache;
     /**

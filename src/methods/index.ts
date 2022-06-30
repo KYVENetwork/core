@@ -12,6 +12,11 @@ export * from "./loadBundle";
 export * from "./canVote";
 export * from "./validateBundleProposal";
 export * from "./voteBundleProposal";
+export * from "./remainingUploadInterval";
+export * from "./waitForNextBundleProposal";
+export * from "./canPropose";
+export * from "./submitBundleProposal";
+export * from "./proposeBundle";
 
 export * from "./runNode";
 export * from "./runCache";

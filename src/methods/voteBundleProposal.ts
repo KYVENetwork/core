@@ -18,7 +18,9 @@ export async function voteBundleProposal(
       throw Error(`Invalid vote: ${vote}`);
     }
 
-    this.logger.debug(`Voting ${voteMessage} on bundle ${bundle_id} ...`);
+    this.logger.debug(
+      `Attempting to vote ${voteMessage} on bundle ${bundle_id}`
+    );
 
     const receipt = await this.client.kyve.v1beta1.base.voteProposal({
       id: this.poolId.toString(),
@@ -29,10 +31,10 @@ export async function voteBundleProposal(
     if (receipt.code === 0) {
       this.logger.info(`Voted ${voteMessage} on bundle ${bundle_id}`);
     } else {
-      this.logger.warn(` Could not vote on proposal. Skipping ...`);
+      this.logger.info(`Could not vote on proposal. Continuing ...`);
     }
   } catch (error) {
-    this.logger.error("Failed to vote. Skipping ...");
+    this.logger.warn(" Failed to vote. Continuing ...");
     this.logger.debug(error);
   }
 }

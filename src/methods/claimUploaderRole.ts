@@ -20,8 +20,9 @@ export async function claimUploaderRole(this: KyveCore): Promise<boolean> {
       this.logger.info(`Could not claim uploader role. Continuing ...`);
       return false;
     }
-  } catch {
-    this.logger.error("Failed to claim uploader role. Skipping ...");
+  } catch (error) {
+    this.logger.warn(" Failed to claim uploader role. Continuing ...");
+    this.logger.debug(error);
     return false;
   }
 }

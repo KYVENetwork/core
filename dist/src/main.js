@@ -39,6 +39,11 @@ class Node {
         this.canVote = methods_1.canVote;
         this.validateBundleProposal = methods_1.validateBundleProposal;
         this.voteBundleProposal = methods_1.voteBundleProposal;
+        this.remainingUploadInterval = methods_1.remainingUploadInterval;
+        this.waitForNextBundleProposal = methods_1.waitForNextBundleProposal;
+        this.canPropose = methods_1.canPropose;
+        this.submitBundleProposal = methods_1.submitBundleProposal;
+        this.proposeBundle = methods_1.proposeBundle;
         this.runNode = methods_1.runNode;
         this.runCache = methods_1.runCache;
         // define program
