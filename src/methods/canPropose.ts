@@ -5,6 +5,7 @@ export async function canPropose(this: KyveCore): Promise<boolean> {
   if (
     this.pool.bundle_proposal!.next_uploader !== this.client.account.address
   ) {
+    this.logger.debug(`Skipping upload. Reason: Node is not the next uploader`);
     return false;
   }
 

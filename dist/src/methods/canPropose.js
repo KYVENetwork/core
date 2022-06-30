@@ -4,6 +4,7 @@ exports.canPropose = void 0;
 const helpers_1 = require("../utils/helpers");
 async function canPropose() {
     if (this.pool.bundle_proposal.next_uploader !== this.client.account.address) {
+        this.logger.debug(`Skipping upload. Reason: Node is not the next uploader`);
         return false;
     }
     while (true) {
