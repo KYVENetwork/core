@@ -113,19 +113,25 @@ export async function validateBundleProposal(
   const proposedBundleHash = hash(proposedBundleCompressed!);
   const validationBundleHash = hash(validationBundleCompressed!);
 
-  this.logger.debug(`Validating:   BYTE_SIZE | KEY | VALUE | HASH`);
-  this.logger.debug(
-    `Proposed:     ${proposedByteSize} $${proposedKey} ${proposedValue} ${proposedBundleHash}`
-  );
-  this.logger.debug(
-    `Validation:   ${validationByteSize} $${validationKey} ${validationValue} ${validationBundleHash}`
-  );
+  this.logger.debug(`Validating bundle proposal by\n`);
+
+  this.logger.debug(`Proposed byte size:      ${proposedByteSize}`);
+  this.logger.debug(`Validation byte size:    ${validationByteSize}\n`);
+
+  this.logger.debug(`Proposed key:      ${proposedKey}`);
+  this.logger.debug(`Validation key:    ${validationKey}\n`);
+
+  this.logger.debug(`Proposed value:      ${proposedValue}`);
+  this.logger.debug(`Validation value:    ${validationValue}\n`);
+
+  this.logger.debug(`Proposed hash:      ${proposedBundleHash}`);
+  this.logger.debug(`Validation hash:    ${validationBundleHash}\n`);
 
   if (
-    proposedByteSize !== validationByteSize ||
-    proposedKey !== validationKey ||
-    proposedValue !== validationValue ||
-    proposedBundleHash !== validationBundleHash
+    proposedByteSize === validationByteSize &&
+    proposedKey === validationKey &&
+    proposedValue === validationValue &&
+    proposedBundleHash === validationBundleHash
   ) {
     await this.voteBundleProposal(
       this.pool.bundle_proposal!.bundle_id,

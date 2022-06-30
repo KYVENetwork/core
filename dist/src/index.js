@@ -135,6 +135,7 @@ class Node {
      * @return {Promise<void>}
      */
     async start() {
+        // TODO: check here if sdk init fails
         await this.asyncSetup();
         this.logNodeInfo();
         await this.syncPoolState();

@@ -188,6 +188,7 @@ class Node {
    * @return {Promise<void>}
    */
   public async start(): Promise<void> {
+    // TODO: check here if sdk init fails
     await this.asyncSetup();
 
     this.logNodeInfo();
