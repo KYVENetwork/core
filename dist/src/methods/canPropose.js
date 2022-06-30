@@ -12,7 +12,7 @@ async function canPropose() {
             const { possible, reason } = await this.query.kyve.registry.v1beta1.canPropose({
                 pool_id: this.poolId.toString(),
                 proposer: this.client.account.address,
-                from_height: this.pool.current_height,
+                from_height: this.pool.bundle_proposal.to_height || this.pool.current_height,
             });
             if (possible) {
                 this.logger.debug(`Node is able to propose a new bundle\n`);
@@ -23,7 +23,7 @@ async function canPropose() {
                 continue;
             }
             else {
-                this.logger.debug(`Skipping vote. Reason: ${reason}`);
+                this.logger.debug(`Skipping upload. Reason: ${reason}`);
                 return false;
             }
         }

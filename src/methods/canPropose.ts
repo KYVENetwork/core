@@ -15,7 +15,8 @@ export async function canPropose(this: KyveCore): Promise<boolean> {
         await this.query.kyve.registry.v1beta1.canPropose({
           pool_id: this.poolId.toString(),
           proposer: this.client.account.address,
-          from_height: this.pool.current_height,
+          from_height:
+            this.pool.bundle_proposal!.to_height || this.pool.current_height,
         });
 
       if (possible) {
@@ -25,7 +26,7 @@ export async function canPropose(this: KyveCore): Promise<boolean> {
         await sleep(1000);
         continue;
       } else {
-        this.logger.debug(`Skipping vote. Reason: ${reason}`);
+        this.logger.debug(`Skipping upload. Reason: ${reason}`);
         return false;
       }
     } catch {
