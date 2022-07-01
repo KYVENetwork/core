@@ -553,7 +553,7 @@ class KYVE {
           );
 
           if (!alreadyVotedWithAbstain) {
-            await this.vote(this.pool.bundle_proposal.bundle_id, 2);
+            await this.vote(this.pool.bundle_proposal.bundle_id, 3);
             alreadyVotedWithAbstain = true;
           }
 
@@ -580,7 +580,7 @@ class KYVE {
         );
 
         if (!alreadyVotedWithAbstain) {
-          await this.vote(this.pool.bundle_proposal.bundle_id, 2);
+          await this.vote(this.pool.bundle_proposal.bundle_id, 3);
           alreadyVotedWithAbstain = true;
         }
 
@@ -624,13 +624,13 @@ class KYVE {
         }
 
         if (support) {
-          await this.vote(this.pool.bundle_proposal.bundle_id, 0);
-        } else {
           await this.vote(this.pool.bundle_proposal.bundle_id, 1);
+        } else {
+          await this.vote(this.pool.bundle_proposal.bundle_id, 2);
         }
       } catch {
         this.logger.warn(` Could not gunzip bundle ...`);
-        await this.vote(this.pool.bundle_proposal.bundle_id, 1);
+        await this.vote(this.pool.bundle_proposal.bundle_id, 2);
       } finally {
         break;
       }
