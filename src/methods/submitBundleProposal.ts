@@ -1,7 +1,7 @@
-import KyveCore from "..";
+import { Node } from "..";
 
 export async function submitBundleProposal(
-  this: KyveCore,
+  this: Node,
   bundleId: string,
   byteSize: number,
   fromHeight: number,

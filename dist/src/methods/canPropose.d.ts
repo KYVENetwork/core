@@ -1,2 +1,2 @@
-import KyveCore from "..";
-export declare function canPropose(this: KyveCore): Promise<boolean>;
+import { Node } from "..";
+export declare function canPropose(this: Node): Promise<boolean>;

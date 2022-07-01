@@ -1,8 +1,8 @@
-import KyveCore from "..";
+import { Node } from "..";
 import { sleep } from "../utils/helpers";
 
 export async function waitForNextBundleProposal(
-  this: KyveCore,
+  this: Node,
   createdAt: number
 ): Promise<void> {
   return new Promise(async (resolve) => {

@@ -9,7 +9,7 @@ import { kyve } from "@kyve/proto";
  * @class Node
  * @constructor
  */
-declare class Node {
+export declare class Node {
     /**
      * My property description.  Like other pieces of your comment blocks,
      * this can span multiple lines.
@@ -129,4 +129,3 @@ export * from "./types";
 export * from "./storage";
 export * from "./compression";
 export * from "./cache";
-export default Node;

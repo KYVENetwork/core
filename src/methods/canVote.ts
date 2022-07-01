@@ -1,6 +1,6 @@
-import KyveCore from "..";
+import { Node } from "..";
 
-export async function canVote(this: KyveCore): Promise<boolean> {
+export async function canVote(this: Node): Promise<boolean> {
   if (!this.pool.bundle_proposal!.uploader) {
     this.logger.debug(
       `Skipping vote. Reason: Node can not vote on empty bundle`

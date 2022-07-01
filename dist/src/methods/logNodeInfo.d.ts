@@ -1,2 +1,2 @@
-import KyveCore from "..";
-export declare function logNodeInfo(this: KyveCore): void;
+import { Node } from "..";
+export declare function logNodeInfo(this: Node): void;

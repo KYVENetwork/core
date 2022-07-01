@@ -1,6 +1,6 @@
-import KyveCore from "..";
+import { Node } from "..";
 
-export async function claimUploaderRole(this: KyveCore): Promise<boolean> {
+export async function claimUploaderRole(this: Node): Promise<boolean> {
   // check if next uploader is free to claim
   if (this.pool.bundle_proposal!.next_uploader) {
     return false;

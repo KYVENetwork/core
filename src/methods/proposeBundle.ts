@@ -1,7 +1,7 @@
-import KyveCore from "..";
+import { Node } from "..";
 import { KYVE_NO_DATA_BUNDLE } from "../utils/constants";
 
-export async function proposeBundle(this: KyveCore): Promise<void> {
+export async function proposeBundle(this: Node): Promise<void> {
   const fromHeight =
     +this.pool.bundle_proposal!.to_height || +this.pool.current_height;
   const toHeight = +this.pool.max_bundle_size + fromHeight;

@@ -1,7 +1,7 @@
-import KyveCore from "..";
+import { Node } from "..";
 
 export async function voteBundleProposal(
-  this: KyveCore,
+  this: Node,
   bundle_id: string,
   vote: number
 ): Promise<void> {

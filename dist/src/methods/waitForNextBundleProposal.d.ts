@@ -1,2 +1,2 @@
-import KyveCore from "..";
-export declare function waitForNextBundleProposal(this: KyveCore, createdAt: number): Promise<void>;
+import { Node } from "..";
+export declare function waitForNextBundleProposal(this: Node, createdAt: number): Promise<void>;

@@ -1,3 +1,3 @@
+import { Node } from "..";
 import { Logger } from "tslog";
-import KyveCore from "..";
-export declare function setupLogger(this: KyveCore): Logger;
+export declare function setupLogger(this: Node): Logger;

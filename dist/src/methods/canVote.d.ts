@@ -1,2 +1,2 @@
-import KyveCore from "..";
-export declare function canVote(this: KyveCore): Promise<boolean>;
+import { Node } from "..";
+export declare function canVote(this: Node): Promise<boolean>;

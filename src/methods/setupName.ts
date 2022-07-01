@@ -1,3 +1,4 @@
+import { Node } from "..";
 import Prando from "prando";
 import {
   adjectives,
@@ -5,9 +6,8 @@ import {
   colors,
   uniqueNamesGenerator,
 } from "unique-names-generator";
-import KyveCore from "..";
 
-export function setupName(this: KyveCore): string {
+export function setupName(this: Node): string {
   const r = new Prando(`${this.poolId}-${this.mnemonic}-${this.coreVersion}`);
 
   return uniqueNamesGenerator({

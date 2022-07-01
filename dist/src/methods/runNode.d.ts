@@ -1,2 +1,2 @@
-import KyveCore from "..";
-export declare function runNode(this: KyveCore): Promise<void>;
+import { Node } from "..";
+export declare function runNode(this: Node): Promise<void>;

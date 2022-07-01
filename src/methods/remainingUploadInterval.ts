@@ -1,7 +1,7 @@
+import { Node } from "..";
 import BigNumber from "bignumber.js";
-import KyveCore from "..";
 
-export function remainingUploadInterval(this: KyveCore): BigNumber {
+export function remainingUploadInterval(this: Node): BigNumber {
   const unixNow = new BigNumber(Math.floor(Date.now() / 1000));
   const unixIntervalEnd = new BigNumber(
     this.pool.bundle_proposal!.created_at

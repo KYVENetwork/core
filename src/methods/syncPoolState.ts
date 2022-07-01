@@ -1,7 +1,7 @@
-import KyveCore from "..";
+import { Node } from "..";
 import { callWithBackoffStrategy } from "../utils/helpers";
 
-export async function syncPoolState(this: KyveCore): Promise<void> {
+export async function syncPoolState(this: Node): Promise<void> {
   this.logger.debug(`Attempting to fetch pool state`);
 
   await callWithBackoffStrategy(

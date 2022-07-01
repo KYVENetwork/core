@@ -1,2 +1,2 @@
-import KyveCore from "..";
-export declare function claimUploaderRole(this: KyveCore): Promise<boolean>;
+import { Node } from "..";
+export declare function claimUploaderRole(this: Node): Promise<boolean>;

@@ -1,6 +1,6 @@
-import KyveCore from "..";
+import { Node } from "..";
 
-export function shouldIdle(this: KyveCore): boolean {
+export function shouldIdle(this: Node): boolean {
   // check if pool is upgrading
   if (
     +this.pool.upgrade_plan!.scheduled_at > 0 &&

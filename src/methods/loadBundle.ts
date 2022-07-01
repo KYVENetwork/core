@@ -1,8 +1,8 @@
-import KyveCore from "..";
+import { Node } from "..";
 import { Bundle } from "../types";
 
 export async function loadBundle(
-  this: KyveCore,
+  this: Node,
   fromHeight: number,
   toHeight: number
 ): Promise<Bundle> {

@@ -1,5 +1,5 @@
-import KyveCore from "..";
+import { Node } from "..";
 
-export async function asyncSetup(this: KyveCore): Promise<void> {
+export async function asyncSetup(this: Node): Promise<void> {
   this.client = await this.sdk.fromMnemonic(this.mnemonic);
 }

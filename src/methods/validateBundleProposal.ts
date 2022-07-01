@@ -1,4 +1,4 @@
-import KyveCore from "..";
+import { Node } from "..";
 import { sleep } from "../utils/helpers";
 import { VOTE } from "../utils/constants";
 import { DataItem } from "../types";
@@ -6,7 +6,7 @@ import hash from "object-hash";
 
 // TODO: exit after remaining upload interval if node is uploader
 export async function validateBundleProposal(
-  this: KyveCore,
+  this: Node,
   createdAt: number
 ): Promise<void> {
   this.logger.info(`Validating bundle ${this.pool.bundle_proposal!.bundle_id}`);

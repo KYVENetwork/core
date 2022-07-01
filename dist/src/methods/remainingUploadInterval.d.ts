@@ -1,3 +1,3 @@
+import { Node } from "..";
 import BigNumber from "bignumber.js";
-import KyveCore from "..";
-export declare function remainingUploadInterval(this: KyveCore): BigNumber;
+export declare function remainingUploadInterval(this: Node): BigNumber;

@@ -1,7 +1,7 @@
-import KyveCore from "..";
+import { Node } from "..";
 import { sleep } from "../utils/helpers";
 
-export async function canPropose(this: KyveCore): Promise<boolean> {
+export async function canPropose(this: Node): Promise<boolean> {
   if (
     this.pool.bundle_proposal!.next_uploader !== this.client.account.address
   ) {

@@ -1,2 +1,2 @@
-import KyveCore from "..";
-export declare function asyncSetup(this: KyveCore): Promise<void>;
+import { Node } from "..";
+export declare function asyncSetup(this: Node): Promise<void>;

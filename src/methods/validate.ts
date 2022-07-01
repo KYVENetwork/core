@@ -1,6 +1,6 @@
-import KyveCore from "..";
+import { Node } from "..";
 
-export function validateRuntime(this: KyveCore): void {
+export function validateRuntime(this: Node): void {
   this.logger.debug(`Attempting to validate pool runtime`);
 
   if (this.pool.runtime !== this.runtime.name) {
@@ -17,7 +17,7 @@ export function validateRuntime(this: KyveCore): void {
   this.logger.debug(`Successfully validated pool runtime\n`);
 }
 
-export function validateVersion(this: KyveCore): void {
+export function validateVersion(this: Node): void {
   this.logger.debug(`Attempting to validate pool runtime version`);
 
   if (this.pool.protocol!.version !== this.runtime.version) {
@@ -34,7 +34,7 @@ export function validateVersion(this: KyveCore): void {
   this.logger.debug(`Successfully validated pool runtime version\n`);
 }
 
-export function validateActiveNode(this: KyveCore): void {
+export function validateActiveNode(this: Node): void {
   this.logger.debug(`Attempting to validate if node has staked`);
 
   if (!this.pool.stakers.includes(this.client.account.address)) {

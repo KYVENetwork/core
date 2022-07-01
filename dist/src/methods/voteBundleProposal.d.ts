@@ -1,2 +1,2 @@
-import KyveCore from "..";
-export declare function voteBundleProposal(this: KyveCore, bundle_id: string, vote: number): Promise<void>;
+import { Node } from "..";
+export declare function voteBundleProposal(this: Node, bundle_id: string, vote: number): Promise<void>;

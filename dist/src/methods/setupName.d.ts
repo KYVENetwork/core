@@ -1,2 +1,2 @@
-import KyveCore from "..";
-export declare function setupName(this: KyveCore): string;
+import { Node } from "..";
+export declare function setupName(this: Node): string;

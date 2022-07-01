@@ -1,2 +1,2 @@
-import KyveCore from "..";
-export declare function syncPoolState(this: KyveCore): Promise<void>;
+import { Node } from "..";
+export declare function syncPoolState(this: Node): Promise<void>;

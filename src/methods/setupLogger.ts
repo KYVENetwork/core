@@ -1,8 +1,8 @@
+import { Node } from "..";
 import { appendFileSync, existsSync, mkdirSync } from "fs";
 import { ILogObject, Logger } from "tslog";
-import KyveCore from "..";
 
-export function setupLogger(this: KyveCore): Logger {
+export function setupLogger(this: Node): Logger {
   if (!existsSync("./logs")) {
     mkdirSync("./logs");
   }

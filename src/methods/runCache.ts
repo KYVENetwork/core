@@ -1,8 +1,8 @@
-import KyveCore from "..";
+import { Node } from "..";
 import { sleep } from "../utils/helpers";
 
 // TODO: strongly test
-export async function runCache(this: KyveCore): Promise<void> {
+export async function runCache(this: Node): Promise<void> {
   let createdAt = 0;
   let currentHeight = 0;
   let toHeight = 0;

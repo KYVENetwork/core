@@ -17,6 +17,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Node = void 0;
 const package_json_1 = require("../package.json");
 const methods_1 = require("./methods");
 const commander_1 = __importDefault(require("./commander"));
@@ -165,6 +166,7 @@ class Node {
         this.runCache();
     }
 }
+exports.Node = Node;
 // // integration runtime should be implemented on the integration repo
 // class EVM implements IRuntime {
 //   public name = "@kyve/evm";
@@ -192,4 +194,3 @@ __exportStar(require("./types"), exports);
 __exportStar(require("./storage"), exports);
 __exportStar(require("./compression"), exports);
 __exportStar(require("./cache"), exports);
-exports.default = Node;

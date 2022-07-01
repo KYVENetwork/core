@@ -1,2 +1,2 @@
-import KyveCore from "..";
-export declare function shouldIdle(this: KyveCore): boolean;
+import { Node } from "..";
+export declare function shouldIdle(this: Node): boolean;
