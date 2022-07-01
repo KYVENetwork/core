@@ -301,13 +301,15 @@ class KYVE {
                 }
             }
             let startHeight;
-            let key = this.pool.bundle_proposal.to_key || this.pool.current_key;
+            let key;
             // determine from which height to continue caching
             if (await this.cache.exists(toHeight - 1)) {
                 startHeight = toHeight;
+                key = this.pool.bundle_proposal.to_key;
             }
             else {
                 startHeight = currentHeight;
+                key = this.pool.current_key;
             }
             this.logger.debug(`Caching from height ${startHeight} to ${maxHeight} ...`);
             for (let height = startHeight; height < maxHeight; height++) {
@@ -414,7 +416,7 @@ class KYVE {
                 else {
                     this.logger.warn(` Could not download bundle from Arweave. Retrying in 10s ...`);
                     if (!alreadyVotedWithAbstain) {
-                        await this.vote(this.pool.bundle_proposal.bundle_id, 2);
+                        await this.vote(this.pool.bundle_proposal.bundle_id, 3);
                         alreadyVotedWithAbstain = true;
                     }
                     await (0, helpers_1.sleep)(10 * 1000);
@@ -430,7 +432,7 @@ class KYVE {
             if (localBundle.bundle.length !== toHeight - currentHeight) {
                 this.logger.warn(` Could not load local bundle from ${currentHeight} to ${toHeight}. Retrying in 10s ...`);
                 if (!alreadyVotedWithAbstain) {
-                    await this.vote(this.pool.bundle_proposal.bundle_id, 2);
+                    await this.vote(this.pool.bundle_proposal.bundle_id, 3);
                     alreadyVotedWithAbstain = true;
                 }
                 await (0, helpers_1.sleep)(10 * 1000);
@@ -457,15 +459,15 @@ class KYVE {
                     support = await this.validate(localBundle.bundle, uploadBundle);
                 }
                 if (support) {
-                    await this.vote(this.pool.bundle_proposal.bundle_id, 0);
+                    await this.vote(this.pool.bundle_proposal.bundle_id, 1);
                 }
                 else {
-                    await this.vote(this.pool.bundle_proposal.bundle_id, 1);
+                    await this.vote(this.pool.bundle_proposal.bundle_id, 2);
                 }
             }
             catch {
                 this.logger.warn(` Could not gunzip bundle ...`);
-                await this.vote(this.pool.bundle_proposal.bundle_id, 1);
+                await this.vote(this.pool.bundle_proposal.bundle_id, 2);
             }
             finally {
                 break;
@@ -604,13 +606,13 @@ class KYVE {
     async vote(bundleId, vote) {
         try {
             let voteMessage = "";
-            if (vote === 0) {
+            if (vote === 1) {
                 voteMessage = "valid";
             }
-            else if (vote === 1) {
+            else if (vote === 2) {
                 voteMessage = "invalid";
             }
-            else if (vote === 2) {
+            else if (vote === 3) {
                 voteMessage = "abstain";
             }
             else {

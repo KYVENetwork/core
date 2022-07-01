@@ -403,14 +403,15 @@ class KYVE {
       }
 
       let startHeight: number;
-      let key: string =
-        this.pool.bundle_proposal.to_key || this.pool.current_key;
+      let key: string;
 
       // determine from which height to continue caching
       if (await this.cache.exists(toHeight - 1)) {
         startHeight = toHeight;
+        key = this.pool.bundle_proposal.to_key;
       } else {
         startHeight = currentHeight;
+        key = this.pool.current_key;
       }
 
       this.logger.debug(
@@ -552,7 +553,7 @@ class KYVE {
           );
 
           if (!alreadyVotedWithAbstain) {
-            await this.vote(this.pool.bundle_proposal.bundle_id, 2);
+            await this.vote(this.pool.bundle_proposal.bundle_id, 3);
             alreadyVotedWithAbstain = true;
           }
 
@@ -579,7 +580,7 @@ class KYVE {
         );
 
         if (!alreadyVotedWithAbstain) {
-          await this.vote(this.pool.bundle_proposal.bundle_id, 2);
+          await this.vote(this.pool.bundle_proposal.bundle_id, 3);
           alreadyVotedWithAbstain = true;
         }
 
@@ -623,13 +624,13 @@ class KYVE {
         }
 
         if (support) {
-          await this.vote(this.pool.bundle_proposal.bundle_id, 0);
-        } else {
           await this.vote(this.pool.bundle_proposal.bundle_id, 1);
+        } else {
+          await this.vote(this.pool.bundle_proposal.bundle_id, 2);
         }
       } catch {
         this.logger.warn(` Could not gunzip bundle ...`);
-        await this.vote(this.pool.bundle_proposal.bundle_id, 1);
+        await this.vote(this.pool.bundle_proposal.bundle_id, 2);
       } finally {
         break;
       }
@@ -835,11 +836,11 @@ class KYVE {
     try {
       let voteMessage = "";
 
-      if (vote === 0) {
+      if (vote === 1) {
         voteMessage = "valid";
-      } else if (vote === 1) {
-        voteMessage = "invalid";
       } else if (vote === 2) {
+        voteMessage = "invalid";
+      } else if (vote === 3) {
         voteMessage = "abstain";
       } else {
         throw Error(`Invalid vote: ${vote}`);
