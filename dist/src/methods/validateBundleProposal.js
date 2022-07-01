@@ -44,7 +44,7 @@ async function validateBundleProposal(createdAt) {
         }
         // try to load local bundle
         const currentHeight = +this.pool.current_height;
-        const toHeight = +this.pool.bundle_proposal.to_height || +this.pool.current_height;
+        const toHeight = +this.pool.bundle_proposal.to_height || currentHeight;
         this.logger.debug(`Loading local bundle from ${currentHeight} to ${toHeight} ...`);
         const { bundle } = await this.loadBundle(currentHeight, toHeight);
         // check if bundle length is equal to request bundle
