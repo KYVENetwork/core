@@ -836,11 +836,11 @@ class KYVE {
     try {
       let voteMessage = "";
 
-      if (vote === 0) {
+      if (vote === 1) {
         voteMessage = "valid";
-      } else if (vote === 1) {
-        voteMessage = "invalid";
       } else if (vote === 2) {
+        voteMessage = "invalid";
+      } else if (vote === 3) {
         voteMessage = "abstain";
       } else {
         throw Error(`Invalid vote: ${vote}`);

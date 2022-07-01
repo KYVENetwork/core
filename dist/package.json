@@ -28,7 +28,7 @@
     "dependencies": {
         "@cosmjs/proto-signing": "^0.27.1",
         "@cosmjs/stargate": "^0.27.1",
-        "@kyve/sdk": "1.2.0",
+        "@kyve/sdk": "KYVENetwork/sdk#v0.5.1",
         "@types/cli-progress": "^3.9.2",
         "@types/jsonfile": "^6.0.1",
         "arweave": "^1.10.17",
