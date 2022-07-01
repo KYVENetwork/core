@@ -455,10 +455,9 @@
     big-integer "^1.6.48"
     utility-types "^3.10.0"
 
-"@kyve/sdk@1.2.0":
+"@kyve/sdk@KYVENetwork/sdk#v0.5.1":
   version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@kyve/sdk/-/sdk-1.2.0.tgz#c8d373e92028b62888965fd5fafd73e843bcda52"
-  integrity sha512-b+SAtpnnqs5V6HLZWVdY7jETOwy4oWi0cDRdte4CxwvtYFcUwcoy/XbGb2oNWXyJCnycXarpkm9pigAk2xyakA==
+  resolved "https://codeload.github.com/KYVENetwork/sdk/tar.gz/82bd92271c3821c7c1671e98903e44a0e805ee9f"
   dependencies:
     "@cosmjs/amino" "0.28.3"
     "@cosmjs/crypto" "0.27.1"
