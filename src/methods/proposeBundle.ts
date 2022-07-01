@@ -1,4 +1,3 @@
-import { gzipSync } from "zlib";
 import KyveCore from "..";
 import { KYVE_NO_DATA_BUNDLE } from "../utils/constants";
 
@@ -12,9 +11,10 @@ export async function proposeBundle(this: KyveCore): Promise<void> {
 
   if (bundleProposal.bundle.length) {
     // upload bundle to Arweave
-    const bundleCompressed = gzipSync(
-      Buffer.from(JSON.stringify(bundleProposal.bundle))
+    const bundleCompressed = await this.compression.compress(
+      bundleProposal.bundle
     );
+
     const tags: [string, string][] = [
       ["Application", "KYVE"],
       ["Network", this.network],

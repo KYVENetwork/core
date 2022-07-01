@@ -1,6 +1,4 @@
-import { IRuntime, IStorageProvider, ICache } from "./types";
-import Arweave from "./storage/Arweave";
-import JsonFileCache from "./cache/JsonFileCache";
+import { IRuntime, IStorageProvider, ICache, ICompression } from "./types";
 import { version as coreVersion } from "../package.json";
 import {
   setupLogger,
@@ -48,6 +46,7 @@ class Node {
    */
   protected runtime!: IRuntime;
   protected storageProvider!: IStorageProvider;
+  protected compression!: ICompression;
   protected cache!: ICache;
 
   // register sdk attributes
@@ -162,6 +161,23 @@ class Node {
   }
 
   /**
+   * Set the compression type for the protocol node.
+   * Before saving bundles to the storage provider the node uses this compression
+   * to store data more efficiently
+   *
+   * Required before calling 'run'
+   *
+   * @method addCompression
+   * @param {ICompression} compression which implements the interface ICompression
+   * @return {Promise<this>} returns this for chained commands
+   * @chainable
+   */
+  public addCompression(compression: ICompression): this {
+    this.compression = compression;
+    return this;
+  }
+
+  /**
    * Set the cache for the protocol node.
    * The Cache is responsible for caching data before its validated and stored on the Storage Provider.
    *
@@ -189,6 +205,7 @@ class Node {
    */
   public async start(): Promise<void> {
     // TODO: check here if sdk init fails
+    // TODO: check if runtime, storage provider etc is defined
     await this.asyncSetup();
 
     this.logNodeInfo();
@@ -236,8 +253,9 @@ class Node {
 //   .addCache(new JsonFileCache())
 //   .start();
 
-export default Node;
-
 export * from "./types";
 export * from "./storage";
+export * from "./compression";
 export * from "./cache";
+
+export default Node;

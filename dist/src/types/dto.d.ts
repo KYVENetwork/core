@@ -5,7 +5,7 @@ export interface DataItem {
 export interface Bundle {
     fromHeight: number;
     toHeight: number;
-    bundle: any[];
+    bundle: DataItem[];
     toKey: string;
     toValue: string;
 }

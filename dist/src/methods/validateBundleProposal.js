@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateBundleProposal = void 0;
-const zlib_1 = require("zlib");
 const helpers_1 = require("../utils/helpers");
 const constants_1 = require("../utils/constants");
 const object_hash_1 = __importDefault(require("object-hash"));
@@ -51,7 +50,7 @@ async function validateBundleProposal(createdAt) {
         // check if bundle length is equal to request bundle
         if (bundle.length === toHeight - currentHeight) {
             validationBundle = bundle;
-            validationBundleCompressed = (0, zlib_1.gzipSync)(Buffer.from(JSON.stringify(validationBundle)));
+            validationBundleCompressed = await this.compression.compress(validationBundle);
             break;
         }
         else {

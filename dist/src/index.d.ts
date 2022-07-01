@@ -1,4 +1,4 @@
-import { IRuntime, IStorageProvider, ICache } from "./types";
+import { IRuntime, IStorageProvider, ICache, ICompression } from "./types";
 import { setupLogger, setupName, logNodeInfo, syncPoolState, validateRuntime, validateVersion, validateActiveNode, setupStake, runNode, runCache, asyncSetup, shouldIdle, claimUploaderRole, canVote, validateBundleProposal, voteBundleProposal, loadBundle, remainingUploadInterval, waitForNextBundleProposal, canPropose, submitBundleProposal, proposeBundle } from "./methods";
 import KyveSDK, { KyveClient, KyveLCDClientType } from "@kyve/sdk";
 import { Logger } from "tslog";
@@ -19,6 +19,7 @@ declare class Node {
      */
     protected runtime: IRuntime;
     protected storageProvider: IStorageProvider;
+    protected compression: ICompression;
     protected cache: ICache;
     protected sdk: KyveSDK;
     protected client: KyveClient;
@@ -88,6 +89,19 @@ declare class Node {
      */
     addStorageProvider(storageProvider: IStorageProvider): this;
     /**
+     * Set the compression type for the protocol node.
+     * Before saving bundles to the storage provider the node uses this compression
+     * to store data more efficiently
+     *
+     * Required before calling 'run'
+     *
+     * @method addCompression
+     * @param {ICompression} compression which implements the interface ICompression
+     * @return {Promise<this>} returns this for chained commands
+     * @chainable
+     */
+    addCompression(compression: ICompression): this;
+    /**
      * Set the cache for the protocol node.
      * The Cache is responsible for caching data before its validated and stored on the Storage Provider.
      *
@@ -111,7 +125,8 @@ declare class Node {
      */
     start(): Promise<void>;
 }
-export default Node;
 export * from "./types";
 export * from "./storage";
+export * from "./compression";
 export * from "./cache";
+export default Node;

@@ -110,6 +110,22 @@ class Node {
         return this;
     }
     /**
+     * Set the compression type for the protocol node.
+     * Before saving bundles to the storage provider the node uses this compression
+     * to store data more efficiently
+     *
+     * Required before calling 'run'
+     *
+     * @method addCompression
+     * @param {ICompression} compression which implements the interface ICompression
+     * @return {Promise<this>} returns this for chained commands
+     * @chainable
+     */
+    addCompression(compression) {
+        this.compression = compression;
+        return this;
+    }
+    /**
      * Set the cache for the protocol node.
      * The Cache is responsible for caching data before its validated and stored on the Storage Provider.
      *
@@ -136,6 +152,7 @@ class Node {
      */
     async start() {
         // TODO: check here if sdk init fails
+        // TODO: check if runtime, storage provider etc is defined
         await this.asyncSetup();
         this.logNodeInfo();
         await this.syncPoolState();
@@ -171,7 +188,8 @@ class Node {
 //   .addStorageProvider(new Arweave())
 //   .addCache(new JsonFileCache())
 //   .start();
-exports.default = Node;
 __exportStar(require("./types"), exports);
 __exportStar(require("./storage"), exports);
+__exportStar(require("./compression"), exports);
 __exportStar(require("./cache"), exports);
+exports.default = Node;

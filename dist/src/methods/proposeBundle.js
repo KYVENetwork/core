@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.proposeBundle = void 0;
-const zlib_1 = require("zlib");
 const constants_1 = require("../utils/constants");
 async function proposeBundle() {
     const fromHeight = +this.pool.bundle_proposal.to_height || +this.pool.current_height;
@@ -10,7 +9,7 @@ async function proposeBundle() {
     const bundleProposal = await this.loadBundle(fromHeight, toHeight);
     if (bundleProposal.bundle.length) {
         // upload bundle to Arweave
-        const bundleCompressed = (0, zlib_1.gzipSync)(Buffer.from(JSON.stringify(bundleProposal.bundle)));
+        const bundleCompressed = await this.compression.compress(bundleProposal.bundle);
         const tags = [
             ["Application", "KYVE"],
             ["Network", this.network],

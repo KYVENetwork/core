@@ -176,3 +176,28 @@ export interface ICache {
      */
     drop(): Promise<void>;
 }
+export interface ICompression {
+    /**
+     * Name of the compression. This should be unique for every compression type.
+     *
+     * @property name
+     * @type {string}
+     */
+    name: string;
+    /**
+     * Compresses a bundle
+     *
+     * @method compress
+     * @param {DataItem[]} bundle
+     * @return {Promise<Buffer>}
+     */
+    compress(bundle: DataItem[]): Promise<Buffer>;
+    /**
+     * Decompresses a bundle
+     *
+     * @method decompress
+     * @param {Buffer} data
+     * @return {Promise<DataItem[]>}
+     */
+    decompress(data: Buffer): Promise<DataItem[]>;
+}

@@ -1,4 +1,3 @@
-import { gzipSync } from "zlib";
 import KyveCore from "..";
 import { sleep } from "../utils/helpers";
 import { VOTE } from "../utils/constants";
@@ -76,8 +75,8 @@ export async function validateBundleProposal(
     // check if bundle length is equal to request bundle
     if (bundle.length === toHeight - currentHeight) {
       validationBundle = bundle;
-      validationBundleCompressed = gzipSync(
-        Buffer.from(JSON.stringify(validationBundle))
+      validationBundleCompressed = await this.compression.compress(
+        validationBundle
       );
 
       break;
