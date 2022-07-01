@@ -29,8 +29,6 @@ export async function loadBundle(
   }
 
   return {
-    fromHeight,
-    toHeight,
     bundle,
     toKey,
     toValue,

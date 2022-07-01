@@ -23,7 +23,8 @@ export async function proposeBundle(this: Node): Promise<void> {
       [this.runtime.name, this.runtime.version],
       ["Uploader", this.client.account.address],
       ["FromHeight", fromHeight.toString()],
-      ["ToHeight", bundleProposal.toHeight.toString()],
+      ["ToHeight", (fromHeight + bundleProposal.bundle.length).toString()],
+      ["Size", bundleProposal.bundle.length.toString()],
       ["FromKey", fromKey],
       ["ToKey", bundleProposal.toKey],
       ["Value", bundleProposal.toValue],
@@ -42,7 +43,7 @@ export async function proposeBundle(this: Node): Promise<void> {
         bundleId,
         bundleCompressed.byteLength,
         fromHeight,
-        bundleProposal.toHeight,
+        fromHeight + bundleProposal.bundle.length,
         fromKey,
         bundleProposal.toKey,
         bundleProposal.toValue

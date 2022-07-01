@@ -19,8 +19,6 @@ async function loadBundle(fromHeight, toHeight) {
         toValue = await this.runtime.getFormattedValueFromDataItem(latestItem.value);
     }
     return {
-        fromHeight,
-        toHeight,
         bundle,
         toKey,
         toValue,

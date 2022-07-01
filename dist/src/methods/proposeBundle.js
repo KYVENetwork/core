@@ -18,7 +18,8 @@ async function proposeBundle() {
             [this.runtime.name, this.runtime.version],
             ["Uploader", this.client.account.address],
             ["FromHeight", fromHeight.toString()],
-            ["ToHeight", bundleProposal.toHeight.toString()],
+            ["ToHeight", (fromHeight + bundleProposal.bundle.length).toString()],
+            ["Size", bundleProposal.bundle.length.toString()],
             ["FromKey", fromKey],
             ["ToKey", bundleProposal.toKey],
             ["Value", bundleProposal.toValue],
@@ -26,7 +27,7 @@ async function proposeBundle() {
         try {
             const bundleId = await this.storageProvider.saveBundle(bundleCompressed, tags);
             this.logger.info(`Saved bundle on ${this.storageProvider.name} with ID ${bundleId}`);
-            await this.submitBundleProposal(bundleId, bundleCompressed.byteLength, fromHeight, bundleProposal.toHeight, fromKey, bundleProposal.toKey, bundleProposal.toValue);
+            await this.submitBundleProposal(bundleId, bundleCompressed.byteLength, fromHeight, fromHeight + bundleProposal.bundle.length, fromKey, bundleProposal.toKey, bundleProposal.toValue);
         }
         catch {
             this.logger.warn(` Failed to save bundle on ${this.storageProvider.name}`);
