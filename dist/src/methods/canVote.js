@@ -3,11 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.canVote = void 0;
 async function canVote() {
     if (!this.pool.bundle_proposal.uploader) {
-        this.logger.debug(`Skipping vote. Reason: Node can not vote on empty bundle`);
+        this.logger.info(`Skipping vote. Reason: Node can not vote on empty bundle\n`);
         return false;
     }
     if (this.pool.bundle_proposal.uploader === this.client.account.address) {
-        this.logger.debug(`Skipping vote. Reason: Node is uploader of this bundle`);
+        this.logger.info(`Skipping vote. Reason: Node is uploader of this bundle\n`);
         return false;
     }
     try {

@@ -4,13 +4,13 @@ exports.voteBundleProposal = void 0;
 async function voteBundleProposal(bundle_id, vote) {
     try {
         let voteMessage = "";
-        if (vote === 0) {
+        if (vote === 1) {
             voteMessage = "valid";
         }
-        else if (vote === 1) {
+        else if (vote === 2) {
             voteMessage = "invalid";
         }
-        else if (vote === 2) {
+        else if (vote === 3) {
             voteMessage = "abstain";
         }
         else {

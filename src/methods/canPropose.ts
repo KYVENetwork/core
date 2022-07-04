@@ -5,7 +5,9 @@ export async function canPropose(this: Node): Promise<boolean> {
   if (
     this.pool.bundle_proposal!.next_uploader !== this.client.account.address
   ) {
-    this.logger.debug(`Skipping upload. Reason: Node is not the next uploader`);
+    this.logger.info(
+      `Skipping upload. Reason: Node is not the next uploader\n`
+    );
     return false;
   }
 

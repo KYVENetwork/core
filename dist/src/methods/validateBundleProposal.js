@@ -27,13 +27,13 @@ async function validateBundleProposal(createdAt) {
         }
         // try to download bundle from arweave
         if (!proposedBundleCompressed) {
-            this.logger.info(`Downloading from ${this.storageProvider.name}`);
+            this.logger.debug(`Attempting to download bundle from ${this.storageProvider.name}`);
             proposedBundleCompressed = await this.storageProvider.retrieveBundle(this.pool.bundle_proposal.bundle_id);
             if (proposedBundleCompressed) {
                 this.logger.info(`Successfully downloaded bundle from ${this.storageProvider.name}`);
             }
             else {
-                this.logger.debug(`Could not download bundle from ${this.storageProvider.name}. Retrying in 10s ...`);
+                this.logger.info(`Could not download bundle from ${this.storageProvider.name}. Retrying in 10s ...`);
                 if (!hasVotedAbstain) {
                     await this.voteBundleProposal(this.pool.bundle_proposal.bundle_id, constants_1.VOTE.ABSTAIN);
                     hasVotedAbstain = true;
@@ -74,10 +74,8 @@ async function validateBundleProposal(createdAt) {
     this.logger.debug(`Validating bundle proposal by\n`);
     this.logger.debug(`Proposed byte size:      ${proposedByteSize}`);
     this.logger.debug(`Validation byte size:    ${validationByteSize}\n`);
-    this.logger.debug(`Proposed key:      ${proposedKey}`);
-    this.logger.debug(`Validation key:    ${validationKey}\n`);
-    this.logger.debug(`Proposed value:      ${proposedValue}`);
-    this.logger.debug(`Validation value:    ${validationValue}\n`);
+    this.logger.debug(`Proposed key value:            ${proposedKey} -> ${proposedValue}`);
+    this.logger.debug(`Validation key value:          ${validationKey} -> ${validationValue}\n`);
     this.logger.debug(`Proposed hash:      ${proposedBundleHash}`);
     this.logger.debug(`Validation hash:    ${validationBundleHash}\n`);
     if (proposedByteSize === validationByteSize &&

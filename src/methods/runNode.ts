@@ -20,11 +20,11 @@ export async function runNode(this: Node): Promise<void> {
       this.pool.bundle_proposal!.next_uploader === this.client.account.address
     ) {
       this.logger.info(
-        `Starting bundle proposal round ${this.pool.total_bundles} as Uploader`
+        `Starting bundle proposal round ${this.pool.total_bundles} as UPLOADER`
       );
     } else {
       this.logger.info(
-        `Starting bundle proposal round ${this.pool.total_bundles} as Validator`
+        `Starting bundle proposal round ${this.pool.total_bundles} as VALIDATOR`
       );
     }
 

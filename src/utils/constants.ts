@@ -1,7 +1,8 @@
 export const KYVE_ARWEAVE_BUNDLE = "KYVE_ARWEAVE_BUNDLE";
 export const KYVE_NO_DATA_BUNDLE = "KYVE_NO_DATA_BUNDLE";
 export const VOTE = {
-  VALID: 0,
-  INVALID: 1,
-  ABSTAIN: 2,
+  UNSPECIFIED: 0,
+  VALID: 1,
+  INVALID: 2,
+  ABSTAIN: 3,
 };

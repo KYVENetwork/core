@@ -4,7 +4,7 @@ exports.waitForNextBundleProposal = void 0;
 const helpers_1 = require("../utils/helpers");
 async function waitForNextBundleProposal(createdAt) {
     return new Promise(async (resolve) => {
-        this.logger.debug("Waiting for new bundle to be proposed");
+        this.logger.info("Waiting for new bundle to be proposed");
         while (true) {
             await this.syncPoolState();
             // check if new proposal is available in the meantime
@@ -18,6 +18,7 @@ async function waitForNextBundleProposal(createdAt) {
                 await (0, helpers_1.sleep)(10 * 1000);
             }
         }
+        this.logger.info(`Found new bundle proposal. Starting new round ...\n`);
         resolve();
     });
 }

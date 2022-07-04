@@ -6,7 +6,7 @@ export async function waitForNextBundleProposal(
   createdAt: number
 ): Promise<void> {
   return new Promise(async (resolve) => {
-    this.logger.debug("Waiting for new bundle to be proposed");
+    this.logger.info("Waiting for new bundle to be proposed");
 
     while (true) {
       await this.syncPoolState();
@@ -20,6 +20,8 @@ export async function waitForNextBundleProposal(
         await sleep(10 * 1000);
       }
     }
+
+    this.logger.info(`Found new bundle proposal. Starting new round ...\n`);
 
     resolve();
   });
