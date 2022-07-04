@@ -19,11 +19,11 @@ async function validateBundleProposal(createdAt) {
         await this.syncPoolState();
         if (+this.pool.bundle_proposal.created_at > createdAt) {
             // check if new proposal is available in the meantime
-            break;
+            return;
         }
         else if (this.shouldIdle()) {
             // check if pool got paused in the meantime
-            break;
+            return;
         }
         // try to download bundle from arweave
         if (!proposedBundleCompressed) {
