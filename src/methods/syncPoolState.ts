@@ -29,5 +29,5 @@ export async function syncPoolState(this: Node): Promise<void> {
     }
   );
 
-  this.logger.debug(`Synced pool state.`);
+  this.logger.debug(`Synced pool state`);
 }

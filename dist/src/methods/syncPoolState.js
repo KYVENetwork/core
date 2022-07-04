@@ -20,6 +20,6 @@ async function syncPoolState() {
         this.logger.info(`Failed to sync pool state. Retrying in ${(ctx.nextTimeoutInMs / 1000).toFixed(2)}s ...`);
         this.logger.debug(error);
     });
-    this.logger.debug(`Synced pool state.`);
+    this.logger.debug(`Synced pool state`);
 }
 exports.syncPoolState = syncPoolState;

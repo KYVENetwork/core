@@ -91,12 +91,14 @@ export async function setupStake(this: Node): Promise<void> {
   );
 
   try {
+    this.logger.debug(`Attempting to stake ${initialStake.toString()} in pool`);
+
     const tx = await this.client.kyve.v1beta1.base.stakePool({
       id: this.poolId.toString(),
       amount: initialStake.toString(),
     });
 
-    this.logger.debug(`Tx = ${tx.txHash}`);
+    this.logger.debug(`StakePool = ${tx.txHash}`);
 
     const receipt = await tx.execute();
 
@@ -104,16 +106,11 @@ export async function setupStake(this: Node): Promise<void> {
       this.logger.info(
         `Node running with a stake of ${toHumanReadable(
           initialStake.toString()
-        )} $KYVE`
-      );
-      this.logger.debug(
-        `Successfully staked ${toHumanReadable(
-          initialStake.toString()
         )} $KYVE\n`
       );
     } else {
       this.logger.error(
-        `Failed to stake ${toHumanReadable(
+        `Could not stake ${toHumanReadable(
           initialStake.toString()
         )} $KYVE. Exiting ...`
       );

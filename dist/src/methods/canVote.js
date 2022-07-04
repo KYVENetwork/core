@@ -17,11 +17,11 @@ async function canVote() {
             bundle_id: this.pool.bundle_proposal.bundle_id,
         });
         if (possible) {
-            this.logger.debug(`Node is able to vote on bundle proposal\n`);
+            this.logger.info(`Node is able to vote on bundle proposal\n`);
             return true;
         }
         else {
-            this.logger.debug(`Skipping vote. Reason: ${reason}`);
+            this.logger.info(`Skipping vote. Reason: ${reason}`);
             return false;
         }
     }

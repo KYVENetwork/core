@@ -58,18 +58,18 @@ async function setupStake() {
     }
     this.logger.debug(`Staking ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE in pool "${this.pool.name}" to become a validator`);
     try {
+        this.logger.debug(`Attempting to stake ${initialStake.toString()} in pool`);
         const tx = await this.client.kyve.v1beta1.base.stakePool({
             id: this.poolId.toString(),
             amount: initialStake.toString(),
         });
-        this.logger.debug(`Tx = ${tx.txHash}`);
+        this.logger.debug(`StakePool = ${tx.txHash}`);
         const receipt = await tx.execute();
         if (receipt.code === 0) {
-            this.logger.info(`Node running with a stake of ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE`);
-            this.logger.debug(`Successfully staked ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE\n`);
+            this.logger.info(`Node running with a stake of ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE\n`);
         }
         else {
-            this.logger.error(`Failed to stake ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE. Exiting ...`);
+            this.logger.error(`Could not stake ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE. Exiting ...`);
             process.exit(1);
         }
     }

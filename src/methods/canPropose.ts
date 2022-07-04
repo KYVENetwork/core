@@ -20,13 +20,13 @@ export async function canPropose(this: Node): Promise<boolean> {
         });
 
       if (possible) {
-        this.logger.debug(`Node is able to propose a new bundle\n`);
+        this.logger.info(`Node is able to propose a new bundle\n`);
         return true;
       } else if (reason === "Upload interval not surpassed") {
         await sleep(1000);
         continue;
       } else {
-        this.logger.debug(`Skipping upload. Reason: ${reason}`);
+        this.logger.info(`Skipping upload. Reason: ${reason}`);
         return false;
       }
     } catch (error) {
