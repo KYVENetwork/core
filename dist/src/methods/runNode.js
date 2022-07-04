@@ -23,7 +23,7 @@ async function runNode() {
             this.validateBundleProposal(createdAt);
         }
         const timeRemaining = this.remainingUploadInterval();
-        this.logger.debug(`Waiting for remaining upload interval = ${timeRemaining.toString()}s ...`);
+        this.logger.debug(`Waiting for remaining upload interval = ${timeRemaining.toFixed(2)}s ...`);
         // sleep until upload interval is reached
         await (0, helpers_1.sleep)(timeRemaining.multipliedBy(1000).toNumber());
         this.logger.debug(`Reached upload interval of current bundle proposal`);

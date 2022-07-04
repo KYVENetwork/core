@@ -35,7 +35,7 @@ export async function runNode(this: Node): Promise<void> {
     const timeRemaining = this.remainingUploadInterval();
 
     this.logger.debug(
-      `Waiting for remaining upload interval = ${timeRemaining.toString()}s ...`
+      `Waiting for remaining upload interval = ${timeRemaining.toFixed(2)}s ...`
     );
 
     // sleep until upload interval is reached

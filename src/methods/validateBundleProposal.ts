@@ -80,10 +80,12 @@ export async function validateBundleProposal(
         validationBundle
       );
 
+      this.logger.info(`Successfully loaded local bundle\n`);
+
       break;
     } else {
-      this.logger.warn(
-        ` Could not load local bundle from ${currentHeight} to ${toHeight}. Retrying in 10s ...`
+      this.logger.info(
+        `Could not load local bundle from ${currentHeight} to ${toHeight}. Retrying in 10s ...`
       );
 
       if (!hasVotedAbstain) {

@@ -51,10 +51,11 @@ async function validateBundleProposal(createdAt) {
         if (bundle.length === toHeight - currentHeight) {
             validationBundle = bundle;
             validationBundleCompressed = await this.compression.compress(validationBundle);
+            this.logger.info(`Successfully loaded local bundle\n`);
             break;
         }
         else {
-            this.logger.warn(` Could not load local bundle from ${currentHeight} to ${toHeight}. Retrying in 10s ...`);
+            this.logger.info(`Could not load local bundle from ${currentHeight} to ${toHeight}. Retrying in 10s ...`);
             if (!hasVotedAbstain) {
                 await this.voteBundleProposal(this.pool.bundle_proposal.bundle_id, constants_1.VOTE.ABSTAIN);
                 hasVotedAbstain = true;
