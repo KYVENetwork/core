@@ -3,8 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.submitBundleProposal = void 0;
 async function submitBundleProposal(bundleId, byteSize, fromHeight, toHeight, fromKey, toKey, toValue) {
     try {
-        this.logger.debug(`Attempting to submit bundle proposal`);
-        const receipt = await this.client.kyve.v1beta1.base.submitBundleProposal({
+        const tx = await this.client.kyve.v1beta1.base.submitBundleProposal({
             id: this.poolId.toString(),
             bundle_id: bundleId,
             byte_size: byteSize.toString(),
@@ -14,6 +13,8 @@ async function submitBundleProposal(bundleId, byteSize, fromHeight, toHeight, fr
             to_key: toKey,
             to_value: toValue,
         });
+        this.logger.debug(`Tx = ${tx.txHash}`);
+        const receipt = await tx.execute();
         if (receipt.code === 0) {
             this.logger.info(`Successfully submitted bundle proposal with id ${bundleId}`);
         }
@@ -22,7 +23,7 @@ async function submitBundleProposal(bundleId, byteSize, fromHeight, toHeight, fr
         }
     }
     catch (error) {
-        this.logger.warn("Failed to submit bundle proposal. Continuing ...");
+        this.logger.warn(" Failed to submit bundle proposal. Continuing ...");
         this.logger.debug(error);
     }
 }

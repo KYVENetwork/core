@@ -19,12 +19,13 @@ export async function setupStake(this: Node): Promise<void> {
       };
     },
     { limitTimeout: "5m", increaseBy: "10s" },
-    (_, ctx) => {
-      this.logger.warn(
-        ` Failed to fetch stake info of address. Retrying in ${
+    (error, ctx) => {
+      this.logger.info(
+        `Failed to fetch stake info of address. Retrying in ${(
           ctx.nextTimeoutInMs / 1000
-        }s ...`
+        ).toFixed(2)}s ...`
       );
+      this.logger.debug(error);
     }
   );
 
@@ -52,23 +53,24 @@ export async function setupStake(this: Node): Promise<void> {
       this.logger.error(
         "Initial stake can not be zero. Please provide a higher stake. Exiting ..."
       );
-      process.exit(0);
+      process.exit(1);
     }
   } catch (error) {
     this.logger.error("Could not parse initial stake. Exiting ...");
+    this.logger.debug(error);
     process.exit(1);
   }
 
   // check if node operator has more stake than the required minimum stake
   if (initialStake.lte(minimumStake)) {
     this.logger.error(
-      ` Minimum stake is ${toHumanReadable(
+      `Minimum stake is ${toHumanReadable(
         minimumStake.toString()
       )} $KYVE - initial stake only ${toHumanReadable(
         initialStake.toString()
       )} $KYVE. Please provide a higher staking amount. Exiting ...`
     );
-    process.exit(0);
+    process.exit(1);
   }
 
   // check if node operator has enough balance to stake
@@ -79,7 +81,7 @@ export async function setupStake(this: Node): Promise<void> {
         balance.toString()
       )} required = ${toHumanReadable(initialStake.toString())}`
     );
-    process.exit(0);
+    process.exit(1);
   }
 
   this.logger.debug(
@@ -89,10 +91,14 @@ export async function setupStake(this: Node): Promise<void> {
   );
 
   try {
-    const receipt = await this.client.kyve.v1beta1.base.stakePool({
+    const tx = await this.client.kyve.v1beta1.base.stakePool({
       id: this.poolId.toString(),
       amount: initialStake.toString(),
     });
+
+    this.logger.debug(`Tx = ${tx.txHash}`);
+
+    const receipt = await tx.execute();
 
     if (receipt.code === 0) {
       this.logger.info(
@@ -113,12 +119,13 @@ export async function setupStake(this: Node): Promise<void> {
       );
       process.exit(1);
     }
-  } catch {
+  } catch (error) {
     this.logger.error(
       `Failed to stake ${toHumanReadable(
         initialStake.toString()
       )} $KYVE. Exiting ...`
     );
+    this.logger.debug(error);
     process.exit(1);
   }
 }

@@ -11,7 +11,6 @@ async function canVote() {
         return false;
     }
     try {
-        this.logger.debug(`Attempting to check if node can vote`);
         const { possible, reason } = await this.query.kyve.registry.v1beta1.canVote({
             pool_id: this.poolId.toString(),
             voter: this.client.account.address,
@@ -26,8 +25,9 @@ async function canVote() {
             return false;
         }
     }
-    catch {
-        this.logger.debug(`Skipping vote. Reason: Failed to execute canVote query`);
+    catch (error) {
+        this.logger.warn(` Skipping vote. Reason: Failed to execute canVote query`);
+        this.logger.debug(error);
         return false;
     }
 }

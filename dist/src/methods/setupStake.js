@@ -18,8 +18,9 @@ async function setupStake() {
             currentStake: new bignumber_js_1.default(data.current_stake),
             minimumStake: new bignumber_js_1.default(data.minimum_stake),
         };
-    }, { limitTimeout: "5m", increaseBy: "10s" }, (_, ctx) => {
-        this.logger.warn(` Failed to fetch stake info of address. Retrying in ${ctx.nextTimeoutInMs / 1000}s ...`);
+    }, { limitTimeout: "5m", increaseBy: "10s" }, (error, ctx) => {
+        this.logger.info(`Failed to fetch stake info of address. Retrying in ${(ctx.nextTimeoutInMs / 1000).toFixed(2)}s ...`);
+        this.logger.debug(error);
     });
     // check if node has already staked
     if (!currentStake.isZero()) {
@@ -36,30 +37,33 @@ async function setupStake() {
         }
         if (initialStake.isZero()) {
             this.logger.error("Initial stake can not be zero. Please provide a higher stake. Exiting ...");
-            process.exit(0);
+            process.exit(1);
         }
     }
     catch (error) {
         this.logger.error("Could not parse initial stake. Exiting ...");
+        this.logger.debug(error);
         process.exit(1);
     }
     // check if node operator has more stake than the required minimum stake
     if (initialStake.lte(minimumStake)) {
-        this.logger.error(` Minimum stake is ${(0, helpers_1.toHumanReadable)(minimumStake.toString())} $KYVE - initial stake only ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE. Please provide a higher staking amount. Exiting ...`);
-        process.exit(0);
+        this.logger.error(`Minimum stake is ${(0, helpers_1.toHumanReadable)(minimumStake.toString())} $KYVE - initial stake only ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE. Please provide a higher staking amount. Exiting ...`);
+        process.exit(1);
     }
     // check if node operator has enough balance to stake
     if (balance.lt(initialStake)) {
         this.logger.error(`Not enough $KYVE in wallet. Exiting ...`);
         this.logger.error(`Balance = ${(0, helpers_1.toHumanReadable)(balance.toString())} required = ${(0, helpers_1.toHumanReadable)(initialStake.toString())}`);
-        process.exit(0);
+        process.exit(1);
     }
     this.logger.debug(`Staking ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE in pool "${this.pool.name}" to become a validator`);
     try {
-        const receipt = await this.client.kyve.v1beta1.base.stakePool({
+        const tx = await this.client.kyve.v1beta1.base.stakePool({
             id: this.poolId.toString(),
             amount: initialStake.toString(),
         });
+        this.logger.debug(`Tx = ${tx.txHash}`);
+        const receipt = await tx.execute();
         if (receipt.code === 0) {
             this.logger.info(`Node running with a stake of ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE`);
             this.logger.debug(`Successfully staked ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE\n`);
@@ -69,8 +73,9 @@ async function setupStake() {
             process.exit(1);
         }
     }
-    catch {
+    catch (error) {
         this.logger.error(`Failed to stake ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE. Exiting ...`);
+        this.logger.debug(error);
         process.exit(1);
     }
 }

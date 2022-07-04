@@ -64,7 +64,9 @@ export async function runCache(this: Node): Promise<void> {
 
           break;
         } catch {
-          this.logger.warn(` Failed to get data item from height ${height}`);
+          this.logger.debug(
+            ` Could not get data item from height ${height}. Retrying in 10s ...`
+          );
           await sleep(requests * 10 * 1000);
         }
       }

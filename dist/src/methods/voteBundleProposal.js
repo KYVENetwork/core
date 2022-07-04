@@ -16,12 +16,13 @@ async function voteBundleProposal(bundle_id, vote) {
         else {
             throw Error(`Invalid vote: ${vote}`);
         }
-        this.logger.debug(`Attempting to vote ${voteMessage} on bundle ${bundle_id}`);
-        const receipt = await this.client.kyve.v1beta1.base.voteProposal({
+        const tx = await this.client.kyve.v1beta1.base.voteProposal({
             id: this.poolId.toString(),
             bundle_id,
             vote,
         });
+        this.logger.debug(`Tx = ${tx.txHash}`);
+        const receipt = await tx.execute();
         if (receipt.code === 0) {
             this.logger.info(`Voted ${voteMessage} on bundle ${bundle_id}`);
         }

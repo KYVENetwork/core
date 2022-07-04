@@ -11,9 +11,7 @@ export async function submitBundleProposal(
   toValue: string
 ): Promise<void> {
   try {
-    this.logger.debug(`Attempting to submit bundle proposal`);
-
-    const receipt = await this.client.kyve.v1beta1.base.submitBundleProposal({
+    const tx = await this.client.kyve.v1beta1.base.submitBundleProposal({
       id: this.poolId.toString(),
       bundle_id: bundleId,
       byte_size: byteSize.toString(),
@@ -24,6 +22,10 @@ export async function submitBundleProposal(
       to_value: toValue,
     });
 
+    this.logger.debug(`Tx = ${tx.txHash}`);
+
+    const receipt = await tx.execute();
+
     if (receipt.code === 0) {
       this.logger.info(
         `Successfully submitted bundle proposal with id ${bundleId}`
@@ -32,7 +34,7 @@ export async function submitBundleProposal(
       this.logger.info(`Could not submit bundle proposal. Continuing ...`);
     }
   } catch (error) {
-    this.logger.warn("Failed to submit bundle proposal. Continuing ...");
+    this.logger.warn(" Failed to submit bundle proposal. Continuing ...");
     this.logger.debug(error);
   }
 }

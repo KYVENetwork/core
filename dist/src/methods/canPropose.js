@@ -27,8 +27,9 @@ async function canPropose() {
                 return false;
             }
         }
-        catch {
-            this.logger.debug(`Skipping upload. Reason: Failed to execute canPropose query`);
+        catch (error) {
+            this.logger.warn(` Skipping upload. Reason: Failed to execute canPropose query`);
+            this.logger.debug(error);
             return false;
         }
     }

@@ -153,17 +153,23 @@ class Node {
      */
     async start() {
         // TODO: check here if sdk init fails
-        // TODO: check if runtime, storage provider etc is defined
-        await this.asyncSetup();
-        this.logNodeInfo();
-        await this.syncPoolState();
-        this.validateRuntime();
-        this.validateVersion();
-        await this.setupStake();
-        await this.syncPoolState();
-        this.validateActiveNode();
-        this.runNode();
-        this.runCache();
+        try {
+            await this.asyncSetup();
+            this.logNodeInfo();
+            await this.syncPoolState();
+            this.validateRuntime();
+            this.validateVersion();
+            await this.setupStake();
+            await this.syncPoolState();
+            this.validateActiveNode();
+            this.runNode();
+            this.runCache();
+        }
+        catch (error) {
+            this.logger.error(`Unexpected runtime error. Exiting ...`);
+            this.logger.debug(error);
+            process.exit(1);
+        }
     }
 }
 exports.Node = Node;

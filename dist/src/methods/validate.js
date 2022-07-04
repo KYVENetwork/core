@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateActiveNode = exports.validateVersion = exports.validateRuntime = void 0;
 function validateRuntime() {
-    this.logger.debug(`Attempting to validate pool runtime`);
     if (this.pool.runtime !== this.runtime.name) {
         this.logger.error(`Specified pool does not match the integration runtime! Exiting ...`);
         this.logger.error(`Found = ${this.runtime.name} required = ${this.pool.runtime}`);
@@ -13,7 +12,6 @@ function validateRuntime() {
 }
 exports.validateRuntime = validateRuntime;
 function validateVersion() {
-    this.logger.debug(`Attempting to validate pool runtime version`);
     if (this.pool.protocol.version !== this.runtime.version) {
         this.logger.error(`Running an invalid runtime version! Exiting ...`);
         this.logger.error(`Found = ${this.runtime.version} required = ${this.pool.protocol.version}`);
@@ -24,7 +22,6 @@ function validateVersion() {
 }
 exports.validateVersion = validateVersion;
 function validateActiveNode() {
-    this.logger.debug(`Attempting to validate if node has staked`);
     if (!this.pool.stakers.includes(this.client.account.address)) {
         this.logger.error(`Node is not in the active validator set! Exiting ...`);
         process.exit(1);

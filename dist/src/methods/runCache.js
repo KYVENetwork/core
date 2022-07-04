@@ -57,7 +57,7 @@ async function runCache() {
                     break;
                 }
                 catch {
-                    this.logger.warn(` Failed to get data item from height ${height}`);
+                    this.logger.debug(` Could not get data item from height ${height}. Retrying in 10s ...`);
                     await (0, helpers_1.sleep)(requests * 10 * 1000);
                 }
             }

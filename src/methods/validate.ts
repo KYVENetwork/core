@@ -1,8 +1,6 @@
 import { Node } from "..";
 
 export function validateRuntime(this: Node): void {
-  this.logger.debug(`Attempting to validate pool runtime`);
-
   if (this.pool.runtime !== this.runtime.name) {
     this.logger.error(
       `Specified pool does not match the integration runtime! Exiting ...`
@@ -18,8 +16,6 @@ export function validateRuntime(this: Node): void {
 }
 
 export function validateVersion(this: Node): void {
-  this.logger.debug(`Attempting to validate pool runtime version`);
-
   if (this.pool.protocol!.version !== this.runtime.version) {
     this.logger.error(`Running an invalid runtime version! Exiting ...`);
     this.logger.error(
@@ -35,8 +31,6 @@ export function validateVersion(this: Node): void {
 }
 
 export function validateActiveNode(this: Node): void {
-  this.logger.debug(`Attempting to validate if node has staked`);
-
   if (!this.pool.stakers.includes(this.client.account.address)) {
     this.logger.error(`Node is not in the active validator set! Exiting ...`);
     process.exit(1);

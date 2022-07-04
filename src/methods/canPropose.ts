@@ -29,10 +29,11 @@ export async function canPropose(this: Node): Promise<boolean> {
         this.logger.debug(`Skipping upload. Reason: ${reason}`);
         return false;
       }
-    } catch {
-      this.logger.debug(
-        `Skipping upload. Reason: Failed to execute canPropose query`
+    } catch (error) {
+      this.logger.warn(
+        ` Skipping upload. Reason: Failed to execute canPropose query`
       );
+      this.logger.debug(error);
       return false;
     }
   }
