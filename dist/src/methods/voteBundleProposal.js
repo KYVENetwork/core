@@ -25,7 +25,7 @@ async function voteBundleProposal(bundle_id, vote) {
         this.logger.debug(`VoteProposal = ${tx.txHash}`);
         const receipt = await tx.execute();
         if (receipt.code === 0) {
-            this.logger.info(`Voted ${voteMessage} on bundle ${bundle_id}\n`);
+            this.logger.info(`Voted ${voteMessage} on bundle "${bundle_id}"\n`);
         }
         else {
             this.logger.info(`Could not vote on proposal. Continuing ...\n`);

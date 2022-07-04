@@ -10,7 +10,7 @@ const object_hash_1 = __importDefault(require("object-hash"));
 // TODO: exit after remaining upload interval if node is uploader
 async function validateBundleProposal(createdAt) {
     var _a;
-    this.logger.info(`Validating bundle ${this.pool.bundle_proposal.bundle_id}`);
+    this.logger.info(`Validating bundle "${this.pool.bundle_proposal.bundle_id}"`);
     let hasVotedAbstain = (_a = this.pool.bundle_proposal) === null || _a === void 0 ? void 0 : _a.voters_abstain.includes(this.client.account.address);
     let proposedBundleCompressed;
     let validationBundle;
@@ -45,13 +45,13 @@ async function validateBundleProposal(createdAt) {
         // try to load local bundle
         const currentHeight = +this.pool.current_height;
         const toHeight = +this.pool.bundle_proposal.to_height || currentHeight;
-        this.logger.debug(`Loading local bundle from ${currentHeight} to ${toHeight} ...`);
+        this.logger.debug(`Attemping to load local bundle from ${currentHeight} to ${toHeight} ...`);
         const { bundle } = await this.loadBundle(currentHeight, toHeight);
         // check if bundle length is equal to request bundle
         if (bundle.length === toHeight - currentHeight) {
             validationBundle = bundle;
             validationBundleCompressed = await this.compression.compress(validationBundle);
-            this.logger.info(`Successfully loaded local bundle\n`);
+            this.logger.info(`Successfully loaded local bundle from ${currentHeight} to ${toHeight}\n`);
             break;
         }
         else {
@@ -73,8 +73,8 @@ async function validateBundleProposal(createdAt) {
     const proposedBundleHash = (0, object_hash_1.default)(proposedBundleCompressed);
     const validationBundleHash = (0, object_hash_1.default)(validationBundleCompressed);
     this.logger.debug(`Validating bundle proposal by key and value`);
-    this.logger.debug(`Proposed:     ${proposedKey} -> ${proposedValue}`);
-    this.logger.debug(`Validation:   ${validationKey} -> ${validationValue}\n`);
+    this.logger.debug(`Proposed:     ${proposedKey} ${proposedValue}`);
+    this.logger.debug(`Validation:   ${validationKey} ${validationValue}\n`);
     this.logger.debug(`Validating bundle proposal by byte size and hash`);
     this.logger.debug(`Proposed:     ${proposedByteSize} ${proposedBundleHash}`);
     this.logger.debug(`Validation:   ${validationByteSize} ${validationBundleHash}\n`);

@@ -30,7 +30,7 @@ export async function submitBundleProposal(
 
     if (receipt.code === 0) {
       this.logger.info(
-        `Successfully submitted bundle proposal with id ${bundleId}\n`
+        `Successfully submitted bundle proposal with ID "${bundleId}"\n`
       );
     } else {
       this.logger.info(`Could not submit bundle proposal. Continuing ...\n`);

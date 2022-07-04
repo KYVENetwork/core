@@ -29,7 +29,7 @@ async function proposeBundle() {
         try {
             this.logger.debug(`Attempting to save bundle on storage provider`);
             const bundleId = await this.storageProvider.saveBundle(bundleCompressed, tags);
-            this.logger.info(`Saved bundle on ${this.storageProvider.name} with ID ${bundleId}\n`);
+            this.logger.info(`Saved bundle on ${this.storageProvider.name} with ID "${bundleId}"\n`);
             await this.submitBundleProposal(bundleId, bundleCompressed.byteLength, fromHeight, fromHeight + bundleProposal.bundle.length, fromKey, bundleProposal.toKey, bundleProposal.toValue);
         }
         catch (error) {

@@ -9,7 +9,9 @@ export async function validateBundleProposal(
   this: Node,
   createdAt: number
 ): Promise<void> {
-  this.logger.info(`Validating bundle ${this.pool.bundle_proposal!.bundle_id}`);
+  this.logger.info(
+    `Validating bundle "${this.pool.bundle_proposal!.bundle_id}"`
+  );
 
   let hasVotedAbstain = this.pool.bundle_proposal?.voters_abstain.includes(
     this.client.account.address
@@ -68,7 +70,7 @@ export async function validateBundleProposal(
     const toHeight = +this.pool.bundle_proposal!.to_height || currentHeight;
 
     this.logger.debug(
-      `Loading local bundle from ${currentHeight} to ${toHeight} ...`
+      `Attemping to load local bundle from ${currentHeight} to ${toHeight} ...`
     );
 
     const { bundle } = await this.loadBundle(currentHeight, toHeight);
@@ -80,7 +82,9 @@ export async function validateBundleProposal(
         validationBundle
       );
 
-      this.logger.info(`Successfully loaded local bundle\n`);
+      this.logger.info(
+        `Successfully loaded local bundle from ${currentHeight} to ${toHeight}\n`
+      );
 
       break;
     } else {
@@ -116,8 +120,8 @@ export async function validateBundleProposal(
   const validationBundleHash = hash(validationBundleCompressed!);
 
   this.logger.debug(`Validating bundle proposal by key and value`);
-  this.logger.debug(`Proposed:     ${proposedKey} -> ${proposedValue}`);
-  this.logger.debug(`Validation:   ${validationKey} -> ${validationValue}\n`);
+  this.logger.debug(`Proposed:     ${proposedKey} ${proposedValue}`);
+  this.logger.debug(`Validation:   ${validationKey} ${validationValue}\n`);
 
   this.logger.debug(`Validating bundle proposal by byte size and hash`);
   this.logger.debug(`Proposed:     ${proposedByteSize} ${proposedBundleHash}`);
