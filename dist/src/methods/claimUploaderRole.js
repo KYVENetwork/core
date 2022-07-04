@@ -7,6 +7,7 @@ async function claimUploaderRole() {
         return false;
     }
     try {
+        this.logger.debug(`Attempting to claim uploader role`);
         const tx = await this.client.kyve.v1beta1.base.claimUploaderRole({
             id: this.poolId.toString(),
         });

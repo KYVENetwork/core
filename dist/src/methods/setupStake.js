@@ -58,7 +58,7 @@ async function setupStake() {
     }
     this.logger.debug(`Staking ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE in pool "${this.pool.name}" to become a validator`);
     try {
-        this.logger.debug(`Attempting to stake ${initialStake.toString()} in pool`);
+        this.logger.debug(`Attempting to stake ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE in pool`);
         const tx = await this.client.kyve.v1beta1.base.stakePool({
             id: this.poolId.toString(),
             amount: initialStake.toString(),

@@ -7,10 +7,16 @@ export async function proposeBundle(this: Node): Promise<void> {
   const toHeight = +this.pool.max_bundle_size + fromHeight;
   const fromKey = this.pool.bundle_proposal!.to_key || this.pool.current_key;
 
+  this.logger.debug(`Loading bundle from cache to create bundle proposal`);
+
   const bundleProposal = await this.loadBundle(fromHeight, toHeight);
 
   if (bundleProposal.bundle.length) {
     // upload bundle to Arweave
+    this.logger.debug(
+      `Compressing bundle with compression type ${this.compression.name}`
+    );
+
     const bundleCompressed = await this.compression.compress(
       bundleProposal.bundle
     );
@@ -31,10 +37,13 @@ export async function proposeBundle(this: Node): Promise<void> {
     ];
 
     try {
+      this.logger.debug(`Attempting to save bundle on storage provider`);
+
       const bundleId = await this.storageProvider.saveBundle(
         bundleCompressed,
         tags
       );
+
       this.logger.info(
         `Saved bundle on ${this.storageProvider.name} with ID ${bundleId}`
       );
@@ -48,10 +57,11 @@ export async function proposeBundle(this: Node): Promise<void> {
         bundleProposal.toKey,
         bundleProposal.toValue
       );
-    } catch {
+    } catch (error) {
       this.logger.warn(
         ` Failed to save bundle on ${this.storageProvider.name}`
       );
+      this.logger.debug(error);
     }
   } else {
     this.logger.info(
