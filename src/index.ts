@@ -238,7 +238,16 @@ export class Node {
   }
 }
 
-export * as types from "./types";
-export * as storage from "./storage";
-export * as compression from "./compression";
-export * as cache from "./cache";
+// export types
+export * from "./types/dto";
+export * from "./types/interfaces";
+
+// export storage providers
+export * from "./storage/Arweave";
+
+// export compression types
+export * from "./compression/NoCompression";
+export * from "./compression/Gzip";
+
+// export caches
+export * from "./cache/JsonFileCache";
