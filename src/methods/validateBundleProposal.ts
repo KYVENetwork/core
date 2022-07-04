@@ -115,18 +115,19 @@ export async function validateBundleProposal(
 
   this.logger.debug(`Validating bundle proposal by\n`);
 
-  this.logger.debug(`Proposed byte size:      ${proposedByteSize}`);
-  this.logger.debug(`Validation byte size:    ${validationByteSize}\n`);
-
   this.logger.debug(
-    `Proposed key value:      ${proposedKey} -> ${proposedValue}`
+    `Proposed key and value:      ${proposedKey} -> ${proposedValue}`
   );
   this.logger.debug(
-    `Validation key value:    ${validationKey} -> ${validationValue}\n`
+    `Validation key and value:    ${validationKey} -> ${validationValue}\n`
   );
 
-  this.logger.debug(`Proposed hash:           ${proposedBundleHash}`);
-  this.logger.debug(`Validation hash:         ${validationBundleHash}\n`);
+  this.logger.debug(
+    `Proposed size and hash:      ${proposedByteSize} ${proposedBundleHash}`
+  );
+  this.logger.debug(
+    `Validation size and hash:    ${validationByteSize} ${validationBundleHash}\n`
+  );
 
   if (
     proposedByteSize === validationByteSize &&
