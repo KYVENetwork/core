@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import { IStorageProvider } from "../types";
-export default class Arweave implements IStorageProvider {
+export declare class Arweave implements IStorageProvider {
     name: string;
     private wallet;
     private arweaveClient;

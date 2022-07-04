@@ -4,7 +4,7 @@ import axios from "axios";
 import { readFileSync } from "fs";
 import { IStorageProvider } from "../types";
 
-export default class Arweave implements IStorageProvider {
+export class Arweave implements IStorageProvider {
   public name = "Arweave";
 
   private wallet!: JWKInterface;

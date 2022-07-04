@@ -1,6 +1,6 @@
 import { DataItem, ICompression } from "../types";
 
-export default class NoCompression implements ICompression {
+export class NoCompression implements ICompression {
   public name = "NoCompression";
 
   async compress(bundle: DataItem[]) {

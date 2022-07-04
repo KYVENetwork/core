@@ -125,9 +125,7 @@ export declare class Node {
      */
     start(): Promise<void>;
 }
-export * from "./types/dto";
-export * from "./types/interfaces";
-export * from "./storage/Arweave";
-export * from "./compression/NoCompression";
-export * from "./compression/Gzip";
-export * from "./cache/JsonFileCache";
+export * from "./types";
+export * from "./storage";
+export * from "./compression";
+export * from "./cache";

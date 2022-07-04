@@ -1,7 +1,7 @@
 import { gunzipSync, gzipSync } from "zlib";
 import { DataItem, ICompression } from "../types";
 
-export default class Gzip implements ICompression {
+export class Gzip implements ICompression {
   public name = "Gzip";
 
   async compress(bundle: DataItem[]) {

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.NoCompression = void 0;
 class NoCompression {
     constructor() {
         this.name = "NoCompression";
@@ -11,4 +12,4 @@ class NoCompression {
         return JSON.parse(data.toString());
     }
 }
-exports.default = NoCompression;
+exports.NoCompression = NoCompression;

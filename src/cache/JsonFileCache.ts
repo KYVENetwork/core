@@ -4,7 +4,7 @@ import fse from "fs-extra";
 
 import { ICache } from "../types";
 
-export default class JsonFileCache implements ICache {
+export class JsonFileCache implements ICache {
   public name = "JsonFileCache";
   public path!: string;
 

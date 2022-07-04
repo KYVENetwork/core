@@ -1,5 +1,5 @@
 import { ICache } from "../types";
-export default class JsonFileCache implements ICache {
+export declare class JsonFileCache implements ICache {
     name: string;
     path: string;
     init(path: string): this;

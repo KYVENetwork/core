@@ -181,12 +181,10 @@ class Node {
 }
 exports.Node = Node;
 // export types
-__exportStar(require("./types/dto"), exports);
-__exportStar(require("./types/interfaces"), exports);
+__exportStar(require("./types"), exports);
 // export storage providers
-__exportStar(require("./storage/Arweave"), exports);
+__exportStar(require("./storage"), exports);
 // export compression types
-__exportStar(require("./compression/NoCompression"), exports);
-__exportStar(require("./compression/Gzip"), exports);
+__exportStar(require("./compression"), exports);
 // export caches
-__exportStar(require("./cache/JsonFileCache"), exports);
+__exportStar(require("./cache"), exports);
