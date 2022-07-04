@@ -73,12 +73,19 @@ class Node {
         this.initialStake = options.initialStake;
         this.network = options.network;
         this.verbose = options.verbose;
-        // assign main attributes
-        this.sdk = new sdk_1.default(this.network);
-        this.query = this.sdk.createLCDClient();
         this.coreVersion = package_json_1.version;
         this.name = this.setupName();
         this.logger = this.setupLogger();
+        try {
+            // assign main attributes
+            this.sdk = new sdk_1.default(this.network);
+            this.query = this.sdk.createLCDClient();
+        }
+        catch (error) {
+            this.logger.error(`Failed to init KYVE SDK. Exiting ...`);
+            this.logger.debug(error);
+            process.exit(1);
+        }
     }
     /**
      * Set the runtime for the protocol node.

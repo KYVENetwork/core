@@ -118,14 +118,21 @@ export class Node {
     this.network = options.network;
     this.verbose = options.verbose;
 
-    // assign main attributes
-    this.sdk = new KyveSDK(this.network as KYVE_NETWORK);
-    this.query = this.sdk.createLCDClient();
-
     this.coreVersion = coreVersion;
 
     this.name = this.setupName();
     this.logger = this.setupLogger();
+
+    try {
+      // assign main attributes
+      this.sdk = new KyveSDK(this.network as KYVE_NETWORK);
+      this.query = this.sdk.createLCDClient();
+    } catch (error) {
+      this.logger.error(`Failed to init KYVE SDK. Exiting ...`);
+      this.logger.debug(error);
+
+      process.exit(1);
+    }
   }
 
   /**

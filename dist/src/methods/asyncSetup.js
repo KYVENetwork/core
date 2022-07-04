@@ -18,6 +18,13 @@ async function asyncSetup() {
         this.logger.error(`Cache is not defined. Exiting ...`);
         process.exit(1);
     }
-    this.client = await this.sdk.fromMnemonic(this.mnemonic);
+    try {
+        this.client = await this.sdk.fromMnemonic(this.mnemonic);
+    }
+    catch (error) {
+        this.logger.error(`Failed to init KYVE client from mnemonic. Exiting ...`);
+        this.logger.debug(error);
+        process.exit(1);
+    }
 }
 exports.asyncSetup = asyncSetup;

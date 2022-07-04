@@ -21,5 +21,12 @@ export async function asyncSetup(this: Node): Promise<void> {
     process.exit(1);
   }
 
-  this.client = await this.sdk.fromMnemonic(this.mnemonic);
+  try {
+    this.client = await this.sdk.fromMnemonic(this.mnemonic);
+  } catch (error) {
+    this.logger.error(`Failed to init KYVE client from mnemonic. Exiting ...`);
+    this.logger.debug(error);
+
+    process.exit(1);
+  }
 }
