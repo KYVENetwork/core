@@ -113,20 +113,14 @@ export async function validateBundleProposal(
   const proposedBundleHash = hash(proposedBundleCompressed!);
   const validationBundleHash = hash(validationBundleCompressed!);
 
-  this.logger.debug(`Validating bundle proposal by\n`);
+  this.logger.debug(`Validating bundle proposal by key and value`);
+  this.logger.debug(`Proposed:   ${proposedKey} -> ${proposedValue}`);
+  this.logger.debug(`Validation: ${validationKey} -> ${validationValue}\n`);
 
+  this.logger.debug(`Validating bundle proposal by byte size and hash`);
+  this.logger.debug(`Proposed:   ${proposedByteSize} ${proposedBundleHash}`);
   this.logger.debug(
-    `Proposed key and value:      ${proposedKey} -> ${proposedValue}`
-  );
-  this.logger.debug(
-    `Validation key and value:    ${validationKey} -> ${validationValue}\n`
-  );
-
-  this.logger.debug(
-    `Proposed size and hash:      ${proposedByteSize} ${proposedBundleHash}`
-  );
-  this.logger.debug(
-    `Validation size and hash:    ${validationByteSize} ${validationBundleHash}\n`
+    `Validation: ${validationByteSize} ${validationBundleHash}\n`
   );
 
   if (

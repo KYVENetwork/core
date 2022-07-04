@@ -71,11 +71,12 @@ async function validateBundleProposal(createdAt) {
     const validationValue = await this.runtime.getFormattedValueFromDataItem(validationBundle[validationBundle.length - 1].value);
     const proposedBundleHash = (0, object_hash_1.default)(proposedBundleCompressed);
     const validationBundleHash = (0, object_hash_1.default)(validationBundleCompressed);
-    this.logger.debug(`Validating bundle proposal by\n`);
-    this.logger.debug(`Proposed key and value:      ${proposedKey} -> ${proposedValue}`);
-    this.logger.debug(`Validation key and value:    ${validationKey} -> ${validationValue}\n`);
-    this.logger.debug(`Proposed size and hash:      ${proposedByteSize} ${proposedBundleHash}`);
-    this.logger.debug(`Validation size and hash:    ${validationByteSize} ${validationBundleHash}\n`);
+    this.logger.debug(`Validating bundle proposal by key and value`);
+    this.logger.debug(`Proposed:   ${proposedKey} -> ${proposedValue}`);
+    this.logger.debug(`Validation: ${validationKey} -> ${validationValue}\n`);
+    this.logger.debug(`Validating bundle proposal by byte size and hash`);
+    this.logger.debug(`Proposed:   ${proposedByteSize} ${proposedBundleHash}`);
+    this.logger.debug(`Validation: ${validationByteSize} ${validationBundleHash}\n`);
     if (proposedByteSize === validationByteSize &&
         proposedKey === validationKey &&
         proposedValue === validationValue &&
