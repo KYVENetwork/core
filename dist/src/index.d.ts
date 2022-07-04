@@ -125,7 +125,7 @@ export declare class Node {
      */
     start(): Promise<void>;
 }
-export * from "./types";
-export * from "./storage";
-export * from "./compression";
-export * from "./cache";
+export * as types from "./types";
+export * as storage from "./storage";
+export * as compression from "./compression";
+export * as cache from "./cache";

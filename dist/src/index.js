@@ -10,14 +10,23 @@ var __createBinding = (this && this.__createBinding) || (Object.create ? (functi
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
 }));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Node = void 0;
+exports.cache = exports.compression = exports.storage = exports.types = exports.Node = void 0;
 const package_json_1 = require("../package.json");
 const methods_1 = require("./methods");
 const commander_1 = __importDefault(require("./commander"));
@@ -180,30 +189,7 @@ class Node {
     }
 }
 exports.Node = Node;
-// // integration runtime should be implemented on the integration repo
-// class EVM implements IRuntime {
-//   public name = "@kyve/evm";
-//   public version = "1.2.0";
-//   async getDataItem(key: string) {
-//     return {
-//       key,
-//       value: `${key}value`,
-//     };
-//   }
-//   async getNextKey(key: string) {
-//     return `${key}+1`;
-//   }
-//   async getFormattedValueFromDataItem(item: any) {
-//     return item.hash;
-//   }
-// }
-// // inject runtime and storage provider
-// new Node()
-//   .addRuntime(new EVM())
-//   .addStorageProvider(new Arweave())
-//   .addCache(new JsonFileCache())
-//   .start();
-__exportStar(require("./types"), exports);
-__exportStar(require("./storage"), exports);
-__exportStar(require("./compression"), exports);
-__exportStar(require("./cache"), exports);
+exports.types = __importStar(require("./types"));
+exports.storage = __importStar(require("./storage"));
+exports.compression = __importStar(require("./compression"));
+exports.cache = __importStar(require("./cache"));

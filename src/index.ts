@@ -238,35 +238,7 @@ export class Node {
   }
 }
 
-// // integration runtime should be implemented on the integration repo
-// class EVM implements IRuntime {
-//   public name = "@kyve/evm";
-//   public version = "1.2.0";
-
-//   async getDataItem(key: string) {
-//     return {
-//       key,
-//       value: `${key}value`,
-//     };
-//   }
-
-//   async getNextKey(key: string) {
-//     return `${key}+1`;
-//   }
-
-//   async getFormattedValueFromDataItem(item: any) {
-//     return item.hash;
-//   }
-// }
-
-// // inject runtime and storage provider
-// new Node()
-//   .addRuntime(new EVM())
-//   .addStorageProvider(new Arweave())
-//   .addCache(new JsonFileCache())
-//   .start();
-
-export * from "./types";
-export * from "./storage";
-export * from "./compression";
-export * from "./cache";
+export * as types from "./types";
+export * as storage from "./storage";
+export * as compression from "./compression";
+export * as cache from "./cache";

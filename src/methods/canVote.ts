@@ -28,11 +28,13 @@ export async function canVote(this: Node): Promise<boolean> {
       this.logger.info(`Node is able to vote on bundle proposal\n`);
       return true;
     } else {
-      this.logger.info(`Skipping vote. Reason: ${reason}`);
+      this.logger.info(`Skipping vote. Reason: ${reason}\n`);
       return false;
     }
   } catch (error) {
-    this.logger.warn(` Skipping vote. Reason: Failed to execute canVote query`);
+    this.logger.warn(
+      ` Skipping vote. Reason: Failed to execute canVote query\n`
+    );
     this.logger.debug(error);
     return false;
   }

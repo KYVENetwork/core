@@ -35,11 +35,13 @@ export async function runNode(this: Node): Promise<void> {
     const timeRemaining = this.remainingUploadInterval();
 
     this.logger.debug(
-      `Waiting for remaining upload interval = ${timeRemaining.toFixed(2)}s ...`
+      `Waiting for remaining upload interval = ${timeRemaining
+        .dividedBy(1000)
+        .toFixed(2)}s ...`
     );
 
     // sleep until upload interval is reached
-    await sleep(timeRemaining.multipliedBy(1000).toNumber());
+    await sleep(timeRemaining.toNumber());
 
     this.logger.debug(`Reached upload interval of current bundle proposal`);
 

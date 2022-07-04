@@ -23,12 +23,12 @@ async function canPropose() {
                 continue;
             }
             else {
-                this.logger.info(`Skipping upload. Reason: ${reason}`);
+                this.logger.info(`Skipping upload. Reason: ${reason}\n`);
                 return false;
             }
         }
         catch (error) {
-            this.logger.warn(` Skipping upload. Reason: Failed to execute canPropose query`);
+            this.logger.warn(` Skipping upload. Reason: Failed to execute canPropose query\n`);
             this.logger.debug(error);
             return false;
         }
