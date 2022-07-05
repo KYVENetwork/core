@@ -482,9 +482,19 @@
     "@protobufs/google" "^0.0.9"
     ts-proto "^1.115.4"
 
+"@kyve/proto@https://github.com/KYVENetwork/proto.git#v0.5.0":
+  version "1.0.0"
+  uid dcd7e0995cc15e23c64216cadf6de57114a44b2d
+  resolved "https://github.com/KYVENetwork/proto.git#dcd7e0995cc15e23c64216cadf6de57114a44b2d"
+  dependencies:
+    "@protobufs/cosmos" "^0.0.9"
+    "@protobufs/gogoproto" "^0.0.9"
+    "@protobufs/google" "^0.0.9"
+    ts-proto "^1.115.4"
+
 "@kyve/sdk@git+ssh://git@github.com:KYVENetwork/sdk.git#feature/v2":
   version "2.0.0"
-  resolved "git+ssh://git@github.com:KYVENetwork/sdk.git#b6182c57f44c0109e1f13acfa8fae6f4dd95770d"
+  resolved "git+ssh://git@github.com:KYVENetwork/sdk.git#c7480f1168ea01e6232d31639549e5c81b2dc524"
   dependencies:
     "@cosmjs/amino" "0.28.3"
     "@cosmjs/crypto" "0.27.1"
@@ -495,7 +505,7 @@
     "@cosmjs/tendermint-rpc" "0.28.0"
     "@cosmostation/extension-client" "^0.0.6"
     "@keplr-wallet/cosmos" "0.9.16"
-    "@kyve/proto" "git+ssh://git@github.com:KYVENetwork/proto.git#v0.5.0"
+    "@kyve/proto" "https://github.com/KYVENetwork/proto.git#v0.5.0"
     axios "0.25.0"
     bech32 "2.0.0"
     bignumber.js "9.0.2"

@@ -8,7 +8,7 @@ function logNodeInfo() {
     this.logger.info(`Pool Id \t\t = ${this.poolId}\n`);
     this.logger.info(`Runtime \t\t = ${this.runtime.name}`);
     this.logger.info(`Storage \t\t = ${this.storageProvider.name}`);
-    this.logger.info(`Compression \t\t = ${this.compression.name}`);
+    this.logger.info(`Compression \t = ${this.compression.name}`);
     this.logger.info(`Cache \t\t = ${this.cache.name}\n`);
     this.logger.info(`Network \t\t = ${this.network}`);
     this.logger.info(`@kyve/core \t = v${this.coreVersion}`);
