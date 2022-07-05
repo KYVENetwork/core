@@ -189,5 +189,3 @@ __exportStar(require("./storage"), exports);
 __exportStar(require("./compression"), exports);
 // export caches
 __exportStar(require("./cache"), exports);
-// export scripts
-__exportStar(require("./scripts"), exports);

@@ -130,4 +130,3 @@ export * from "./types";
 export * from "./storage";
 export * from "./compression";
 export * from "./cache";
-export * from "./scripts";

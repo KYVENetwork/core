@@ -251,6 +251,3 @@ export * from "./compression";
 
 // export caches
 export * from "./cache";
-
-// export scripts
-export * from "./scripts";
