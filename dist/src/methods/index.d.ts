@@ -16,5 +16,6 @@ export * from "./waitForNextBundleProposal";
 export * from "./canPropose";
 export * from "./submitBundleProposal";
 export * from "./proposeBundle";
+export * from "./authenticate";
 export * from "./runNode";
 export * from "./runCache";

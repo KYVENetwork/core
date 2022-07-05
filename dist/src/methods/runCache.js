@@ -44,20 +44,22 @@ async function runCache() {
         this.logger.debug(`Caching from height ${startHeight} to ${maxHeight} ...`);
         for (let height = startHeight; height < maxHeight; height++) {
             for (let requests = 1; requests < 30; requests++) {
+                let nextKey;
                 try {
                     if (key) {
-                        key = await this.runtime.getNextKey(key);
+                        nextKey = await this.runtime.getNextKey(key);
                     }
                     else {
-                        key = this.pool.start_key;
+                        nextKey = this.pool.start_key;
                     }
-                    const item = await this.runtime.getDataItem(key, this.poolConfig);
+                    const item = await this.runtime.getDataItem(nextKey, this.poolConfig);
                     await this.cache.put(height.toString(), item);
                     await (0, helpers_1.sleep)(50);
+                    key = nextKey;
                     break;
                 }
                 catch {
-                    this.logger.debug(` Could not get data item from height ${height}. Retrying in 10s ...`);
+                    this.logger.debug(`Could not get data item from height ${height}. Retrying in 10s ...`);
                     await (0, helpers_1.sleep)(requests * 10 * 1000);
                 }
             }

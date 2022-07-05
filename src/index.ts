@@ -23,6 +23,7 @@ import {
   canPropose,
   submitBundleProposal,
   proposeBundle,
+  authenticate,
 } from "./methods";
 import program from "./commander";
 import KyveSDK, { KyveClient, KyveLCDClientType } from "@kyve/sdk";
@@ -92,6 +93,7 @@ export class Node {
   protected canPropose = canPropose;
   protected submitBundleProposal = submitBundleProposal;
   protected proposeBundle = proposeBundle;
+  protected authenticate = authenticate;
   protected runNode = runNode;
   protected runCache = runCache;
 
