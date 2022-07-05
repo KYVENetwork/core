@@ -59,7 +59,7 @@ export async function runCache(this: Node): Promise<void> {
             nextKey = this.pool.start_key;
           }
 
-          const item = await this.runtime.getDataItem(nextKey, this);
+          const item = await this.runtime.getDataItem(this, nextKey);
 
           await this.cache.put(height.toString(), item);
           await sleep(50);

@@ -58,11 +58,11 @@ export class Node {
   // register attributes
   public coreVersion: string;
   public pool!: kyve.registry.v1beta1.kyveRegistry.Pool;
-  public poolConfig!: object;
+  public poolConfig!: any;
   public name: string;
 
   // logger attributes
-  protected logger: Logger;
+  public logger: Logger;
 
   // options
   protected poolId: number;

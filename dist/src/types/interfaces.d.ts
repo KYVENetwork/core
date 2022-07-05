@@ -36,7 +36,7 @@ export interface IRuntime {
      * @param {any} config pool config which usually holds rpc endpoints for example
      * @return {Promise<DataItem>}
      */
-    getDataItem(key: string, core: Node): Promise<DataItem>;
+    getDataItem(core: Node, key: string): Promise<DataItem>;
     /**
      * Gets the next key from the current key so that the data archived has an order.
      *

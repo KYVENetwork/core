@@ -26,9 +26,9 @@ export declare class Node {
     query: KyveLCDClientType;
     coreVersion: string;
     pool: kyve.registry.v1beta1.kyveRegistry.Pool;
-    poolConfig: object;
+    poolConfig: any;
     name: string;
-    protected logger: Logger;
+    logger: Logger;
     protected poolId: number;
     protected mnemonic: string;
     protected keyfile: string;
