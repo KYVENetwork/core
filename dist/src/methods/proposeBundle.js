@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.proposeBundle = void 0;
 const constants_1 = require("../utils/constants");
 const object_hash_1 = __importDefault(require("object-hash"));
+const helpers_1 = require("../utils/helpers");
 async function proposeBundle() {
     const fromHeight = +this.pool.bundle_proposal.to_height || +this.pool.current_height;
     const toHeight = +this.pool.max_bundle_size + fromHeight;
@@ -13,26 +14,26 @@ async function proposeBundle() {
     this.logger.debug(`Loading bundle from cache to create bundle proposal`);
     const bundleProposal = await this.loadBundle(fromHeight, toHeight);
     if (bundleProposal.bundle.length) {
-        // upload bundle to Arweave
-        this.logger.info(`Created bundle of length ${bundleProposal.bundle.length}`);
-        this.logger.debug(`Compressing bundle with compression type ${this.compression.name}`);
-        const bundleCompressed = await this.compression.compress(bundleProposal.bundle);
-        const bundleHash = (0, object_hash_1.default)(bundleCompressed);
-        const tags = [
-            ["Application", "KYVE"],
-            ["Network", this.network],
-            ["Pool", this.poolId.toString()],
-            ["@kyve/core", this.coreVersion],
-            [this.runtime.name, this.runtime.version],
-            ["Uploader", this.client.account.address],
-            ["FromHeight", fromHeight.toString()],
-            ["ToHeight", (fromHeight + bundleProposal.bundle.length).toString()],
-            ["Size", bundleProposal.bundle.length.toString()],
-            ["FromKey", fromKey],
-            ["ToKey", bundleProposal.toKey],
-            ["Value", bundleProposal.toValue],
-        ];
         try {
+            // upload bundle to Arweave
+            this.logger.info(`Created bundle of length ${bundleProposal.bundle.length}`);
+            this.logger.debug(`Compressing bundle with compression type ${this.compression.name}`);
+            const bundleCompressed = await this.compression.compress(bundleProposal.bundle);
+            const bundleHash = (0, object_hash_1.default)(bundleCompressed);
+            const tags = [
+                ["Application", "KYVE"],
+                ["Network", this.network],
+                ["Pool", this.poolId.toString()],
+                ["@kyve/core", this.coreVersion],
+                [this.runtime.name, this.runtime.version],
+                ["Uploader", this.client.account.address],
+                ["FromHeight", fromHeight.toString()],
+                ["ToHeight", (fromHeight + bundleProposal.bundle.length).toString()],
+                ["Size", bundleProposal.bundle.length.toString()],
+                ["FromKey", fromKey],
+                ["ToKey", bundleProposal.toKey],
+                ["Value", bundleProposal.toValue],
+            ];
             this.logger.debug(`Attempting to save bundle on storage provider`);
             const bundleId = await this.storageProvider.saveBundle(bundleCompressed, tags);
             this.logger.info(`Saved bundle on ${this.storageProvider.name} with ID "${bundleId}"\n`);
@@ -41,6 +42,7 @@ async function proposeBundle() {
         catch (error) {
             this.logger.warn(` Failed to save bundle on ${this.storageProvider.name}`);
             this.logger.debug(error);
+            await (0, helpers_1.sleep)(10 * 1000);
         }
     }
     else {
