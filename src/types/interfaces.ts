@@ -1,4 +1,4 @@
-import { DataItem } from ".";
+import { Auth, DataItem } from ".";
 
 /**
  * Interface of Runtime.
@@ -37,7 +37,11 @@ export interface IRuntime {
    * @param {any} config pool config which usually holds rpc endpoints for example
    * @return {Promise<DataItem>}
    */
-  getDataItem(key: string, config: any): Promise<DataItem>;
+  getDataItem(
+    key: string,
+    config: any,
+    authenticate: () => Promise<Auth>
+  ): Promise<DataItem>;
 
   /**
    * Gets the next key from the current key so that the data archived has an order.
