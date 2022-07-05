@@ -1,6 +1,6 @@
-import { Auth, Node } from "..";
+import { Signature, Node } from "..";
 
-export async function authenticate(this: Node): Promise<Auth> {
+export async function requestSignature(this: Node): Promise<Signature> {
   const address = this.client.account.address;
   const timestamp = new Date().valueOf().toString();
 
@@ -18,9 +18,9 @@ export async function authenticate(this: Node): Promise<Auth> {
 
   return {
     address,
-    pubKey: "",
-    signature: "",
     poolId: this.poolId.toString(),
     timestamp,
-  } as Auth;
+    pubKey: "",
+    signature: "",
+  };
 }

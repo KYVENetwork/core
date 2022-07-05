@@ -1,4 +1,4 @@
-import { Auth, DataItem } from ".";
+import { Signature, DataItem } from ".";
 
 /**
  * Interface of Runtime.
@@ -40,7 +40,7 @@ export interface IRuntime {
   getDataItem(
     key: string,
     config: any,
-    authenticate: () => Promise<Auth>
+    authenticate: () => Promise<Signature>
   ): Promise<DataItem>;
 
   /**

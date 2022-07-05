@@ -62,7 +62,7 @@ export async function runCache(this: Node): Promise<void> {
           const item = await this.runtime.getDataItem(
             nextKey,
             this.poolConfig,
-            this.authenticate
+            this.requestSignature
           );
 
           await this.cache.put(height.toString(), item);

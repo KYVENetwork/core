@@ -57,7 +57,7 @@ class Node {
         this.canPropose = methods_1.canPropose;
         this.submitBundleProposal = methods_1.submitBundleProposal;
         this.proposeBundle = methods_1.proposeBundle;
-        this.authenticate = methods_1.authenticate;
+        this.requestSignature = methods_1.requestSignature;
         this.runNode = methods_1.runNode;
         this.runCache = methods_1.runCache;
         // define program

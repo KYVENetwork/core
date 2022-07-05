@@ -32,6 +32,6 @@ __exportStar(require("./waitForNextBundleProposal"), exports);
 __exportStar(require("./canPropose"), exports);
 __exportStar(require("./submitBundleProposal"), exports);
 __exportStar(require("./proposeBundle"), exports);
-__exportStar(require("./authenticate"), exports);
+__exportStar(require("./requestSignature"), exports);
 __exportStar(require("./runNode"), exports);
 __exportStar(require("./runCache"), exports);

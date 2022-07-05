@@ -1,4 +1,4 @@
-export interface Auth {
+export interface Signature {
     address: string;
     signature: string;
     pubKey: string;

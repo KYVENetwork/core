@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authenticate = void 0;
-async function authenticate() {
+exports.requestSignature = void 0;
+async function requestSignature() {
     const address = this.client.account.address;
     const timestamp = new Date().valueOf().toString();
     // TODO: Implement
@@ -16,10 +16,10 @@ async function authenticate() {
     // };
     return {
         address,
-        pubKey: "",
-        signature: "",
         poolId: this.poolId.toString(),
         timestamp,
+        pubKey: "",
+        signature: "",
     };
 }
-exports.authenticate = authenticate;
+exports.requestSignature = requestSignature;
