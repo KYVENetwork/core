@@ -52,7 +52,7 @@ async function runCache() {
                     else {
                         nextKey = this.pool.start_key;
                     }
-                    const item = await this.runtime.getDataItem(nextKey, this.poolConfig, this.requestSignature);
+                    const item = await this.runtime.getDateItem(nextKey, this.poolConfig, this.requestSignature);
                     await this.cache.put(height.toString(), item);
                     await (0, helpers_1.sleep)(50);
                     key = nextKey;

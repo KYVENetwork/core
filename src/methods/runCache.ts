@@ -59,7 +59,7 @@ export async function runCache(this: Node): Promise<void> {
             nextKey = this.pool.start_key;
           }
 
-          const item = await this.runtime.getDataItem(
+          const item = await this.runtime.getDateItem(
             nextKey,
             this.poolConfig,
             this.requestSignature

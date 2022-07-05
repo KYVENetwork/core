@@ -112,7 +112,7 @@ export async function validateBundleProposal(
   const validationKey = validationBundle![validationBundle!.length - 1].key;
 
   const proposedValue = this.pool.bundle_proposal!.to_value;
-  const validationValue = await this.runtime.getFormattedValueFromDataItem(
+  const validationValue = await this.runtime.formatValue(
     validationBundle![validationBundle!.length - 1].value
   );
 

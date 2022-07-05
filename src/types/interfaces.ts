@@ -32,12 +32,12 @@ export interface IRuntime {
    *
    * Deterministic behavior is required
    *
-   * @method getDataItem
+   * @method getDateItem
    * @param {string} key which gets inserted by @kyve/core
    * @param {any} config pool config which usually holds rpc endpoints for example
    * @return {Promise<DataItem>}
    */
-  getDataItem(
+  getDateItem(
     key: string,
     config: any,
     authenticate: () => Promise<Signature>
@@ -62,11 +62,11 @@ export interface IRuntime {
    *
    * Deterministic behavior is required
    *
-   * @method getFormattedValueFromDataItem
-   * @param {any} item is the last data item in a bundle
+   * @method formatValue
+   * @param {any} value is the last data value in a bundle
    * @return {Promise<string>} returns a formatted value string
    */
-  getFormattedValueFromDataItem(item: any): Promise<string>;
+  formatValue(value: any): Promise<string>;
 }
 
 /**

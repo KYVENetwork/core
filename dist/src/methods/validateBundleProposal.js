@@ -69,7 +69,7 @@ async function validateBundleProposal(createdAt) {
     const proposedKey = this.pool.bundle_proposal.to_key;
     const validationKey = validationBundle[validationBundle.length - 1].key;
     const proposedValue = this.pool.bundle_proposal.to_value;
-    const validationValue = await this.runtime.getFormattedValueFromDataItem(validationBundle[validationBundle.length - 1].value);
+    const validationValue = await this.runtime.formatValue(validationBundle[validationBundle.length - 1].value);
     const proposedBundleHash = (0, object_hash_1.default)(proposedBundleCompressed);
     const validationBundleHash = (0, object_hash_1.default)(validationBundleCompressed);
     this.logger.debug(`Validating bundle proposal by key and value`);

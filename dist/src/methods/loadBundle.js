@@ -16,7 +16,7 @@ async function loadBundle(fromHeight, toHeight) {
     if (bundle.length) {
         const latestItem = bundle[bundle.length - 1];
         toKey = latestItem.key;
-        toValue = await this.runtime.getFormattedValueFromDataItem(latestItem.value);
+        toValue = await this.runtime.formatValue(latestItem.value);
     }
     return {
         bundle,
