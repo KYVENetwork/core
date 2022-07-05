@@ -30,12 +30,12 @@ export interface IRuntime {
      *
      * Deterministic behavior is required
      *
-     * @method getDateItem
+     * @method getDataItem
      * @param {string} key which gets inserted by @kyve/core
      * @param {any} config pool config which usually holds rpc endpoints for example
      * @return {Promise<DataItem>}
      */
-    getDateItem(key: string, config: any, authenticate: () => Promise<Signature>): Promise<DataItem>;
+    getDataItem(key: string, config: any, authenticate: () => Promise<Signature>): Promise<DataItem>;
     /**
      * Gets the next key from the current key so that the data archived has an order.
      *
