@@ -12,6 +12,7 @@ async function validateBundleProposal(createdAt) {
     var _a;
     this.logger.info(`Validating bundle "${this.pool.bundle_proposal.bundle_id}"`);
     let hasVotedAbstain = (_a = this.pool.bundle_proposal) === null || _a === void 0 ? void 0 : _a.voters_abstain.includes(this.client.account.address);
+    let proposedBundle;
     let proposedBundleCompressed;
     let validationBundle;
     let validationBundleCompressed;
@@ -28,9 +29,12 @@ async function validateBundleProposal(createdAt) {
         // try to download bundle from arweave
         if (!proposedBundleCompressed) {
             this.logger.debug(`Attempting to download bundle from ${this.storageProvider.name}`);
+            // Todo catch error if decompression fails
             proposedBundleCompressed = await this.storageProvider.retrieveBundle(this.pool.bundle_proposal.bundle_id);
             if (proposedBundleCompressed) {
                 this.logger.info(`Successfully downloaded bundle from ${this.storageProvider.name}`);
+                // Todo catch error if decompression fails
+                proposedBundle = await this.compression.decompress(proposedBundleCompressed);
             }
             else {
                 this.logger.info(`Could not download bundle from ${this.storageProvider.name}. Retrying in 10s ...`);
@@ -64,24 +68,45 @@ async function validateBundleProposal(createdAt) {
             continue;
         }
     }
-    const proposedByteSize = +this.pool.bundle_proposal.byte_size;
-    const validationByteSize = validationBundleCompressed.byteLength;
+    const uploadedKey = proposedBundle[proposedBundle.length - 1].key;
     const proposedKey = this.pool.bundle_proposal.to_key;
     const validationKey = validationBundle[validationBundle.length - 1].key;
+    const uploadedValue = await this.runtime.formatValue(proposedBundle[proposedBundle.length - 1].value);
     const proposedValue = this.pool.bundle_proposal.to_value;
     const validationValue = await this.runtime.formatValue(validationBundle[validationBundle.length - 1].value);
-    const proposedBundleHash = (0, object_hash_1.default)(proposedBundleCompressed);
+    const uploadedByteSize = proposedBundleCompressed.byteLength;
+    const proposedByteSize = +this.pool.bundle_proposal.byte_size;
+    const validationByteSize = validationBundleCompressed.byteLength;
+    const uploadedBundleHash = (0, object_hash_1.default)(proposedBundleCompressed);
+    const proposedBundleHash = this.pool.bundle_proposal.bundle_hash;
     const validationBundleHash = (0, object_hash_1.default)(validationBundleCompressed);
     this.logger.debug(`Validating bundle proposal by key and value`);
+    this.logger.debug(`Uploaded:     ${uploadedKey} ${uploadedValue}`);
     this.logger.debug(`Proposed:     ${proposedKey} ${proposedValue}`);
     this.logger.debug(`Validation:   ${validationKey} ${validationValue}\n`);
     this.logger.debug(`Validating bundle proposal by byte size and hash`);
+    this.logger.debug(`Uploaded:     ${uploadedByteSize} ${uploadedBundleHash}`);
     this.logger.debug(`Proposed:     ${proposedByteSize} ${proposedBundleHash}`);
     this.logger.debug(`Validation:   ${validationByteSize} ${validationBundleHash}\n`);
-    if (proposedByteSize === validationByteSize &&
-        proposedKey === validationKey &&
-        proposedValue === validationValue &&
+    let keysEqual = false;
+    let valuesEqual = false;
+    let byteSizesEqual = false;
+    let hashesEqual = false;
+    if (uploadedKey === proposedKey && proposedKey === validationKey) {
+        keysEqual = true;
+    }
+    if (uploadedValue === proposedValue && proposedValue === validationValue) {
+        valuesEqual = true;
+    }
+    if (uploadedByteSize === proposedByteSize &&
+        proposedByteSize === validationByteSize) {
+        byteSizesEqual = true;
+    }
+    if (uploadedBundleHash === proposedBundleHash &&
         proposedBundleHash === validationBundleHash) {
+        hashesEqual = true;
+    }
+    if (keysEqual && valuesEqual && byteSizesEqual && hashesEqual) {
         await this.voteBundleProposal(this.pool.bundle_proposal.bundle_id, constants_1.VOTE.VALID);
     }
     else {

@@ -33,7 +33,10 @@ export async function asyncSetup(this: Node): Promise<void> {
   this.logNodeInfo();
 
   await this.syncPoolState();
+
+  this.logger.debug(`Attempting to clear cache`);
   await this.cache.drop();
+  this.logger.info(`Cleared cache`);
 
   this.validateRuntime();
   this.validateVersion();

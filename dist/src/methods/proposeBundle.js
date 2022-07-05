@@ -1,7 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.proposeBundle = void 0;
 const constants_1 = require("../utils/constants");
+const object_hash_1 = __importDefault(require("object-hash"));
 async function proposeBundle() {
     const fromHeight = +this.pool.bundle_proposal.to_height || +this.pool.current_height;
     const toHeight = +this.pool.max_bundle_size + fromHeight;
@@ -12,6 +16,7 @@ async function proposeBundle() {
         // upload bundle to Arweave
         this.logger.debug(`Compressing bundle with compression type ${this.compression.name}`);
         const bundleCompressed = await this.compression.compress(bundleProposal.bundle);
+        const bundleHash = (0, object_hash_1.default)(bundleCompressed);
         const tags = [
             ["Application", "KYVE"],
             ["Network", this.network],
@@ -30,7 +35,7 @@ async function proposeBundle() {
             this.logger.debug(`Attempting to save bundle on storage provider`);
             const bundleId = await this.storageProvider.saveBundle(bundleCompressed, tags);
             this.logger.info(`Saved bundle on ${this.storageProvider.name} with ID "${bundleId}"\n`);
-            await this.submitBundleProposal(bundleId, bundleCompressed.byteLength, fromHeight, fromHeight + bundleProposal.bundle.length, fromKey, bundleProposal.toKey, bundleProposal.toValue);
+            await this.submitBundleProposal(bundleId, bundleCompressed.byteLength, fromHeight, fromHeight + bundleProposal.bundle.length, fromKey, bundleProposal.toKey, bundleProposal.toValue, bundleHash);
         }
         catch (error) {
             this.logger.warn(` Failed to save bundle on ${this.storageProvider.name}`);
@@ -40,7 +45,7 @@ async function proposeBundle() {
     else {
         this.logger.info(`Creating new bundle proposal of type ${constants_1.KYVE_NO_DATA_BUNDLE}`);
         const bundleId = `KYVE_NO_DATA_BUNDLE_${this.poolId}_${Math.floor(Date.now() / 1000)}`;
-        await this.submitBundleProposal(bundleId, 0, fromHeight, fromHeight, fromKey, "", "");
+        await this.submitBundleProposal(bundleId, 0, fromHeight, fromHeight, fromKey, "", "", "");
     }
 }
 exports.proposeBundle = proposeBundle;

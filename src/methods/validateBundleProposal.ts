@@ -17,6 +17,7 @@ export async function validateBundleProposal(
     this.client.account.address
   );
 
+  let proposedBundle: DataItem[];
   let proposedBundleCompressed: Buffer;
 
   let validationBundle: DataItem[];
@@ -39,6 +40,7 @@ export async function validateBundleProposal(
         `Attempting to download bundle from ${this.storageProvider.name}`
       );
 
+      // Todo catch error if decompression fails
       proposedBundleCompressed = await this.storageProvider.retrieveBundle(
         this.pool.bundle_proposal!.bundle_id
       );
@@ -46,6 +48,11 @@ export async function validateBundleProposal(
       if (proposedBundleCompressed) {
         this.logger.info(
           `Successfully downloaded bundle from ${this.storageProvider.name}`
+        );
+
+        // Todo catch error if decompression fails
+        proposedBundle = await this.compression.decompress(
+          proposedBundleCompressed
         );
       } else {
         this.logger.info(
@@ -105,36 +112,66 @@ export async function validateBundleProposal(
     }
   }
 
-  const proposedByteSize = +this.pool.bundle_proposal!.byte_size;
-  const validationByteSize = validationBundleCompressed!.byteLength;
-
+  const uploadedKey = proposedBundle![proposedBundle!.length - 1].key;
   const proposedKey = this.pool.bundle_proposal!.to_key;
   const validationKey = validationBundle![validationBundle!.length - 1].key;
 
+  const uploadedValue = await this.runtime.formatValue(
+    proposedBundle![proposedBundle!.length - 1].value
+  );
   const proposedValue = this.pool.bundle_proposal!.to_value;
   const validationValue = await this.runtime.formatValue(
     validationBundle![validationBundle!.length - 1].value
   );
 
-  const proposedBundleHash = hash(proposedBundleCompressed!);
-  const validationBundleHash = hash(validationBundleCompressed!);
+  const uploadedByteSize = proposedBundleCompressed.byteLength;
+  const proposedByteSize = +this.pool.bundle_proposal!.byte_size;
+  const validationByteSize = validationBundleCompressed.byteLength;
+
+  const uploadedBundleHash = hash(proposedBundleCompressed);
+  const proposedBundleHash = this.pool.bundle_proposal!.bundle_hash;
+  const validationBundleHash = hash(validationBundleCompressed);
 
   this.logger.debug(`Validating bundle proposal by key and value`);
+  this.logger.debug(`Uploaded:     ${uploadedKey} ${uploadedValue}`);
   this.logger.debug(`Proposed:     ${proposedKey} ${proposedValue}`);
   this.logger.debug(`Validation:   ${validationKey} ${validationValue}\n`);
 
   this.logger.debug(`Validating bundle proposal by byte size and hash`);
+  this.logger.debug(`Uploaded:     ${uploadedByteSize} ${uploadedBundleHash}`);
   this.logger.debug(`Proposed:     ${proposedByteSize} ${proposedBundleHash}`);
   this.logger.debug(
     `Validation:   ${validationByteSize} ${validationBundleHash}\n`
   );
 
+  let keysEqual = false;
+  let valuesEqual = false;
+  let byteSizesEqual = false;
+  let hashesEqual = false;
+
+  if (uploadedKey === proposedKey && proposedKey === validationKey) {
+    keysEqual = true;
+  }
+
+  if (uploadedValue === proposedValue && proposedValue === validationValue) {
+    valuesEqual = true;
+  }
+
   if (
-    proposedByteSize === validationByteSize &&
-    proposedKey === validationKey &&
-    proposedValue === validationValue &&
+    uploadedByteSize === proposedByteSize &&
+    proposedByteSize === validationByteSize
+  ) {
+    byteSizesEqual = true;
+  }
+
+  if (
+    uploadedBundleHash === proposedBundleHash &&
     proposedBundleHash === validationBundleHash
   ) {
+    hashesEqual = true;
+  }
+
+  if (keysEqual && valuesEqual && byteSizesEqual && hashesEqual) {
     await this.voteBundleProposal(
       this.pool.bundle_proposal!.bundle_id,
       VOTE.VALID

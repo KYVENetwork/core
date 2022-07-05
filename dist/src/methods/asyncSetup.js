@@ -28,7 +28,9 @@ async function asyncSetup() {
     }
     this.logNodeInfo();
     await this.syncPoolState();
+    this.logger.debug(`Attempting to clear cache`);
     await this.cache.drop();
+    this.logger.info(`Cleared cache`);
     this.validateRuntime();
     this.validateVersion();
     await this.setupStake();

@@ -11,7 +11,9 @@ async function runCache() {
     while (true) {
         // a smaller to_height means a bundle got dropped or invalidated
         if (+this.pool.bundle_proposal.to_height < toHeight) {
+            this.logger.debug(`Attempting to clear cache`);
             await this.cache.drop();
+            this.logger.info(`Cleared cache`);
         }
         // cache data items from current height to required height
         createdAt = +this.pool.bundle_proposal.created_at;

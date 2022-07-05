@@ -8,7 +8,8 @@ export async function submitBundleProposal(
   toHeight: number,
   fromKey: string,
   toKey: string,
-  toValue: string
+  toValue: string,
+  bundleHash: string
 ): Promise<void> {
   try {
     this.logger.debug(`Attempting to submit bundle proposal`);
@@ -22,6 +23,7 @@ export async function submitBundleProposal(
       from_key: fromKey,
       to_key: toKey,
       to_value: toValue,
+      bundle_hash: bundleHash,
     });
 
     this.logger.debug(`SubmitBundleProposal = ${tx.txHash}`);

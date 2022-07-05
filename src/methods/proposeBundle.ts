@@ -1,5 +1,6 @@
 import { Node } from "..";
 import { KYVE_NO_DATA_BUNDLE } from "../utils/constants";
+import hash from "object-hash";
 
 export async function proposeBundle(this: Node): Promise<void> {
   const fromHeight =
@@ -20,6 +21,7 @@ export async function proposeBundle(this: Node): Promise<void> {
     const bundleCompressed = await this.compression.compress(
       bundleProposal.bundle
     );
+    const bundleHash = hash(bundleCompressed);
 
     const tags: [string, string][] = [
       ["Application", "KYVE"],
@@ -55,7 +57,8 @@ export async function proposeBundle(this: Node): Promise<void> {
         fromHeight + bundleProposal.bundle.length,
         fromKey,
         bundleProposal.toKey,
-        bundleProposal.toValue
+        bundleProposal.toValue,
+        bundleHash
       );
     } catch (error) {
       this.logger.warn(
@@ -78,6 +81,7 @@ export async function proposeBundle(this: Node): Promise<void> {
       fromHeight,
       fromHeight,
       fromKey,
+      "",
       "",
       ""
     );
