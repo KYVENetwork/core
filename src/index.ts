@@ -51,18 +51,18 @@ export class Node {
   protected cache!: ICache;
 
   // register sdk attributes
-  protected sdk: KyveSDK;
-  protected client!: KyveClient;
-  protected query: KyveLCDClientType;
+  public sdk: KyveSDK;
+  public client!: KyveClient;
+  public query: KyveLCDClientType;
+
+  // register attributes
+  public coreVersion: string;
+  public pool!: kyve.registry.v1beta1.kyveRegistry.Pool;
+  public poolConfig!: object;
+  public name: string;
 
   // logger attributes
   protected logger: Logger;
-
-  // register attributes
-  protected coreVersion: string;
-  protected pool!: kyve.registry.v1beta1.kyveRegistry.Pool;
-  protected poolConfig!: object;
-  protected name: string;
 
   // options
   protected poolId: number;

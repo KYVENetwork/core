@@ -1,5 +1,6 @@
 /// <reference types="node" />
-import { Signature, DataItem } from ".";
+import { DataItem } from ".";
+import { Node } from "..";
 /**
  * Interface of Runtime.
  *
@@ -35,7 +36,7 @@ export interface IRuntime {
      * @param {any} config pool config which usually holds rpc endpoints for example
      * @return {Promise<DataItem>}
      */
-    getDataItem(key: string, config: any, authenticate: () => Promise<Signature>): Promise<DataItem>;
+    getDataItem(key: string, core: Node): Promise<DataItem>;
     /**
      * Gets the next key from the current key so that the data archived has an order.
      *
