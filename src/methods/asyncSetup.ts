@@ -36,7 +36,7 @@ export async function asyncSetup(this: Node): Promise<void> {
 
   this.logger.debug(`Attempting to clear cache`);
   await this.cache.drop();
-  this.logger.info(`Cleared cache`);
+  this.logger.info(`Cleared cache\n`);
 
   this.validateRuntime();
   this.validateVersion();

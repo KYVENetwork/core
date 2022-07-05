@@ -14,6 +14,9 @@ export async function proposeBundle(this: Node): Promise<void> {
 
   if (bundleProposal.bundle.length) {
     // upload bundle to Arweave
+    this.logger.info(
+      `Created bundle of length ${bundleProposal.bundle.length}`
+    );
     this.logger.debug(
       `Compressing bundle with compression type ${this.compression.name}`
     );

@@ -14,6 +14,7 @@ async function proposeBundle() {
     const bundleProposal = await this.loadBundle(fromHeight, toHeight);
     if (bundleProposal.bundle.length) {
         // upload bundle to Arweave
+        this.logger.info(`Created bundle of length ${bundleProposal.bundle.length}`);
         this.logger.debug(`Compressing bundle with compression type ${this.compression.name}`);
         const bundleCompressed = await this.compression.compress(bundleProposal.bundle);
         const bundleHash = (0, object_hash_1.default)(bundleCompressed);

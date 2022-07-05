@@ -17,10 +17,10 @@ export async function validateBundleProposal(
     this.client.account.address
   );
 
-  let proposedBundle: DataItem[];
+  let proposedBundle: DataItem[] = [];
   let proposedBundleCompressed: Buffer;
 
-  let validationBundle: DataItem[];
+  let validationBundle: DataItem[] = [];
   let validationBundleCompressed: Buffer;
 
   while (true) {
@@ -40,7 +40,6 @@ export async function validateBundleProposal(
         `Attempting to download bundle from ${this.storageProvider.name}`
       );
 
-      // Todo catch error if decompression fails
       proposedBundleCompressed = await this.storageProvider.retrieveBundle(
         this.pool.bundle_proposal!.bundle_id
       );
@@ -50,10 +49,18 @@ export async function validateBundleProposal(
           `Successfully downloaded bundle from ${this.storageProvider.name}`
         );
 
-        // Todo catch error if decompression fails
-        proposedBundle = await this.compression.decompress(
-          proposedBundleCompressed
-        );
+        try {
+          proposedBundle = await this.compression.decompress(
+            proposedBundleCompressed
+          );
+          this.logger.info(
+            `Successfully decompressed bundle with compression type ${this.compression.name}`
+          );
+        } catch (error) {
+          this.logger.info(
+            `Could not decompress bundle with compression type ${this.compression.name}`
+          );
+        }
       } else {
         this.logger.info(
           `Could not download bundle from ${this.storageProvider.name}. Retrying in 10s ...`
@@ -112,74 +119,90 @@ export async function validateBundleProposal(
     }
   }
 
-  const uploadedKey = proposedBundle![proposedBundle!.length - 1].key;
-  const proposedKey = this.pool.bundle_proposal!.to_key;
-  const validationKey = validationBundle![validationBundle!.length - 1].key;
+  try {
+    const uploadedKey = proposedBundle!.at(-1)?.key ?? "";
+    const proposedKey = this.pool.bundle_proposal!.to_key;
+    const validationKey = validationBundle!.at(-1)?.key ?? "";
 
-  const uploadedValue = await this.runtime.formatValue(
-    proposedBundle![proposedBundle!.length - 1].value
-  );
-  const proposedValue = this.pool.bundle_proposal!.to_value;
-  const validationValue = await this.runtime.formatValue(
-    validationBundle![validationBundle!.length - 1].value
-  );
-
-  const uploadedByteSize = proposedBundleCompressed.byteLength;
-  const proposedByteSize = +this.pool.bundle_proposal!.byte_size;
-  const validationByteSize = validationBundleCompressed.byteLength;
-
-  const uploadedBundleHash = hash(proposedBundleCompressed);
-  const proposedBundleHash = this.pool.bundle_proposal!.bundle_hash;
-  const validationBundleHash = hash(validationBundleCompressed);
-
-  this.logger.debug(`Validating bundle proposal by key and value`);
-  this.logger.debug(`Uploaded:     ${uploadedKey} ${uploadedValue}`);
-  this.logger.debug(`Proposed:     ${proposedKey} ${proposedValue}`);
-  this.logger.debug(`Validation:   ${validationKey} ${validationValue}\n`);
-
-  this.logger.debug(`Validating bundle proposal by byte size and hash`);
-  this.logger.debug(`Uploaded:     ${uploadedByteSize} ${uploadedBundleHash}`);
-  this.logger.debug(`Proposed:     ${proposedByteSize} ${proposedBundleHash}`);
-  this.logger.debug(
-    `Validation:   ${validationByteSize} ${validationBundleHash}\n`
-  );
-
-  let keysEqual = false;
-  let valuesEqual = false;
-  let byteSizesEqual = false;
-  let hashesEqual = false;
-
-  if (uploadedKey === proposedKey && proposedKey === validationKey) {
-    keysEqual = true;
-  }
-
-  if (uploadedValue === proposedValue && proposedValue === validationValue) {
-    valuesEqual = true;
-  }
-
-  if (
-    uploadedByteSize === proposedByteSize &&
-    proposedByteSize === validationByteSize
-  ) {
-    byteSizesEqual = true;
-  }
-
-  if (
-    uploadedBundleHash === proposedBundleHash &&
-    proposedBundleHash === validationBundleHash
-  ) {
-    hashesEqual = true;
-  }
-
-  if (keysEqual && valuesEqual && byteSizesEqual && hashesEqual) {
-    await this.voteBundleProposal(
-      this.pool.bundle_proposal!.bundle_id,
-      VOTE.VALID
+    const uploadedValue = await this.runtime.formatValue(
+      proposedBundle!.at(-1)?.value ?? ""
     );
-  } else {
-    await this.voteBundleProposal(
-      this.pool.bundle_proposal!.bundle_id,
-      VOTE.INVALID
+    const proposedValue = this.pool.bundle_proposal!.to_value;
+    const validationValue = await this.runtime.formatValue(
+      validationBundle!.at(-1)?.value ?? ""
     );
+
+    const uploadedByteSize = proposedBundleCompressed.byteLength;
+    const proposedByteSize = +this.pool.bundle_proposal!.byte_size;
+    const validationByteSize = validationBundleCompressed.byteLength;
+
+    const uploadedBundleHash = hash(proposedBundleCompressed);
+    const proposedBundleHash = this.pool.bundle_proposal!.bundle_hash;
+    const validationBundleHash = hash(validationBundleCompressed);
+
+    this.logger.debug(`Validating bundle proposal by key and value`);
+    this.logger.debug(`Uploaded:     ${uploadedKey} ${uploadedValue}`);
+    this.logger.debug(`Proposed:     ${proposedKey} ${proposedValue}`);
+    this.logger.debug(`Validation:   ${validationKey} ${validationValue}\n`);
+
+    this.logger.debug(`Validating bundle proposal by byte size and hash`);
+    this.logger.debug(
+      `Uploaded:     ${uploadedByteSize} ${uploadedBundleHash}`
+    );
+    this.logger.debug(
+      `Proposed:     ${proposedByteSize} ${proposedBundleHash}`
+    );
+    this.logger.debug(
+      `Validation:   ${validationByteSize} ${validationBundleHash}\n`
+    );
+
+    let keysEqual = false;
+    let valuesEqual = false;
+    let byteSizesEqual = false;
+    let hashesEqual = false;
+
+    if (uploadedKey === proposedKey && proposedKey === validationKey) {
+      keysEqual = true;
+    }
+
+    if (uploadedValue === proposedValue && proposedValue === validationValue) {
+      valuesEqual = true;
+    }
+
+    if (
+      uploadedByteSize === proposedByteSize &&
+      proposedByteSize === validationByteSize
+    ) {
+      byteSizesEqual = true;
+    }
+
+    if (
+      uploadedBundleHash === proposedBundleHash &&
+      proposedBundleHash === validationBundleHash
+    ) {
+      hashesEqual = true;
+    }
+
+    if (keysEqual && valuesEqual && byteSizesEqual && hashesEqual) {
+      await this.voteBundleProposal(
+        this.pool.bundle_proposal!.bundle_id,
+        VOTE.VALID
+      );
+    } else {
+      await this.voteBundleProposal(
+        this.pool.bundle_proposal!.bundle_id,
+        VOTE.INVALID
+      );
+    }
+  } catch (error) {
+    this.logger.warn(` Failed to validate bundle`);
+    this.logger.debug(error);
+
+    if (!hasVotedAbstain) {
+      await this.voteBundleProposal(
+        this.pool.bundle_proposal!.bundle_id,
+        VOTE.ABSTAIN
+      );
+    }
   }
 }

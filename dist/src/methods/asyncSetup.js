@@ -30,7 +30,7 @@ async function asyncSetup() {
     await this.syncPoolState();
     this.logger.debug(`Attempting to clear cache`);
     await this.cache.drop();
-    this.logger.info(`Cleared cache`);
+    this.logger.info(`Cleared cache\n`);
     this.validateRuntime();
     this.validateVersion();
     await this.setupStake();

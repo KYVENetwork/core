@@ -9,12 +9,12 @@ const constants_1 = require("../utils/constants");
 const object_hash_1 = __importDefault(require("object-hash"));
 // TODO: exit after remaining upload interval if node is uploader
 async function validateBundleProposal(createdAt) {
-    var _a;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     this.logger.info(`Validating bundle "${this.pool.bundle_proposal.bundle_id}"`);
     let hasVotedAbstain = (_a = this.pool.bundle_proposal) === null || _a === void 0 ? void 0 : _a.voters_abstain.includes(this.client.account.address);
-    let proposedBundle;
+    let proposedBundle = [];
     let proposedBundleCompressed;
-    let validationBundle;
+    let validationBundle = [];
     let validationBundleCompressed;
     while (true) {
         await this.syncPoolState();
@@ -29,12 +29,16 @@ async function validateBundleProposal(createdAt) {
         // try to download bundle from arweave
         if (!proposedBundleCompressed) {
             this.logger.debug(`Attempting to download bundle from ${this.storageProvider.name}`);
-            // Todo catch error if decompression fails
             proposedBundleCompressed = await this.storageProvider.retrieveBundle(this.pool.bundle_proposal.bundle_id);
             if (proposedBundleCompressed) {
                 this.logger.info(`Successfully downloaded bundle from ${this.storageProvider.name}`);
-                // Todo catch error if decompression fails
-                proposedBundle = await this.compression.decompress(proposedBundleCompressed);
+                try {
+                    proposedBundle = await this.compression.decompress(proposedBundleCompressed);
+                    this.logger.info(`Successfully decompressed bundle with compression type ${this.compression.name}`);
+                }
+                catch (error) {
+                    this.logger.info(`Could not decompress bundle with compression type ${this.compression.name}`);
+                }
             }
             else {
                 this.logger.info(`Could not download bundle from ${this.storageProvider.name}. Retrying in 10s ...`);
@@ -68,49 +72,58 @@ async function validateBundleProposal(createdAt) {
             continue;
         }
     }
-    const uploadedKey = proposedBundle[proposedBundle.length - 1].key;
-    const proposedKey = this.pool.bundle_proposal.to_key;
-    const validationKey = validationBundle[validationBundle.length - 1].key;
-    const uploadedValue = await this.runtime.formatValue(proposedBundle[proposedBundle.length - 1].value);
-    const proposedValue = this.pool.bundle_proposal.to_value;
-    const validationValue = await this.runtime.formatValue(validationBundle[validationBundle.length - 1].value);
-    const uploadedByteSize = proposedBundleCompressed.byteLength;
-    const proposedByteSize = +this.pool.bundle_proposal.byte_size;
-    const validationByteSize = validationBundleCompressed.byteLength;
-    const uploadedBundleHash = (0, object_hash_1.default)(proposedBundleCompressed);
-    const proposedBundleHash = this.pool.bundle_proposal.bundle_hash;
-    const validationBundleHash = (0, object_hash_1.default)(validationBundleCompressed);
-    this.logger.debug(`Validating bundle proposal by key and value`);
-    this.logger.debug(`Uploaded:     ${uploadedKey} ${uploadedValue}`);
-    this.logger.debug(`Proposed:     ${proposedKey} ${proposedValue}`);
-    this.logger.debug(`Validation:   ${validationKey} ${validationValue}\n`);
-    this.logger.debug(`Validating bundle proposal by byte size and hash`);
-    this.logger.debug(`Uploaded:     ${uploadedByteSize} ${uploadedBundleHash}`);
-    this.logger.debug(`Proposed:     ${proposedByteSize} ${proposedBundleHash}`);
-    this.logger.debug(`Validation:   ${validationByteSize} ${validationBundleHash}\n`);
-    let keysEqual = false;
-    let valuesEqual = false;
-    let byteSizesEqual = false;
-    let hashesEqual = false;
-    if (uploadedKey === proposedKey && proposedKey === validationKey) {
-        keysEqual = true;
+    try {
+        const uploadedKey = (_c = (_b = proposedBundle.at(-1)) === null || _b === void 0 ? void 0 : _b.key) !== null && _c !== void 0 ? _c : "";
+        const proposedKey = this.pool.bundle_proposal.to_key;
+        const validationKey = (_e = (_d = validationBundle.at(-1)) === null || _d === void 0 ? void 0 : _d.key) !== null && _e !== void 0 ? _e : "";
+        const uploadedValue = await this.runtime.formatValue((_g = (_f = proposedBundle.at(-1)) === null || _f === void 0 ? void 0 : _f.value) !== null && _g !== void 0 ? _g : "");
+        const proposedValue = this.pool.bundle_proposal.to_value;
+        const validationValue = await this.runtime.formatValue((_j = (_h = validationBundle.at(-1)) === null || _h === void 0 ? void 0 : _h.value) !== null && _j !== void 0 ? _j : "");
+        const uploadedByteSize = proposedBundleCompressed.byteLength;
+        const proposedByteSize = +this.pool.bundle_proposal.byte_size;
+        const validationByteSize = validationBundleCompressed.byteLength;
+        const uploadedBundleHash = (0, object_hash_1.default)(proposedBundleCompressed);
+        const proposedBundleHash = this.pool.bundle_proposal.bundle_hash;
+        const validationBundleHash = (0, object_hash_1.default)(validationBundleCompressed);
+        this.logger.debug(`Validating bundle proposal by key and value`);
+        this.logger.debug(`Uploaded:     ${uploadedKey} ${uploadedValue}`);
+        this.logger.debug(`Proposed:     ${proposedKey} ${proposedValue}`);
+        this.logger.debug(`Validation:   ${validationKey} ${validationValue}\n`);
+        this.logger.debug(`Validating bundle proposal by byte size and hash`);
+        this.logger.debug(`Uploaded:     ${uploadedByteSize} ${uploadedBundleHash}`);
+        this.logger.debug(`Proposed:     ${proposedByteSize} ${proposedBundleHash}`);
+        this.logger.debug(`Validation:   ${validationByteSize} ${validationBundleHash}\n`);
+        let keysEqual = false;
+        let valuesEqual = false;
+        let byteSizesEqual = false;
+        let hashesEqual = false;
+        if (uploadedKey === proposedKey && proposedKey === validationKey) {
+            keysEqual = true;
+        }
+        if (uploadedValue === proposedValue && proposedValue === validationValue) {
+            valuesEqual = true;
+        }
+        if (uploadedByteSize === proposedByteSize &&
+            proposedByteSize === validationByteSize) {
+            byteSizesEqual = true;
+        }
+        if (uploadedBundleHash === proposedBundleHash &&
+            proposedBundleHash === validationBundleHash) {
+            hashesEqual = true;
+        }
+        if (keysEqual && valuesEqual && byteSizesEqual && hashesEqual) {
+            await this.voteBundleProposal(this.pool.bundle_proposal.bundle_id, constants_1.VOTE.VALID);
+        }
+        else {
+            await this.voteBundleProposal(this.pool.bundle_proposal.bundle_id, constants_1.VOTE.INVALID);
+        }
     }
-    if (uploadedValue === proposedValue && proposedValue === validationValue) {
-        valuesEqual = true;
-    }
-    if (uploadedByteSize === proposedByteSize &&
-        proposedByteSize === validationByteSize) {
-        byteSizesEqual = true;
-    }
-    if (uploadedBundleHash === proposedBundleHash &&
-        proposedBundleHash === validationBundleHash) {
-        hashesEqual = true;
-    }
-    if (keysEqual && valuesEqual && byteSizesEqual && hashesEqual) {
-        await this.voteBundleProposal(this.pool.bundle_proposal.bundle_id, constants_1.VOTE.VALID);
-    }
-    else {
-        await this.voteBundleProposal(this.pool.bundle_proposal.bundle_id, constants_1.VOTE.INVALID);
+    catch (error) {
+        this.logger.warn(` Failed to validate bundle`);
+        this.logger.debug(error);
+        if (!hasVotedAbstain) {
+            await this.voteBundleProposal(this.pool.bundle_proposal.bundle_id, constants_1.VOTE.ABSTAIN);
+        }
     }
 }
 exports.validateBundleProposal = validateBundleProposal;

@@ -13,7 +13,7 @@ export async function runCache(this: Node): Promise<void> {
     if (+this.pool.bundle_proposal!.to_height < toHeight) {
       this.logger.debug(`Attempting to clear cache`);
       await this.cache.drop();
-      this.logger.info(`Cleared cache`);
+      this.logger.info(`Cleared cache\n`);
     }
 
     // cache data items from current height to required height
