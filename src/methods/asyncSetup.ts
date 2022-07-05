@@ -29,4 +29,17 @@ export async function asyncSetup(this: Node): Promise<void> {
 
     process.exit(1);
   }
+
+  this.logNodeInfo();
+
+  await this.syncPoolState();
+  await this.cache.drop();
+
+  this.validateRuntime();
+  this.validateVersion();
+
+  await this.setupStake();
+  await this.syncPoolState();
+
+  this.validateActiveNode();
 }

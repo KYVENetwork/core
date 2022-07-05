@@ -23,7 +23,6 @@ import {
   canPropose,
   submitBundleProposal,
   proposeBundle,
-  requestSignature,
 } from "./methods";
 import program from "./commander";
 import KyveSDK, { KyveClient, KyveLCDClientType } from "@kyve/sdk";
@@ -93,7 +92,6 @@ export class Node {
   protected canPropose = canPropose;
   protected submitBundleProposal = submitBundleProposal;
   protected proposeBundle = proposeBundle;
-  protected requestSignature = requestSignature;
   protected runNode = runNode;
   protected runCache = runCache;
 
@@ -216,18 +214,6 @@ export class Node {
     // TODO: check here if sdk init fails
     try {
       await this.asyncSetup();
-
-      this.logNodeInfo();
-
-      await this.syncPoolState();
-
-      this.validateRuntime();
-      this.validateVersion();
-
-      await this.setupStake();
-      await this.syncPoolState();
-
-      this.validateActiveNode();
 
       this.runNode();
       this.runCache();

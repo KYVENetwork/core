@@ -57,7 +57,6 @@ class Node {
         this.canPropose = methods_1.canPropose;
         this.submitBundleProposal = methods_1.submitBundleProposal;
         this.proposeBundle = methods_1.proposeBundle;
-        this.requestSignature = methods_1.requestSignature;
         this.runNode = methods_1.runNode;
         this.runCache = methods_1.runCache;
         // define program
@@ -163,13 +162,6 @@ class Node {
         // TODO: check here if sdk init fails
         try {
             await this.asyncSetup();
-            this.logNodeInfo();
-            await this.syncPoolState();
-            this.validateRuntime();
-            this.validateVersion();
-            await this.setupStake();
-            await this.syncPoolState();
-            this.validateActiveNode();
             this.runNode();
             this.runCache();
         }

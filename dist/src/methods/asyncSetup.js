@@ -26,5 +26,13 @@ async function asyncSetup() {
         this.logger.debug(error);
         process.exit(1);
     }
+    this.logNodeInfo();
+    await this.syncPoolState();
+    await this.cache.drop();
+    this.validateRuntime();
+    this.validateVersion();
+    await this.setupStake();
+    await this.syncPoolState();
+    this.validateActiveNode();
 }
 exports.asyncSetup = asyncSetup;
