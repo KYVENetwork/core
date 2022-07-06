@@ -20,7 +20,7 @@ export async function canVote(this: Node): Promise<boolean> {
       {
         pool_id: this.poolId.toString(),
         voter: this.client.account.address,
-        bundle_id: this.pool.bundle_proposal!.bundle_id,
+        storage_id: this.pool.bundle_proposal!.storage_id,
       }
     );
 

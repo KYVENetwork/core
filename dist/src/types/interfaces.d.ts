@@ -92,17 +92,17 @@ export interface IStorageProvider {
      * @method saveBundle
      * @param {Buffer} bundle data of the bundle which will get saved
      * @param {[string, string][]} tags metadata that should be included
-     * @return {Promise<string>} returns a bundle ID which should be able to retrieve the bundle again
+     * @return {Promise<string>} returns a storage ID which should be able to retrieve the bundle again
      */
     saveBundle(bundle: Buffer, tags: [string, string][]): Promise<string>;
     /**
      * Retrieves the bundle from the storage provider with the bundle ID
      *
      * @method retrieveBundle
-     * @param {string} bundleId bundle ID from which the data of the bundle can be retrieved
+     * @param {string} storageId bundle ID from which the data of the bundle can be retrieved
      * @return {Promise<Buffer>} returns the data of the bundle
      */
-    retrieveBundle(bundleId: string): Promise<Buffer>;
+    retrieveBundle(storageId: string): Promise<Buffer>;
 }
 /**
  * Interface of Cache.

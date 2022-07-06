@@ -17,9 +17,9 @@ export function validateRuntime(this: Node): void {
 
 export function validateVersion(this: Node): void {
   if (this.pool.protocol!.version !== this.runtime.version) {
-    this.logger.error(`Running an invalid runtime version! Exiting ...`);
+    this.logger.error(`Running an invalid version. Exiting ...`);
     this.logger.error(
-      `Found = ${this.runtime.version} required = ${
+      `Found Runtime version = ${this.runtime.version} required = ${
         this.pool.protocol!.version
       }`
     );

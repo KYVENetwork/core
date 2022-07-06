@@ -2,7 +2,7 @@ import { Node } from "..";
 
 export async function voteBundleProposal(
   this: Node,
-  bundle_id: string,
+  storageId: string,
   vote: number
 ): Promise<void> {
   try {
@@ -22,7 +22,7 @@ export async function voteBundleProposal(
 
     const tx = await this.client.kyve.v1beta1.base.voteProposal({
       id: this.poolId.toString(),
-      bundle_id,
+      storage_id: storageId,
       vote,
     });
 
@@ -31,7 +31,7 @@ export async function voteBundleProposal(
     const receipt = await tx.execute();
 
     if (receipt.code === 0) {
-      this.logger.info(`Voted ${voteMessage} on bundle "${bundle_id}"\n`);
+      this.logger.info(`Voted ${voteMessage} on bundle "${storageId}"\n`);
     } else {
       this.logger.info(`Could not vote on proposal. Continuing ...\n`);
     }

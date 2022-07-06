@@ -14,7 +14,7 @@ async function canVote() {
         const { possible, reason } = await this.query.kyve.registry.v1beta1.canVote({
             pool_id: this.poolId.toString(),
             voter: this.client.account.address,
-            bundle_id: this.pool.bundle_proposal.bundle_id,
+            storage_id: this.pool.bundle_proposal.storage_id,
         });
         if (possible) {
             this.logger.info(`Node is able to vote on bundle proposal\n`);

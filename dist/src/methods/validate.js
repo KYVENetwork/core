@@ -13,8 +13,8 @@ function validateRuntime() {
 exports.validateRuntime = validateRuntime;
 function validateVersion() {
     if (this.pool.protocol.version !== this.runtime.version) {
-        this.logger.error(`Running an invalid runtime version! Exiting ...`);
-        this.logger.error(`Found = ${this.runtime.version} required = ${this.pool.protocol.version}`);
+        this.logger.error(`Running an invalid version. Exiting ...`);
+        this.logger.error(`Found Runtime version = ${this.runtime.version} required = ${this.pool.protocol.version}`);
         process.exit(1);
     }
     this.logger.info(`Node running on runtime version = ${this.runtime.version}`);

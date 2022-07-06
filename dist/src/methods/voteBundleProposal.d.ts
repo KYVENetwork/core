@@ -1,2 +1,2 @@
 import { Node } from "..";
-export declare function voteBundleProposal(this: Node, bundle_id: string, vote: number): Promise<void>;
+export declare function voteBundleProposal(this: Node, storageId: string, vote: number): Promise<void>;

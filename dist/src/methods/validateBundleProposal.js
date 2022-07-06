@@ -10,7 +10,7 @@ const object_hash_1 = __importDefault(require("object-hash"));
 // TODO: exit after remaining upload interval if node is uploader
 async function validateBundleProposal(createdAt) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
-    this.logger.info(`Validating bundle "${this.pool.bundle_proposal.bundle_id}"`);
+    this.logger.info(`Validating bundle "${this.pool.bundle_proposal.storage_id}"`);
     let hasVotedAbstain = (_a = this.pool.bundle_proposal) === null || _a === void 0 ? void 0 : _a.voters_abstain.includes(this.client.account.address);
     let proposedBundle = [];
     let proposedBundleCompressed;
@@ -29,7 +29,7 @@ async function validateBundleProposal(createdAt) {
         // try to download bundle from arweave
         if (!proposedBundleCompressed) {
             this.logger.debug(`Attempting to download bundle from ${this.storageProvider.name}`);
-            proposedBundleCompressed = await this.storageProvider.retrieveBundle(this.pool.bundle_proposal.bundle_id);
+            proposedBundleCompressed = await this.storageProvider.retrieveBundle(this.pool.bundle_proposal.storage_id);
             if (proposedBundleCompressed) {
                 this.logger.info(`Successfully downloaded bundle from ${this.storageProvider.name}`);
                 try {
@@ -43,7 +43,7 @@ async function validateBundleProposal(createdAt) {
             else {
                 this.logger.info(`Could not download bundle from ${this.storageProvider.name}. Retrying in 10s ...`);
                 if (!hasVotedAbstain) {
-                    await this.voteBundleProposal(this.pool.bundle_proposal.bundle_id, constants_1.VOTE.ABSTAIN);
+                    await this.voteBundleProposal(this.pool.bundle_proposal.storage_id, constants_1.VOTE.ABSTAIN);
                     hasVotedAbstain = true;
                 }
                 await (0, helpers_1.sleep)(10 * 1000);
@@ -65,7 +65,7 @@ async function validateBundleProposal(createdAt) {
         else {
             this.logger.info(`Could not load local bundle from ${currentHeight} to ${toHeight}. Retrying in 10s ...`);
             if (!hasVotedAbstain) {
-                await this.voteBundleProposal(this.pool.bundle_proposal.bundle_id, constants_1.VOTE.ABSTAIN);
+                await this.voteBundleProposal(this.pool.bundle_proposal.storage_id, constants_1.VOTE.ABSTAIN);
                 hasVotedAbstain = true;
             }
             await (0, helpers_1.sleep)(10 * 1000);
@@ -112,17 +112,17 @@ async function validateBundleProposal(createdAt) {
             hashesEqual = true;
         }
         if (keysEqual && valuesEqual && byteSizesEqual && hashesEqual) {
-            await this.voteBundleProposal(this.pool.bundle_proposal.bundle_id, constants_1.VOTE.VALID);
+            await this.voteBundleProposal(this.pool.bundle_proposal.storage_id, constants_1.VOTE.VALID);
         }
         else {
-            await this.voteBundleProposal(this.pool.bundle_proposal.bundle_id, constants_1.VOTE.INVALID);
+            await this.voteBundleProposal(this.pool.bundle_proposal.storage_id, constants_1.VOTE.INVALID);
         }
     }
     catch (error) {
         this.logger.warn(` Failed to validate bundle`);
         this.logger.debug(error);
         if (!hasVotedAbstain) {
-            await this.voteBundleProposal(this.pool.bundle_proposal.bundle_id, constants_1.VOTE.ABSTAIN);
+            await this.voteBundleProposal(this.pool.bundle_proposal.storage_id, constants_1.VOTE.ABSTAIN);
         }
     }
 }

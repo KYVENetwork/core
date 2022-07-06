@@ -34,12 +34,12 @@ class Arweave {
         await this.arweaveClient.transactions.post(transaction);
         return transaction.id;
     }
-    async retrieveBundle(bundleId) {
-        const { status } = await this.arweaveClient.transactions.getStatus(bundleId);
+    async retrieveBundle(storageId) {
+        const { status } = await this.arweaveClient.transactions.getStatus(storageId);
         if (status !== 200 && status !== 202) {
             throw Error(`Could not download bundle from Arweave. Status code = ${status}`);
         }
-        const { data: bundle } = await axios_1.default.get(`https://arweave.net/${bundleId}`, { responseType: "arraybuffer" });
+        const { data: bundle } = await axios_1.default.get(`https://arweave.net/${storageId}`, { responseType: "arraybuffer" });
         return bundle;
     }
 }

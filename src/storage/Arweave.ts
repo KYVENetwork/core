@@ -45,9 +45,9 @@ export class Arweave implements IStorageProvider {
     return transaction.id;
   }
 
-  async retrieveBundle(bundleId: string) {
+  async retrieveBundle(storageId: string) {
     const { status } = await this.arweaveClient.transactions.getStatus(
-      bundleId
+      storageId
     );
 
     if (status !== 200 && status !== 202) {
@@ -57,7 +57,7 @@ export class Arweave implements IStorageProvider {
     }
 
     const { data: bundle } = await axios.get(
-      `https://arweave.net/${bundleId}`,
+      `https://arweave.net/${storageId}`,
       { responseType: "arraybuffer" }
     );
 

@@ -35,9 +35,9 @@ async function proposeBundle() {
                 ["Value", bundleProposal.toValue],
             ];
             this.logger.debug(`Attempting to save bundle on storage provider`);
-            const bundleId = await this.storageProvider.saveBundle(bundleCompressed, tags);
-            this.logger.info(`Saved bundle on ${this.storageProvider.name} with ID "${bundleId}"\n`);
-            await this.submitBundleProposal(bundleId, bundleCompressed.byteLength, fromHeight, fromHeight + bundleProposal.bundle.length, fromKey, bundleProposal.toKey, bundleProposal.toValue, bundleHash);
+            const storageId = await this.storageProvider.saveBundle(bundleCompressed, tags);
+            this.logger.info(`Saved bundle on ${this.storageProvider.name} with ID "${storageId}"\n`);
+            await this.submitBundleProposal(storageId, bundleCompressed.byteLength, fromHeight, fromHeight + bundleProposal.bundle.length, fromKey, bundleProposal.toKey, bundleProposal.toValue, bundleHash);
         }
         catch (error) {
             this.logger.warn(` Failed to save bundle on ${this.storageProvider.name}`);
@@ -47,8 +47,8 @@ async function proposeBundle() {
     }
     else {
         this.logger.info(`Creating new bundle proposal of type ${constants_1.KYVE_NO_DATA_BUNDLE}`);
-        const bundleId = `KYVE_NO_DATA_BUNDLE_${this.poolId}_${Math.floor(Date.now() / 1000)}`;
-        await this.submitBundleProposal(bundleId, 0, fromHeight, fromHeight, fromKey, "", "", "");
+        const storageId = `KYVE_NO_DATA_BUNDLE_${this.poolId}_${Math.floor(Date.now() / 1000)}`;
+        await this.submitBundleProposal(storageId, 0, fromHeight, fromHeight, fromKey, "", "", "");
     }
 }
 exports.proposeBundle = proposeBundle;

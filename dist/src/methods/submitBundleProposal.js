@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.submitBundleProposal = void 0;
-async function submitBundleProposal(bundleId, byteSize, fromHeight, toHeight, fromKey, toKey, toValue, bundleHash) {
+async function submitBundleProposal(storageId, byteSize, fromHeight, toHeight, fromKey, toKey, toValue, bundleHash) {
     try {
         this.logger.debug(`Attempting to submit bundle proposal`);
         const tx = await this.client.kyve.v1beta1.base.submitBundleProposal({
             id: this.poolId.toString(),
-            bundle_id: bundleId,
+            storage_id: storageId,
             byte_size: byteSize.toString(),
             from_height: fromHeight.toString(),
             to_height: toHeight.toString(),
@@ -18,7 +18,7 @@ async function submitBundleProposal(bundleId, byteSize, fromHeight, toHeight, fr
         this.logger.debug(`SubmitBundleProposal = ${tx.txHash}`);
         const receipt = await tx.execute();
         if (receipt.code === 0) {
-            this.logger.info(`Successfully submitted bundle proposal with ID "${bundleId}"\n`);
+            this.logger.info(`Successfully submitted bundle proposal with ID "${storageId}"\n`);
         }
         else {
             this.logger.info(`Could not submit bundle proposal. Continuing ...\n`);

@@ -45,17 +45,17 @@ export async function proposeBundle(this: Node): Promise<void> {
 
       this.logger.debug(`Attempting to save bundle on storage provider`);
 
-      const bundleId = await this.storageProvider.saveBundle(
+      const storageId = await this.storageProvider.saveBundle(
         bundleCompressed,
         tags
       );
 
       this.logger.info(
-        `Saved bundle on ${this.storageProvider.name} with ID "${bundleId}"\n`
+        `Saved bundle on ${this.storageProvider.name} with ID "${storageId}"\n`
       );
 
       await this.submitBundleProposal(
-        bundleId,
+        storageId,
         bundleCompressed.byteLength,
         fromHeight,
         fromHeight + bundleProposal.bundle.length,
@@ -77,12 +77,12 @@ export async function proposeBundle(this: Node): Promise<void> {
       `Creating new bundle proposal of type ${KYVE_NO_DATA_BUNDLE}`
     );
 
-    const bundleId = `KYVE_NO_DATA_BUNDLE_${this.poolId}_${Math.floor(
+    const storageId = `KYVE_NO_DATA_BUNDLE_${this.poolId}_${Math.floor(
       Date.now() / 1000
     )}`;
 
     await this.submitBundleProposal(
-      bundleId,
+      storageId,
       0,
       fromHeight,
       fromHeight,

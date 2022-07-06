@@ -2,7 +2,7 @@ import { Node } from "..";
 
 export async function submitBundleProposal(
   this: Node,
-  bundleId: string,
+  storageId: string,
   byteSize: number,
   fromHeight: number,
   toHeight: number,
@@ -16,7 +16,7 @@ export async function submitBundleProposal(
 
     const tx = await this.client.kyve.v1beta1.base.submitBundleProposal({
       id: this.poolId.toString(),
-      bundle_id: bundleId,
+      storage_id: storageId,
       byte_size: byteSize.toString(),
       from_height: fromHeight.toString(),
       to_height: toHeight.toString(),
@@ -32,7 +32,7 @@ export async function submitBundleProposal(
 
     if (receipt.code === 0) {
       this.logger.info(
-        `Successfully submitted bundle proposal with ID "${bundleId}"\n`
+        `Successfully submitted bundle proposal with ID "${storageId}"\n`
       );
     } else {
       this.logger.info(`Could not submit bundle proposal. Continuing ...\n`);

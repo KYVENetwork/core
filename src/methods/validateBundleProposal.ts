@@ -10,7 +10,7 @@ export async function validateBundleProposal(
   createdAt: number
 ): Promise<void> {
   this.logger.info(
-    `Validating bundle "${this.pool.bundle_proposal!.bundle_id}"`
+    `Validating bundle "${this.pool.bundle_proposal!.storage_id}"`
   );
 
   let hasVotedAbstain = this.pool.bundle_proposal?.voters_abstain.includes(
@@ -41,7 +41,7 @@ export async function validateBundleProposal(
       );
 
       proposedBundleCompressed = await this.storageProvider.retrieveBundle(
-        this.pool.bundle_proposal!.bundle_id
+        this.pool.bundle_proposal!.storage_id
       );
 
       if (proposedBundleCompressed) {
@@ -68,7 +68,7 @@ export async function validateBundleProposal(
 
         if (!hasVotedAbstain) {
           await this.voteBundleProposal(
-            this.pool.bundle_proposal!.bundle_id,
+            this.pool.bundle_proposal!.storage_id,
             VOTE.ABSTAIN
           );
           hasVotedAbstain = true;
@@ -108,7 +108,7 @@ export async function validateBundleProposal(
 
       if (!hasVotedAbstain) {
         await this.voteBundleProposal(
-          this.pool.bundle_proposal!.bundle_id,
+          this.pool.bundle_proposal!.storage_id,
           VOTE.ABSTAIN
         );
         hasVotedAbstain = true;
@@ -185,12 +185,12 @@ export async function validateBundleProposal(
 
     if (keysEqual && valuesEqual && byteSizesEqual && hashesEqual) {
       await this.voteBundleProposal(
-        this.pool.bundle_proposal!.bundle_id,
+        this.pool.bundle_proposal!.storage_id,
         VOTE.VALID
       );
     } else {
       await this.voteBundleProposal(
-        this.pool.bundle_proposal!.bundle_id,
+        this.pool.bundle_proposal!.storage_id,
         VOTE.INVALID
       );
     }
@@ -200,7 +200,7 @@ export async function validateBundleProposal(
 
     if (!hasVotedAbstain) {
       await this.voteBundleProposal(
-        this.pool.bundle_proposal!.bundle_id,
+        this.pool.bundle_proposal!.storage_id,
         VOTE.ABSTAIN
       );
     }

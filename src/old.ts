@@ -213,7 +213,7 @@ class KYVE {
               `${this.wallet.getRestEndpoint()}/kyve/registry/${
                 this.chainVersion
               }/can_vote/${this.poolId}/${address}/${
-                this.pool.bundle_proposal.bundle_id
+                this.pool.bundle_proposal.storage_id
               }`
             );
 
@@ -339,12 +339,12 @@ class KYVE {
                 `Creating new bundle proposal of type ${KYVE_NO_DATA_BUNDLE}`
               );
 
-              const bundleId = `KYVE_NO_DATA_BUNDLE_${this.poolId}_${Math.floor(
-                Date.now() / 1000
-              )}`;
+              const storageId = `KYVE_NO_DATA_BUNDLE_${
+                this.poolId
+              }_${Math.floor(Date.now() / 1000)}`;
 
               await this.submitBundleProposal(
-                bundleId,
+                storageId,
                 0,
                 fromHeight,
                 fromHeight,
@@ -516,7 +516,7 @@ class KYVE {
     abstain: boolean
   ): Promise<void> {
     this.logger.info(
-      `Validating bundle ${this.pool.bundle_proposal.bundle_id}`
+      `Validating bundle ${this.pool.bundle_proposal.storage_id}`
     );
 
     let alreadyVotedWithAbstain = abstain;
@@ -552,7 +552,7 @@ class KYVE {
           );
 
           if (!alreadyVotedWithAbstain) {
-            await this.vote(this.pool.bundle_proposal.bundle_id, 2);
+            await this.vote(this.pool.bundle_proposal.storage_id, 2);
             alreadyVotedWithAbstain = true;
           }
 
@@ -579,7 +579,7 @@ class KYVE {
         );
 
         if (!alreadyVotedWithAbstain) {
-          await this.vote(this.pool.bundle_proposal.bundle_id, 2);
+          await this.vote(this.pool.bundle_proposal.storage_id, 2);
           alreadyVotedWithAbstain = true;
         }
 
@@ -623,13 +623,13 @@ class KYVE {
         }
 
         if (support) {
-          await this.vote(this.pool.bundle_proposal.bundle_id, 0);
+          await this.vote(this.pool.bundle_proposal.storage_id, 0);
         } else {
-          await this.vote(this.pool.bundle_proposal.bundle_id, 1);
+          await this.vote(this.pool.bundle_proposal.storage_id, 1);
         }
       } catch {
         this.logger.warn(` Could not gunzip bundle ...`);
-        await this.vote(this.pool.bundle_proposal.bundle_id, 1);
+        await this.vote(this.pool.bundle_proposal.storage_id, 1);
       } finally {
         break;
       }
@@ -659,12 +659,12 @@ class KYVE {
   private async downloadBundleFromArweave(): Promise<any> {
     try {
       const { status } = await this.arweave.transactions.getStatus(
-        this.pool.bundle_proposal.bundle_id
+        this.pool.bundle_proposal.storage_id
       );
 
       if (status === 200 || status === 202) {
         const { data: downloadBundle } = await axios.get(
-          `https://arweave.net/${this.pool.bundle_proposal.bundle_id}`,
+          `https://arweave.net/${this.pool.bundle_proposal.storage_id}`,
           { responseType: "arraybuffer" }
         );
 
@@ -733,7 +733,7 @@ class KYVE {
   }
 
   private async submitBundleProposal(
-    bundleId: string,
+    storageId: string,
     byteSize: number,
     fromHeight: number,
     toHeight: number,
@@ -747,7 +747,7 @@ class KYVE {
       const { transactionHash, transactionBroadcast } =
         await this.sdk.submitBundleProposal(
           this.poolId,
-          bundleId,
+          storageId,
           byteSize,
           fromHeight,
           toHeight,
@@ -761,7 +761,7 @@ class KYVE {
       const res = await transactionBroadcast;
 
       if (res.code === 0) {
-        this.logger.info(`Successfully submitted bundle proposal ${bundleId}`);
+        this.logger.info(`Successfully submitted bundle proposal ${storageId}`);
       } else {
         this.logger.warn(` Could not submit bundle proposal. Skipping ...`);
       }
@@ -831,7 +831,7 @@ class KYVE {
     });
   }
 
-  private async vote(bundleId: string, vote: number) {
+  private async vote(storageId: string, vote: number) {
     try {
       let voteMessage = "";
 
@@ -845,17 +845,17 @@ class KYVE {
         throw Error(`Invalid vote: ${vote}`);
       }
 
-      this.logger.debug(`Voting ${voteMessage} on bundle ${bundleId} ...`);
+      this.logger.debug(`Voting ${voteMessage} on bundle ${storageId} ...`);
 
       const { transactionHash, transactionBroadcast } =
-        await this.sdk.voteProposal(this.poolId, bundleId, vote);
+        await this.sdk.voteProposal(this.poolId, storageId, vote);
 
       this.logger.debug(`Transaction = ${transactionHash}`);
 
       const res = await transactionBroadcast;
 
       if (res.code === 0) {
-        this.logger.info(`Voted ${voteMessage} on bundle ${bundleId}`);
+        this.logger.info(`Voted ${voteMessage} on bundle ${storageId}`);
       } else {
         this.logger.warn(` Could not vote on proposal. Skipping ...`);
       }

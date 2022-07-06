@@ -6,5 +6,5 @@ export declare class Arweave implements IStorageProvider {
     private arweaveClient;
     init(wallet: string): this;
     saveBundle(bundle: Buffer, tags: [string, string][]): Promise<string>;
-    retrieveBundle(bundleId: string): Promise<any>;
+    retrieveBundle(storageId: string): Promise<any>;
 }
