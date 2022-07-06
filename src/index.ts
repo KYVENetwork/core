@@ -577,11 +577,6 @@ class KYVE {
 
       const localBundle = await this.loadBundle(currentHeight, toHeight);
 
-      await this.cache.put(
-        this.pool.bundle_proposal.bundle_id,
-        localBundle.bundle
-      );
-
       // check if bundle length is equal to request bundle
       if (localBundle.bundle.length !== toHeight - currentHeight) {
         this.logger.warn(
