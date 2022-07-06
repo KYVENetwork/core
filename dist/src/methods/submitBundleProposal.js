@@ -18,7 +18,7 @@ async function submitBundleProposal(storageId, byteSize, fromHeight, toHeight, f
         this.logger.debug(`SubmitBundleProposal = ${tx.txHash}`);
         const receipt = await tx.execute();
         if (receipt.code === 0) {
-            this.logger.info(`Successfully submitted bundle proposal with ID "${storageId}"\n`);
+            this.logger.info(`Successfully submitted bundle proposal with Storage Id "${storageId}"\n`);
         }
         else {
             this.logger.info(`Could not submit bundle proposal. Continuing ...\n`);

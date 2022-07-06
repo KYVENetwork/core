@@ -51,7 +51,7 @@ export async function proposeBundle(this: Node): Promise<void> {
       );
 
       this.logger.info(
-        `Saved bundle on ${this.storageProvider.name} with ID "${storageId}"\n`
+        `Saved bundle on ${this.storageProvider.name} with Storage Id "${storageId}"\n`
       );
 
       await this.submitBundleProposal(

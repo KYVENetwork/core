@@ -87,19 +87,19 @@ export interface IStorageProvider {
      */
     init(wallet: string): this;
     /**
-     * Saves a bundle on the storage provider and returns a bundle ID
+     * Saves a bundle on the storage provider and returns a Storage Id
      *
      * @method saveBundle
      * @param {Buffer} bundle data of the bundle which will get saved
      * @param {[string, string][]} tags metadata that should be included
-     * @return {Promise<string>} returns a storage ID which should be able to retrieve the bundle again
+     * @return {Promise<string>} returns a storage Id which should be able to retrieve the bundle again
      */
     saveBundle(bundle: Buffer, tags: [string, string][]): Promise<string>;
     /**
-     * Retrieves the bundle from the storage provider with the bundle ID
+     * Retrieves the bundle from the storage provider with the Storage Id
      *
      * @method retrieveBundle
-     * @param {string} storageId bundle ID from which the data of the bundle can be retrieved
+     * @param {string} storageId storage Id from which the data of the bundle can be retrieved
      * @return {Promise<Buffer>} returns the data of the bundle
      */
     retrieveBundle(storageId: string): Promise<Buffer>;
