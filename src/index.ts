@@ -418,29 +418,28 @@ class KYVE {
         `Caching from height ${startHeight} to ${maxHeight} ...`
       );
 
-      for (let height = startHeight; height < maxHeight; height++) {
-        for (let requests = 1; requests < 30; requests++) {
-          try {
-            let nextKey;
+      let height = startHeight;
 
-            if (key) {
-              nextKey = await this.getNextKey(key);
-            } else {
-              nextKey = this.pool.start_key;
-            }
+      while (height < maxHeight) {
+        try {
+          let nextKey;
 
-            const item = await this.getDataItem(key);
-
-            await this.cache.put(height, item);
-            await sleep(50);
-
-            key = nextKey;
-
-            break;
-          } catch {
-            this.logger.warn(` Failed to get data item from height ${height}`);
-            await sleep(requests * 10 * 1000);
+          if (key) {
+            nextKey = await this.getNextKey(key);
+          } else {
+            nextKey = this.pool.start_key;
           }
+
+          const item = await this.getDataItem(nextKey);
+
+          await this.cache.put(height, item);
+          await sleep(50);
+
+          key = nextKey;
+          height++;
+        } catch {
+          this.logger.warn(` Failed to get data item from height ${height}`);
+          await sleep(10 * 1000);
         }
       }
 
