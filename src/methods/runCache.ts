@@ -50,31 +50,28 @@ export async function runCache(this: Node): Promise<void> {
 
     this.logger.debug(`Caching from height ${startHeight} to ${maxHeight} ...`);
 
-    for (let height = startHeight; height < maxHeight; height++) {
-      for (let requests = 1; requests < 30; requests++) {
+    let height = startHeight;
+
+    while (height < maxHeight) {
+      try {
         let nextKey;
 
-        try {
-          if (key) {
-            nextKey = await this.runtime.getNextKey(key);
-          } else {
-            nextKey = this.pool.start_key;
-          }
-
-          const item = await this.runtime.getDataItem(this, nextKey);
-
-          await this.cache.put(height.toString(), item);
-          await sleep(50);
-
-          key = nextKey;
-
-          break;
-        } catch {
-          this.logger.debug(
-            `Could not get data item from height ${height}. Retrying in 10s ...`
-          );
-          await sleep(requests * 10 * 1000);
+        if (key) {
+          nextKey = await this.runtime.getNextKey(key);
+        } else {
+          nextKey = this.pool.start_key;
         }
+
+        const item = await this.runtime.getDataItem(this, nextKey);
+
+        await this.cache.put(height.toString(), item);
+        await sleep(50);
+
+        key = nextKey;
+        height++;
+      } catch {
+        this.logger.warn(` Failed to get data item from height ${height}`);
+        await sleep(10 * 1000);
       }
     }
 

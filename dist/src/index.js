@@ -28,6 +28,7 @@ const sdk_1 = __importDefault(require("@kyve/sdk"));
  * @class Node
  * @constructor
  */
+// TODO: investigate arweave error which exits node
 class Node {
     /**
      * Defines node options for CLI and initializes those inputs
