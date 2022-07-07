@@ -443,32 +443,6 @@ class KYVE {
         }
       }
 
-      // for (let height = startHeight; height < maxHeight; height++) {
-      //   for (let requests = 1; requests < 30; requests++) {
-      //     try {
-      //       let nextKey;
-
-      //       if (key) {
-      //         nextKey = await this.getNextKey(key);
-      //       } else {
-      //         nextKey = this.pool.start_key;
-      //       }
-
-      //       const item = await this.getDataItem(key);
-
-      //       await this.cache.put(height, item);
-      //       await sleep(50);
-
-      //       key = nextKey;
-
-      //       break;
-      //     } catch {
-      //       this.logger.warn(` Failed to get data item from height ${height}`);
-      //       await sleep(requests * 10 * 1000);
-      //     }
-      //   }
-      // }
-
       // wait until new bundle proposal gets created
       while (createdAt === +this.pool.bundle_proposal.created_at) {
         await sleep(1000);

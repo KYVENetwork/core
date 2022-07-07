@@ -312,26 +312,25 @@ class KYVE {
                 key = this.pool.current_key;
             }
             this.logger.debug(`Caching from height ${startHeight} to ${maxHeight} ...`);
-            for (let height = startHeight; height < maxHeight; height++) {
-                for (let requests = 1; requests < 30; requests++) {
-                    try {
-                        let nextKey;
-                        if (key) {
-                            nextKey = await this.getNextKey(key);
-                        }
-                        else {
-                            nextKey = this.pool.start_key;
-                        }
-                        const item = await this.getDataItem(key);
-                        await this.cache.put(height, item);
-                        await (0, helpers_1.sleep)(50);
-                        key = nextKey;
-                        break;
+            let height = startHeight;
+            while (height < maxHeight) {
+                try {
+                    let nextKey;
+                    if (key) {
+                        nextKey = await this.getNextKey(key);
                     }
-                    catch {
-                        this.logger.warn(` Failed to get data item from height ${height}`);
-                        await (0, helpers_1.sleep)(requests * 10 * 1000);
+                    else {
+                        nextKey = this.pool.start_key;
                     }
+                    const item = await this.getDataItem(nextKey);
+                    await this.cache.put(height, item);
+                    await (0, helpers_1.sleep)(50);
+                    key = nextKey;
+                    height++;
+                }
+                catch {
+                    this.logger.warn(` Failed to get data item from height ${height}`);
+                    await (0, helpers_1.sleep)(10 * 1000);
                 }
             }
             // wait until new bundle proposal gets created
