@@ -1,5 +1,5 @@
 import { Node } from "..";
-import { sleep } from "../utils/helpers";
+import { sleep } from "../utils";
 
 // TODO: strongly test
 export async function runCache(this: Node): Promise<void> {

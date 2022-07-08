@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.waitForNextBundleProposal = void 0;
-const helpers_1 = require("../utils/helpers");
+const utils_1 = require("../utils");
 async function waitForNextBundleProposal(createdAt) {
     return new Promise(async (resolve) => {
         this.logger.info("Waiting for new bundle to be proposed");
@@ -15,7 +15,7 @@ async function waitForNextBundleProposal(createdAt) {
                 break;
             }
             else {
-                await (0, helpers_1.sleep)(10 * 1000);
+                await (0, utils_1.sleep)(10 * 1000);
             }
         }
         this.logger.info(`Found new bundle proposal. Starting new round ...\n`);

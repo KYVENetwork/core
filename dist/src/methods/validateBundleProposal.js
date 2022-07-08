@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateBundleProposal = void 0;
-const helpers_1 = require("../utils/helpers");
+const utils_1 = require("../utils");
 const constants_1 = require("../utils/constants");
 const object_hash_1 = __importDefault(require("object-hash"));
 // TODO: exit after remaining upload interval if node is uploader
@@ -29,7 +29,15 @@ async function validateBundleProposal(createdAt) {
         // try to download bundle from arweave
         if (!proposedBundleCompressed) {
             this.logger.debug(`Attempting to download bundle from ${this.storageProvider.name}`);
-            proposedBundleCompressed = await this.storageProvider.retrieveBundle(this.pool.bundle_proposal.storage_id);
+            try {
+                proposedBundleCompressed = await this.storageProvider.retrieveBundle(this.pool.bundle_proposal.storage_id);
+            }
+            catch (error) {
+                this.logger.warn(` Failed to retrieve bundle from ${this.storageProvider.name}. Retrying in 10s ...\n`);
+                this.logger.debug(error);
+                await (0, utils_1.sleep)(10 * 1000);
+                continue;
+            }
             if (proposedBundleCompressed) {
                 this.logger.info(`Successfully downloaded bundle from ${this.storageProvider.name}`);
                 try {
@@ -46,7 +54,7 @@ async function validateBundleProposal(createdAt) {
                     await this.voteBundleProposal(this.pool.bundle_proposal.storage_id, constants_1.VOTE.ABSTAIN);
                     hasVotedAbstain = true;
                 }
-                await (0, helpers_1.sleep)(10 * 1000);
+                await (0, utils_1.sleep)(10 * 1000);
                 continue;
             }
         }
@@ -68,7 +76,7 @@ async function validateBundleProposal(createdAt) {
                 await this.voteBundleProposal(this.pool.bundle_proposal.storage_id, constants_1.VOTE.ABSTAIN);
                 hasVotedAbstain = true;
             }
-            await (0, helpers_1.sleep)(10 * 1000);
+            await (0, utils_1.sleep)(10 * 1000);
             continue;
         }
     }

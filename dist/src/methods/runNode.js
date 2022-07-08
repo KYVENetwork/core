@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.runNode = void 0;
-const helpers_1 = require("../utils/helpers");
+const utils_1 = require("../utils");
 async function runNode() {
     while (true) {
         await this.syncPoolState();
         const createdAt = +this.pool.bundle_proposal.created_at;
         this.validateActiveNode();
         if (this.shouldIdle()) {
-            await (0, helpers_1.sleep)("1m");
+            await (0, utils_1.sleep)("1m");
             continue;
         }
         if (await this.claimUploaderRole()) {
@@ -28,7 +28,7 @@ async function runNode() {
             .dividedBy(1000)
             .toFixed(2)}s ...`);
         // sleep until upload interval is reached
-        await (0, helpers_1.sleep)(timeRemaining.toNumber());
+        await (0, utils_1.sleep)(timeRemaining.toNumber());
         this.logger.debug(`Reached upload interval of current bundle proposal`);
         await this.syncPoolState();
         if (+this.pool.bundle_proposal.created_at > createdAt) {

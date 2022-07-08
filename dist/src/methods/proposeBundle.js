@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.proposeBundle = void 0;
 const constants_1 = require("../utils/constants");
 const object_hash_1 = __importDefault(require("object-hash"));
-const helpers_1 = require("../utils/helpers");
+const utils_1 = require("../utils");
 async function proposeBundle() {
     const fromHeight = +this.pool.bundle_proposal.to_height || +this.pool.current_height;
     const toHeight = +this.pool.max_bundle_size + fromHeight;
@@ -42,7 +42,7 @@ async function proposeBundle() {
         catch (error) {
             this.logger.warn(` Failed to save bundle on ${this.storageProvider.name}`);
             this.logger.debug(error);
-            await (0, helpers_1.sleep)(10 * 1000);
+            await (0, utils_1.sleep)(10 * 1000);
         }
     }
     else {

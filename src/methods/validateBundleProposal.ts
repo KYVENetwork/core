@@ -1,5 +1,5 @@
 import { Node } from "..";
-import { sleep } from "../utils/helpers";
+import { sleep } from "../utils";
 import { VOTE } from "../utils/constants";
 import { DataItem } from "../types";
 import hash from "object-hash";
@@ -40,11 +40,21 @@ export async function validateBundleProposal(
         `Attempting to download bundle from ${this.storageProvider.name}`
       );
 
-      proposedBundleCompressed = await this.storageProvider.retrieveBundle(
-        this.pool.bundle_proposal!.storage_id
-      );
+      try {
+        proposedBundleCompressed = await this.storageProvider.retrieveBundle(
+          this.pool.bundle_proposal!.storage_id
+        );
+      } catch (error) {
+        this.logger.warn(
+          ` Failed to retrieve bundle from ${this.storageProvider.name}. Retrying in 10s ...\n`
+        );
+        this.logger.debug(error);
 
-      if (proposedBundleCompressed) {
+        await sleep(10 * 1000);
+        continue;
+      }
+
+      if (proposedBundleCompressed!) {
         this.logger.info(
           `Successfully downloaded bundle from ${this.storageProvider.name}`
         );

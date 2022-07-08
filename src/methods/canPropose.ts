@@ -1,5 +1,5 @@
 import { Node } from "..";
-import { sleep } from "../utils/helpers";
+import { sleep } from "../utils";
 
 export async function canPropose(this: Node): Promise<boolean> {
   if (

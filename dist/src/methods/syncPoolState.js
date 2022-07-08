@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.syncPoolState = void 0;
-const helpers_1 = require("../utils/helpers");
+const utils_1 = require("../utils");
 async function syncPoolState() {
-    await (0, helpers_1.callWithBackoffStrategy)(async () => {
+    await (0, utils_1.callWithBackoffStrategy)(async () => {
         var _a;
         const { pool } = await this.query.kyve.registry.v1beta1.pool({
             id: this.poolId.toString(),

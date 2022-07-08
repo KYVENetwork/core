@@ -5,10 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.setupStake = void 0;
 const bignumber_js_1 = __importDefault(require("bignumber.js"));
-const helpers_1 = require("../utils/helpers");
+const utils_1 = require("../utils");
 async function setupStake() {
     let initialStake = new bignumber_js_1.default(0);
-    const { balance, currentStake, minimumStake } = await (0, helpers_1.callWithBackoffStrategy)(async () => {
+    const { balance, currentStake, minimumStake } = await (0, utils_1.callWithBackoffStrategy)(async () => {
         const data = await this.query.kyve.registry.v1beta1.stakeInfo({
             pool_id: this.poolId.toString(),
             staker: this.client.account.address,
@@ -24,7 +24,7 @@ async function setupStake() {
     });
     // check if node has already staked
     if (!currentStake.isZero()) {
-        this.logger.info(`Node running with a stake of ${(0, helpers_1.toHumanReadable)(currentStake.toString())} $KYVE`);
+        this.logger.info(`Node running with a stake of ${(0, utils_1.toHumanReadable)(currentStake.toString())} $KYVE`);
         this.logger.debug(`Node is already staked. Continuing ...\n`);
         return;
     }
@@ -47,18 +47,18 @@ async function setupStake() {
     }
     // check if node operator has more stake than the required minimum stake
     if (initialStake.lte(minimumStake)) {
-        this.logger.error(`Minimum stake is ${(0, helpers_1.toHumanReadable)(minimumStake.toString())} $KYVE - initial stake only ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE. Please provide a higher staking amount. Exiting ...`);
+        this.logger.error(`Minimum stake is ${(0, utils_1.toHumanReadable)(minimumStake.toString())} $KYVE - initial stake only ${(0, utils_1.toHumanReadable)(initialStake.toString())} $KYVE. Please provide a higher staking amount. Exiting ...`);
         process.exit(1);
     }
     // check if node operator has enough balance to stake
     if (balance.lt(initialStake)) {
         this.logger.error(`Not enough $KYVE in wallet. Exiting ...`);
-        this.logger.error(`Balance = ${(0, helpers_1.toHumanReadable)(balance.toString())} required = ${(0, helpers_1.toHumanReadable)(initialStake.toString())}`);
+        this.logger.error(`Balance = ${(0, utils_1.toHumanReadable)(balance.toString())} required = ${(0, utils_1.toHumanReadable)(initialStake.toString())}`);
         process.exit(1);
     }
-    this.logger.debug(`Staking ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE in pool "${this.pool.name}" to become a validator`);
+    this.logger.debug(`Staking ${(0, utils_1.toHumanReadable)(initialStake.toString())} $KYVE in pool "${this.pool.name}" to become a validator`);
     try {
-        this.logger.debug(`Attempting to stake ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE in pool`);
+        this.logger.debug(`Attempting to stake ${(0, utils_1.toHumanReadable)(initialStake.toString())} $KYVE in pool`);
         const tx = await this.client.kyve.v1beta1.base.stakePool({
             id: this.poolId.toString(),
             amount: initialStake.toString(),
@@ -66,15 +66,15 @@ async function setupStake() {
         this.logger.debug(`StakePool = ${tx.txHash}`);
         const receipt = await tx.execute();
         if (receipt.code === 0) {
-            this.logger.info(`Node running with a stake of ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE\n`);
+            this.logger.info(`Node running with a stake of ${(0, utils_1.toHumanReadable)(initialStake.toString())} $KYVE\n`);
         }
         else {
-            this.logger.error(`Could not stake ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE. Exiting ...`);
+            this.logger.error(`Could not stake ${(0, utils_1.toHumanReadable)(initialStake.toString())} $KYVE. Exiting ...`);
             process.exit(1);
         }
     }
     catch (error) {
-        this.logger.error(`Failed to stake ${(0, helpers_1.toHumanReadable)(initialStake.toString())} $KYVE. Exiting ...`);
+        this.logger.error(`Failed to stake ${(0, utils_1.toHumanReadable)(initialStake.toString())} $KYVE. Exiting ...`);
         this.logger.debug(error);
         process.exit(1);
     }

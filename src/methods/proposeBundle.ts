@@ -1,7 +1,7 @@
 import { Node } from "..";
 import { KYVE_NO_DATA_BUNDLE } from "../utils/constants";
 import hash from "object-hash";
-import { sleep } from "../utils/helpers";
+import { sleep } from "../utils";
 
 export async function proposeBundle(this: Node): Promise<void> {
   const fromHeight =

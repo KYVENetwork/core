@@ -1,5 +1,5 @@
 import { Node } from "..";
-import { callWithBackoffStrategy } from "../utils/helpers";
+import { callWithBackoffStrategy } from "../utils";
 
 export async function syncPoolState(this: Node): Promise<void> {
   await callWithBackoffStrategy(

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.runCache = void 0;
-const helpers_1 = require("../utils/helpers");
+const utils_1 = require("../utils");
 // TODO: strongly test
 async function runCache() {
     let createdAt = 0;
@@ -56,18 +56,18 @@ async function runCache() {
                 }
                 const item = await this.runtime.getDataItem(this, nextKey);
                 await this.cache.put(height.toString(), item);
-                await (0, helpers_1.sleep)(50);
+                await (0, utils_1.sleep)(50);
                 key = nextKey;
                 height++;
             }
             catch {
                 this.logger.warn(` Failed to get data item from height ${height}`);
-                await (0, helpers_1.sleep)(10 * 1000);
+                await (0, utils_1.sleep)(10 * 1000);
             }
         }
         // wait until new bundle proposal gets created
         while (createdAt === +this.pool.bundle_proposal.created_at) {
-            await (0, helpers_1.sleep)(1000);
+            await (0, utils_1.sleep)(1000);
         }
     }
 }
