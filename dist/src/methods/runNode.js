@@ -6,6 +6,7 @@ async function runNode() {
     while (true) {
         await this.syncPoolState();
         const createdAt = +this.pool.bundle_proposal.created_at;
+        this.validateActiveNode();
         if (this.shouldIdle()) {
             await (0, helpers_1.sleep)("1m");
             continue;

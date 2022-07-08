@@ -475,7 +475,7 @@
 
 "@kyve/proto@git+ssh://git@github.com:KYVENetwork/proto.git#v0.6.0":
   version "1.0.0"
-  resolved "git+ssh://git@github.com:KYVENetwork/proto.git#c315d3d1dd196e0608be2953fed77119196f1eef"
+  resolved "git+ssh://git@github.com:KYVENetwork/proto.git#4f2d5b9f6ed1aaf2c976b2ac32a0e15911761ee1"
   dependencies:
     "@protobufs/cosmos" "^0.0.9"
     "@protobufs/gogoproto" "^0.0.9"
@@ -484,8 +484,8 @@
 
 "@kyve/proto@https://github.com/KYVENetwork/proto.git#v0.6.0":
   version "1.0.0"
-  uid c315d3d1dd196e0608be2953fed77119196f1eef
-  resolved "https://github.com/KYVENetwork/proto.git#c315d3d1dd196e0608be2953fed77119196f1eef"
+  uid "4f2d5b9f6ed1aaf2c976b2ac32a0e15911761ee1"
+  resolved "https://github.com/KYVENetwork/proto.git#4f2d5b9f6ed1aaf2c976b2ac32a0e15911761ee1"
   dependencies:
     "@protobufs/cosmos" "^0.0.9"
     "@protobufs/gogoproto" "^0.0.9"
@@ -494,7 +494,7 @@
 
 "@kyve/sdk@git+ssh://git@github.com:KYVENetwork/sdk.git#feature/v2":
   version "2.0.0"
-  resolved "git+ssh://git@github.com:KYVENetwork/sdk.git#40eb83b00a3c6e646c34294da9ae4c2952d99c72"
+  resolved "git+ssh://git@github.com:KYVENetwork/sdk.git#3071e602853641f97a1aeed8a4c4237c6d9f20f9"
   dependencies:
     "@cosmjs/amino" "0.28.3"
     "@cosmjs/crypto" "0.27.1"
