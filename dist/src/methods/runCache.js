@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.runCache = void 0;
 const utils_1 = require("../utils");
-// TODO: strongly test
 async function runCache() {
     let createdAt = 0;
     let currentHeight = 0;

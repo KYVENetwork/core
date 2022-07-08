@@ -28,7 +28,6 @@ const sdk_1 = __importDefault(require("@kyve/sdk"));
  * @class Node
  * @constructor
  */
-// TODO: investigate arweave error which exits node
 class Node {
     /**
      * Defines node options for CLI and initializes those inputs
@@ -160,7 +159,6 @@ class Node {
      * @return {Promise<void>}
      */
     async start() {
-        // TODO: check here if sdk init fails
         try {
             await this.asyncSetup();
             this.runNode();

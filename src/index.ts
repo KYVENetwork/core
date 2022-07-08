@@ -36,7 +36,6 @@ import { kyve } from "@kyve/proto";
  * @class Node
  * @constructor
  */
-// TODO: investigate arweave error which exits node
 export class Node {
   /**
    * My property description.  Like other pieces of your comment blocks,
@@ -212,7 +211,6 @@ export class Node {
    * @return {Promise<void>}
    */
   public async start(): Promise<void> {
-    // TODO: check here if sdk init fails
     try {
       await this.asyncSetup();
 

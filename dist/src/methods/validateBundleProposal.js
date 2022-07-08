@@ -7,7 +7,6 @@ exports.validateBundleProposal = void 0;
 const utils_1 = require("../utils");
 const constants_1 = require("../utils/constants");
 const object_hash_1 = __importDefault(require("object-hash"));
-// TODO: exit after remaining upload interval if node is uploader
 async function validateBundleProposal(createdAt) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     this.logger.info(`Validating bundle "${this.pool.bundle_proposal.storage_id}"`);

@@ -1,7 +1,6 @@
 import { Node } from "..";
 import { sleep } from "../utils";
 
-// TODO: strongly test
 export async function runCache(this: Node): Promise<void> {
   let createdAt = 0;
   let currentHeight = 0;

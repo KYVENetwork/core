@@ -4,7 +4,6 @@ import { VOTE } from "../utils/constants";
 import { DataItem } from "../types";
 import hash from "object-hash";
 
-// TODO: exit after remaining upload interval if node is uploader
 export async function validateBundleProposal(
   this: Node,
   createdAt: number

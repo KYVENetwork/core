@@ -8,9 +8,7 @@
 
 # Integrations
 
-## Existing integrations
-
-- [EVM](https://github.com/KYVENetwork/evm)
+In order to archive data with KYVE protocol nodes have to run on a storage pool. Every protocol node runs on a runtime which defines how data is being retrieved and how data is being validated. A runtime is just the execution environment for a integration.
 
 ## Creating a custom integration
 
@@ -20,9 +18,9 @@
 yarn add @kyve/core
 ```
 
-### Using KYVE in your application
+### Implement interface IRuntime
 
-In order to use KYVE in your own integration you only need to extend the exported base class `KYVE`.
+The interface `IRuntime` defines how a runtime needs to be implemented. It has three main methods which need to be implemented. Explanations in detail can be found on the interface itself in the form of comments (`src/types/interfaces.ts`).
 
 #### Example EVM integration
 
