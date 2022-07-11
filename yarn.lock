@@ -494,7 +494,7 @@
 
 "@kyve/sdk@git+ssh://git@github.com:KYVENetwork/sdk.git#feature/v2":
   version "2.0.0"
-  resolved "git+ssh://git@github.com:KYVENetwork/sdk.git#f6711ed479f7257f8cd08328c6e48f987ee4588a"
+  resolved "git+ssh://git@github.com:KYVENetwork/sdk.git#1aa52f8d646e58229ac09adf0ae918b22df767e7"
   dependencies:
     "@cosmjs/amino" "0.28.3"
     "@cosmjs/crypto" "0.27.1"
