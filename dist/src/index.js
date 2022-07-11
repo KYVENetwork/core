@@ -72,7 +72,7 @@ class Node {
         this.poolId = options.poolId;
         this.mnemonic = options.mnemonic;
         this.keyfile = options.keyfile;
-        this.desiredStake = options.desiredStake;
+        this.desiredStake = options.initialStake; // TODO: change after IT
         this.network = options.network;
         this.verbose = options.verbose;
         this.coreVersion = package_json_1.version;
