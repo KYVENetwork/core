@@ -8,6 +8,8 @@ import {
   validateRuntime,
   validateVersion,
   validateActiveNode,
+  stakePool,
+  unstakePool,
   setupStake,
   runNode,
   runCache,
@@ -67,7 +69,7 @@ export class Node {
   protected poolId: number;
   protected mnemonic: string;
   protected keyfile: string;
-  protected initialStake: string;
+  protected desiredStake: string;
   protected network: string;
   protected verbose: boolean;
 
@@ -80,6 +82,8 @@ export class Node {
   protected validateRuntime = validateRuntime;
   protected validateVersion = validateVersion;
   protected validateActiveNode = validateActiveNode;
+  protected stakePool = stakePool;
+  protected unstakePool = unstakePool;
   protected setupStake = setupStake;
   protected shouldIdle = shouldIdle;
   protected claimUploaderRole = claimUploaderRole;
@@ -114,7 +118,7 @@ export class Node {
     this.poolId = options.poolId;
     this.mnemonic = options.mnemonic;
     this.keyfile = options.keyfile;
-    this.initialStake = options.initialStake;
+    this.desiredStake = options.desiredStake;
     this.network = options.network;
     this.verbose = options.verbose;
 

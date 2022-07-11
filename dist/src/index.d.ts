@@ -1,5 +1,5 @@
 import { IRuntime, IStorageProvider, ICache, ICompression } from "./types";
-import { setupLogger, setupName, logNodeInfo, syncPoolState, validateRuntime, validateVersion, validateActiveNode, setupStake, runNode, runCache, asyncSetup, shouldIdle, claimUploaderRole, canVote, validateBundleProposal, voteBundleProposal, loadBundle, remainingUploadInterval, waitForNextBundleProposal, canPropose, submitBundleProposal, proposeBundle } from "./methods";
+import { setupLogger, setupName, logNodeInfo, syncPoolState, validateRuntime, validateVersion, validateActiveNode, stakePool, unstakePool, setupStake, runNode, runCache, asyncSetup, shouldIdle, claimUploaderRole, canVote, validateBundleProposal, voteBundleProposal, loadBundle, remainingUploadInterval, waitForNextBundleProposal, canPropose, submitBundleProposal, proposeBundle } from "./methods";
 import KyveSDK, { KyveClient, KyveLCDClientType } from "@kyve/sdk";
 import { Logger } from "tslog";
 import { kyve } from "@kyve/proto";
@@ -32,7 +32,7 @@ export declare class Node {
     protected poolId: number;
     protected mnemonic: string;
     protected keyfile: string;
-    protected initialStake: string;
+    protected desiredStake: string;
     protected network: string;
     protected verbose: boolean;
     protected asyncSetup: typeof asyncSetup;
@@ -43,6 +43,8 @@ export declare class Node {
     protected validateRuntime: typeof validateRuntime;
     protected validateVersion: typeof validateVersion;
     protected validateActiveNode: typeof validateActiveNode;
+    protected stakePool: typeof stakePool;
+    protected unstakePool: typeof unstakePool;
     protected setupStake: typeof setupStake;
     protected shouldIdle: typeof shouldIdle;
     protected claimUploaderRole: typeof claimUploaderRole;

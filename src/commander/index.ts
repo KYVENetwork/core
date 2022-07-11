@@ -4,7 +4,7 @@ import {
   parsePoolId,
   parseMnemonic,
   parseKeyfile,
-  parseInitialStake,
+  parseDesiredStake,
   parseNetwork,
 } from "./parser";
 
@@ -28,8 +28,8 @@ export default program
   )
   .option(
     "-s, --initialStake <number>",
-    "Your initial stake the node should start with. Flag is ignored node is already staked [unit = $KYVE].",
-    parseInitialStake,
+    "Your desired stake the node should run with. [unit = $KYVE].",
+    parseDesiredStake,
     "0"
   )
   .option(

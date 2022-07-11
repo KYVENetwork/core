@@ -45,6 +45,8 @@ class Node {
         this.validateRuntime = methods_1.validateRuntime;
         this.validateVersion = methods_1.validateVersion;
         this.validateActiveNode = methods_1.validateActiveNode;
+        this.stakePool = methods_1.stakePool;
+        this.unstakePool = methods_1.unstakePool;
         this.setupStake = methods_1.setupStake;
         this.shouldIdle = methods_1.shouldIdle;
         this.claimUploaderRole = methods_1.claimUploaderRole;
@@ -70,7 +72,7 @@ class Node {
         this.poolId = options.poolId;
         this.mnemonic = options.mnemonic;
         this.keyfile = options.keyfile;
-        this.initialStake = options.initialStake;
+        this.desiredStake = options.desiredStake;
         this.network = options.network;
         this.verbose = options.verbose;
         this.coreVersion = package_json_1.version;

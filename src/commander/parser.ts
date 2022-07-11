@@ -32,12 +32,12 @@ export const parseKeyfile = (value: string): string => {
   return value;
 };
 
-export const parseInitialStake = (value: string): string => {
+export const parseDesiredStake = (value: string): string => {
   const parsedValue = new BigNumber(value);
 
   if (parsedValue.toString() === "NaN") {
     throw new commander.InvalidArgumentError(
-      "Initial stake must be of type number."
+      "Desired stake must be of type number."
     );
   }
 

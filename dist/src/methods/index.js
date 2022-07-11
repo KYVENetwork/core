@@ -20,6 +20,7 @@ __exportStar(require("./setupName"), exports);
 __exportStar(require("./logNodeInfo"), exports);
 __exportStar(require("./syncPoolState"), exports);
 __exportStar(require("./validate"), exports);
+__exportStar(require("./stake"), exports);
 __exportStar(require("./setupStake"), exports);
 __exportStar(require("./shouldIdle"), exports);
 __exportStar(require("./claimUploaderRole"), exports);
