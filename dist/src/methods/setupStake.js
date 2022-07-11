@@ -46,8 +46,8 @@ async function setupStake() {
         process.exit(1);
     }
     // calculate amount to stake
-    if (desiredStake.lt(currentStake)) {
-        toStake = currentStake.minus(desiredStake);
+    if (desiredStake.gt(currentStake)) {
+        toStake = desiredStake.minus(currentStake);
         // check if node operator has enough balance to stake
         if (balance.lt(toStake)) {
             this.logger.error(`Not enough $KYVE in wallet. Exiting ...`);
@@ -58,8 +58,8 @@ async function setupStake() {
         await this.stakePool(toStake.toString());
     }
     // calculate amount to unstake
-    if (desiredStake.gt(currentStake)) {
-        toUnstake = desiredStake.minus(currentStake);
+    if (desiredStake.lt(currentStake)) {
+        toUnstake = currentStake.minus(currentStake);
         // unstake from pool
         await this.unstakePool(toUnstake.toString());
     }
