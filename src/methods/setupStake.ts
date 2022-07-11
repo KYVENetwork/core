@@ -103,6 +103,7 @@ export async function setupStake(this: Node): Promise<void> {
         currentStake.toString()
       )} $KYVE`
     );
+    this.logger.debug(`Node is already staked. Continuing ...\n`);
 
     try {
       this.logger.debug(`Attempting to reactivate node`);

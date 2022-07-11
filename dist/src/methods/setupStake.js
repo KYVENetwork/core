@@ -68,6 +68,7 @@ async function setupStake() {
     }
     if (status === "STAKER_STATUS_INACTIVE") {
         this.logger.info(`Node is INACTIVE and running with a stake of ${(0, utils_1.toHumanReadable)(currentStake.toString())} $KYVE`);
+        this.logger.debug(`Node is already staked. Continuing ...\n`);
         try {
             this.logger.debug(`Attempting to reactivate node`);
             const tx = await this.client.kyve.v1beta1.base.reactivateStaker({
