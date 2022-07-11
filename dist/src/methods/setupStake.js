@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.setupStake = void 0;
 const bignumber_js_1 = __importDefault(require("bignumber.js"));
 const utils_1 = require("../utils");
-const registry_1 = require("@kyve/proto/dist/proto/kyve/registry/v1beta1/registry");
 async function setupStake() {
     let desiredStake = new bignumber_js_1.default(0);
     let toStake = new bignumber_js_1.default(0);
@@ -63,12 +62,11 @@ async function setupStake() {
         // unstake from pool
         await this.unstakePool(toUnstake.toString());
     }
-    if (status === registry_1.StakerStatus.STAKER_STATUS_ACTIVE) {
+    if (status === "STAKER_STATUS_ACTIVE") {
         this.logger.info(`Node is ACTIVE and running with a stake of ${(0, utils_1.toHumanReadable)(currentStake.toString())} $KYVE`);
         this.logger.debug(`Node is already staked. Continuing ...\n`);
-        return;
     }
-    if (status === registry_1.StakerStatus.STAKER_STATUS_INACTIVE) {
+    if (status === "STAKER_STATUS_INACTIVE") {
         this.logger.info(`Node is INACTIVE and running with a stake of ${(0, utils_1.toHumanReadable)(currentStake.toString())} $KYVE`);
         try {
             this.logger.debug(`Attempting to reactivate node`);
@@ -90,7 +88,6 @@ async function setupStake() {
             this.logger.debug(error);
             process.exit(1);
         }
-        return;
     }
 }
 exports.setupStake = setupStake;

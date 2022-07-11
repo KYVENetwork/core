@@ -35,7 +35,7 @@ export async function setupStake(this: Node): Promise<void> {
           balance: new BigNumber(data.balance),
           currentStake: new BigNumber(data.current_stake),
           minimumStake: new BigNumber(data.minimum_stake),
-          status: data.status,
+          status: data.status as any,
         };
       },
       { limitTimeout: "5m", increaseBy: "10s" },
@@ -88,17 +88,16 @@ export async function setupStake(this: Node): Promise<void> {
     await this.unstakePool(toUnstake.toString());
   }
 
-  if (status === StakerStatus.STAKER_STATUS_ACTIVE) {
+  if (status === "STAKER_STATUS_ACTIVE") {
     this.logger.info(
       `Node is ACTIVE and running with a stake of ${toHumanReadable(
         currentStake.toString()
       )} $KYVE`
     );
     this.logger.debug(`Node is already staked. Continuing ...\n`);
-    return;
   }
 
-  if (status === StakerStatus.STAKER_STATUS_INACTIVE) {
+  if (status === "STAKER_STATUS_INACTIVE") {
     this.logger.info(
       `Node is INACTIVE and running with a stake of ${toHumanReadable(
         currentStake.toString()
@@ -127,7 +126,5 @@ export async function setupStake(this: Node): Promise<void> {
       this.logger.debug(error);
       process.exit(1);
     }
-
-    return;
   }
 }
