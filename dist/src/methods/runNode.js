@@ -35,9 +35,11 @@ async function runNode() {
             continue;
         }
         if (await this.canPropose()) {
-            await this.proposeBundle();
+            await this.proposeBundle(createdAt);
         }
-        await this.waitForNextBundleProposal(createdAt);
+        else {
+            await this.waitForNextBundleProposal(createdAt);
+        }
     }
 }
 exports.runNode = runNode;

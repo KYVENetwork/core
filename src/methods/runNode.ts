@@ -54,9 +54,9 @@ export async function runNode(this: Node): Promise<void> {
     }
 
     if (await this.canPropose()) {
-      await this.proposeBundle();
+      await this.proposeBundle(createdAt);
+    } else {
+      await this.waitForNextBundleProposal(createdAt);
     }
-
-    await this.waitForNextBundleProposal(createdAt);
   }
 }
