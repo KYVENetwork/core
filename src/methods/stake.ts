@@ -9,7 +9,7 @@ export async function stakePool(this: Node, amount: string): Promise<void> {
 
     const tx = await this.client.kyve.v1beta1.base.stakePool({
       id: this.poolId.toString(),
-      amount: amount,
+      amount,
     });
 
     this.logger.debug(`StakePool = ${tx.txHash}`);
@@ -43,10 +43,10 @@ export async function unstakePool(this: Node, amount: string): Promise<void> {
 
     const tx = await this.client.kyve.v1beta1.base.unstakePool({
       id: this.poolId.toString(),
-      amount: amount,
+      amount,
     });
 
-    this.logger.debug(`StakePool = ${tx.txHash}`);
+    this.logger.debug(`UnstakePool = ${tx.txHash}`);
 
     const receipt = await tx.execute();
 
@@ -56,13 +56,13 @@ export async function unstakePool(this: Node, amount: string): Promise<void> {
       );
     } else {
       this.logger.error(
-        `Could not stake ${toHumanReadable(amount)} $KYVE. Exiting ...`
+        `Could not unstake ${toHumanReadable(amount)} $KYVE. Exiting ...`
       );
       process.exit(1);
     }
   } catch (error) {
     this.logger.error(
-      `Failed to stake ${toHumanReadable(amount)} $KYVE. Exiting ...`
+      `Failed to unstake ${toHumanReadable(amount)} $KYVE. Exiting ...`
     );
     this.logger.debug(error);
     process.exit(1);

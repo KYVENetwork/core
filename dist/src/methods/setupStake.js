@@ -58,7 +58,7 @@ async function setupStake() {
     }
     // calculate amount to unstake
     if (desiredStake.lt(currentStake)) {
-        toUnstake = currentStake.minus(currentStake);
+        toUnstake = currentStake.minus(desiredStake);
         // unstake from pool
         await this.unstakePool(toUnstake.toString());
     }

@@ -7,7 +7,7 @@ async function stakePool(amount) {
         this.logger.debug(`Attempting to stake ${(0, utils_1.toHumanReadable)(amount)} $KYVE in pool`);
         const tx = await this.client.kyve.v1beta1.base.stakePool({
             id: this.poolId.toString(),
-            amount: amount,
+            amount,
         });
         this.logger.debug(`StakePool = ${tx.txHash}`);
         const receipt = await tx.execute();
@@ -31,20 +31,20 @@ async function unstakePool(amount) {
         this.logger.debug(`Attempting to unstake ${(0, utils_1.toHumanReadable)(amount)} $KYVE from pool`);
         const tx = await this.client.kyve.v1beta1.base.unstakePool({
             id: this.poolId.toString(),
-            amount: amount,
+            amount,
         });
-        this.logger.debug(`StakePool = ${tx.txHash}`);
+        this.logger.debug(`UnstakePool = ${tx.txHash}`);
         const receipt = await tx.execute();
         if (receipt.code === 0) {
             this.logger.info(`Successfully unstaked ${(0, utils_1.toHumanReadable)(amount)} $KYVE\n`);
         }
         else {
-            this.logger.error(`Could not stake ${(0, utils_1.toHumanReadable)(amount)} $KYVE. Exiting ...`);
+            this.logger.error(`Could not unstake ${(0, utils_1.toHumanReadable)(amount)} $KYVE. Exiting ...`);
             process.exit(1);
         }
     }
     catch (error) {
-        this.logger.error(`Failed to stake ${(0, utils_1.toHumanReadable)(amount)} $KYVE. Exiting ...`);
+        this.logger.error(`Failed to unstake ${(0, utils_1.toHumanReadable)(amount)} $KYVE. Exiting ...`);
         this.logger.debug(error);
         process.exit(1);
     }

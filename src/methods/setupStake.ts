@@ -1,7 +1,6 @@
 import { Node } from "..";
 import BigNumber from "bignumber.js";
 import { callWithBackoffStrategy, toHumanReadable } from "../utils";
-import { StakerStatus } from "@kyve/proto/dist/proto/kyve/registry/v1beta1/registry";
 
 export async function setupStake(this: Node): Promise<void> {
   let desiredStake = new BigNumber(0);
@@ -82,7 +81,7 @@ export async function setupStake(this: Node): Promise<void> {
 
   // calculate amount to unstake
   if (desiredStake.lt(currentStake)) {
-    toUnstake = currentStake.minus(currentStake);
+    toUnstake = currentStake.minus(desiredStake);
 
     // unstake from pool
     await this.unstakePool(toUnstake.toString());
