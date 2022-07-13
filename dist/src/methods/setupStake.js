@@ -63,11 +63,11 @@ async function setupStake() {
         await this.unstakePool(toUnstake.toString());
     }
     if (status === "STAKER_STATUS_ACTIVE") {
-        this.logger.info(`Node is ACTIVE and running with a stake of ${(0, utils_1.toHumanReadable)(currentStake.toString())} $KYVE`);
+        this.logger.info(`Node is ACTIVE and running with a stake of ${(0, utils_1.toHumanReadable)(desiredStake.toString())} $KYVE`);
         this.logger.debug(`Node is already staked. Continuing ...\n`);
     }
     if (status === "STAKER_STATUS_INACTIVE") {
-        this.logger.info(`Node is INACTIVE and running with a stake of ${(0, utils_1.toHumanReadable)(currentStake.toString())} $KYVE`);
+        this.logger.info(`Node is INACTIVE and running with a stake of ${(0, utils_1.toHumanReadable)(desiredStake.toString())} $KYVE`);
         this.logger.debug(`Node is already staked. Continuing ...\n`);
         try {
             this.logger.debug(`Attempting to reactivate node`);
