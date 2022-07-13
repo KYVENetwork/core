@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.submitBundleProposal = void 0;
+const utils_1 = require("../utils");
 async function submitBundleProposal(storageId, byteSize, fromHeight, toHeight, fromKey, toKey, toValue, bundleHash) {
     try {
         this.logger.debug(`Attempting to submit bundle proposal`);
@@ -21,12 +22,14 @@ async function submitBundleProposal(storageId, byteSize, fromHeight, toHeight, f
             this.logger.info(`Successfully submitted bundle proposal with Storage Id "${storageId}"\n`);
         }
         else {
-            this.logger.info(`Could not submit bundle proposal. Continuing ...\n`);
+            this.logger.info(`Could not submit bundle proposal. Continuing in 10s ...\n`);
+            await (0, utils_1.sleep)(10 * 1000);
         }
     }
     catch (error) {
-        this.logger.warn(" Failed to submit bundle proposal. Continuing ...\n");
+        this.logger.warn(" Failed to submit bundle proposal. Continuing in 10s ...\n");
         this.logger.debug(error);
+        await (0, utils_1.sleep)(10 * 1000);
     }
 }
 exports.submitBundleProposal = submitBundleProposal;

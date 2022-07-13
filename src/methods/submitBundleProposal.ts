@@ -1,4 +1,5 @@
 import { Node } from "..";
+import { sleep } from "../utils";
 
 export async function submitBundleProposal(
   this: Node,
@@ -35,10 +36,18 @@ export async function submitBundleProposal(
         `Successfully submitted bundle proposal with Storage Id "${storageId}"\n`
       );
     } else {
-      this.logger.info(`Could not submit bundle proposal. Continuing ...\n`);
+      this.logger.info(
+        `Could not submit bundle proposal. Continuing in 10s ...\n`
+      );
+
+      await sleep(10 * 1000);
     }
   } catch (error) {
-    this.logger.warn(" Failed to submit bundle proposal. Continuing ...\n");
+    this.logger.warn(
+      " Failed to submit bundle proposal. Continuing in 10s ...\n"
+    );
     this.logger.debug(error);
+
+    await sleep(10 * 1000);
   }
 }
