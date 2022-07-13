@@ -1,21 +1,18 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.CLI = void 0;
-const commander_1 = require("commander");
-class CLI extends commander_1.Command {
-    constructor(runtime = process.env.KYVE_RUNTIME, packageVersion = process.env.KYVE_VERSION) {
-        super(runtime);
-        this.runtime = runtime;
-        this.packageVersion = packageVersion;
-        this.requiredOption("-p, --poolId <number>", "The id of the pool you want to run on.");
-        this.requiredOption("-m, --mnemonic <string>", "Your mnemonic of your account.");
-        this.requiredOption("-k, --keyfile <string>", "The path to your Arweave keyfile.");
-        this.option("-s, --initialStake <number>", "Your initial stake the node should start with. Flag is ignored node is already staked [unit = $KYVE].");
-        this.option("--space", "How much bytes the node can occupy [deprecated]. [optional, default = 1000000000]", "1000000000");
-        this.option("-n, --network <string>", "The chain id of the network. [optional, default = korellia]", "korellia");
-        this.option("--metrics", "Run Prometheus metrics server on localhost. [optional, default = false]", false);
-        this.option("-v, --verbose", "Run node in verbose mode. [optional, default = false]", false);
-        this.version(packageVersion, "--version");
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
     }
-}
-exports.CLI = CLI;
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+__exportStar(require("./constants"), exports);
+__exportStar(require("./helpers"), exports);

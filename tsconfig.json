@@ -8,5 +8,5 @@
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
-  "files": ["src/index.ts", "src/checksum.ts"]
+  "files": ["src/index.ts", "src/scripts/checksum.ts"]
 }

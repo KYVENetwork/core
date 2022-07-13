@@ -8,94 +8,110 @@
 
 # Integrations
 
-## Existing integrations
-
-- [EVM](https://github.com/KYVENetwork/evm)
+In order to archive data with KYVE protocol nodes have to run on a storage pool. Every protocol node runs on a runtime which defines how data is being retrieved and how data is being validated. A runtime is just the execution environment for a integration.
 
 ## Creating a custom integration
 
-### Installation
+Everybody can create a custom integration. For that it is highly recommended to use this package to ensure no unexpected behaviour occurs.
+
+## Installation
 
 ```
 yarn add @kyve/core
 ```
 
-### Using KYVE in your application
+## Implement interface IRuntime
 
-In order to use KYVE in your own integration you only need to extend the exported base class `KYVE`.
+The interface `IRuntime` defines how a runtime needs to be implemented. It has three main methods which need to be implemented. Explanations in detail can be found on the interface itself in the form of comments (`src/types/interfaces.ts`).
 
-#### Example EVM integration
+An example implementation of the EVM runtime can be found here:
 
 ```ts
-import KYVE from "@kyve/core";
+import { DataItem, IRuntime, Node } from "@kyve/core";
 import { providers } from "ethers";
-import { version } from "../package.json";
 
-process.env.KYVE_RUNTIME = "@kyve/evm";
-process.env.KYVE_VERSION = version;
+export default class EVM implements IRuntime {
+  public name = "@kyve/evm";
+  public version = "1.0.0";
 
-KYVE.metrics.register.setDefaultLabels({
-  app: process.env.KYVE_RUNTIME,
-});
-
-class EVM extends KYVE {
-  // pull data item from source
-  public async getDataItem(key: number): Promise<{ key: number; value: any }> {
-    let provider;
-    let block;
-
-    // setup provider for evm chain
+  // get block with transactions by height
+  public async getDataItem(core: Node, key: string): Promise<DataItem> {
     try {
-      provider = new providers.StaticJsonRpcProvider(this.pool.config.rpc);
-    } catch (err) {
-      this.logger.warn(
-        `⚠️  EXTERNAL ERROR: Failed to connect with rpc: ${this.pool.config.rpc}. Retrying ...`
+      // setup web3 provider
+      const provider = new providers.StaticJsonRpcProvider({
+        url: core.poolConfig.rpc,
+      });
+
+      // fetch data item
+      const value = await provider.getBlockWithTransactions(+key);
+
+      // throw if data item is not available
+      if (!value) throw new Error();
+
+      // Delete the number of confirmations from a transaction to keep data deterministic.
+      value.transactions.forEach(
+        (tx: Partial<providers.TransactionResponse>) => delete tx.confirmations
       );
-      // forward error to core
-      throw err;
+
+      return {
+        key,
+        value,
+      };
+    } catch (error) {
+      throw error;
     }
-
-    // fetch block with transactions at requested height
-    try {
-      block = await provider?.getBlockWithTransactions(key)!;
-
-      // delete transaction confirmations from block since they are not deterministic
-      block.transactions.forEach(
-        (transaction: Partial<providers.TransactionResponse>) =>
-          delete transaction.confirmations
-      );
-    } catch (err) {
-      this.logger.warn(
-        `⚠️  EXTERNAL ERROR: Failed to fetch data item from source at height ${key}. Retrying ...`
-      );
-      // forward error to core
-      throw err;
-    }
-
-    return {
-      key,
-      value: block,
-    };
   }
 
-  // validate the data item uploaded by a node
-  public async validate(
-    localBundle: any[],
-    localBytes: number,
-    uploadBundle: any[],
-    uploadBytes: number
-  ): Promise<boolean> {
-    // default validate consists of a simple hash comparison
-    return super.validate(localBundle, localBytes, uploadBundle, uploadBytes);
+  // increment block height by 1
+  public async getNextKey(key: string): Promise<string> {
+    return (parseInt(key) + 1).toString();
+  }
+
+  // save only the hash of a block on KYVE chain
+  public async formatValue(value: any): Promise<string> {
+    return value.hash;
   }
 }
-
-new EVM().start();
 ```
 
-### Querying data
+## Build your custom integration
 
-> Coming soon!
+Having the runtime implemented the final steps now are choosing suitable prebuild
+modules for your integration. There are three core features which need to be defined:
+
+### Storage Provider
+
+The storage provider is basically the harddrive of KYVE. It saves all the data a bundle has and should be web 3 by nature. Current supported storage providers are:
+
+- [Arweave](https://arweave.net) (recommended)
+
+### Compression
+
+The compression type should also be chosen carefully. Each bundle saved on the storage provider gets compressed and decompressed by this algorithm. Current supported compression types are:
+
+- NoCompression
+- Gzip (recommended)
+
+### Cache
+
+The cache of an integration is responsible for precaching data, making data archival much faster. Current supported caches are:
+
+- JsonFileCache (recommended)
+
+After settling on certain modules the integration can just be built together and started. An example from the EVM integration can be found here:
+
+```ts
+import { Node, Arweave, Gzip, JsonFileCache } from "@kyve/core";
+
+import EVM from "./runtime";
+
+new Node()
+  .addRuntime(new EVM())
+  .addStorageProvider(new Arweave())
+  .addCompression(new Gzip())
+  .addCache(new JsonFileCache())
+  .start();
+```
 
 ## Contributing
 
