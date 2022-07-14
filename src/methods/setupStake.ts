@@ -94,7 +94,7 @@ export async function setupStake(this: Node): Promise<void> {
   if (status === "STAKER_STATUS_ACTIVE") {
     this.logger.info(
       `Node is ACTIVE and running with a stake of ${toHumanReadable(
-        stake.toString()
+        currentStake.toString()
       )} $KYVE`
     );
     this.logger.debug(`Node is already staked. Continuing ...\n`);
@@ -103,7 +103,7 @@ export async function setupStake(this: Node): Promise<void> {
   if (status === "STAKER_STATUS_INACTIVE") {
     this.logger.info(
       `Node is INACTIVE and running with a stake of ${toHumanReadable(
-        stake.toString()
+        currentStake.toString()
       )} $KYVE`
     );
     this.logger.debug(`Node is already staked. Continuing ...\n`);
