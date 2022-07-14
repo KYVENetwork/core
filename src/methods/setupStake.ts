@@ -3,20 +3,20 @@ import BigNumber from "bignumber.js";
 import { callWithBackoffStrategy, toHumanReadable } from "../utils";
 
 export async function setupStake(this: Node): Promise<void> {
-  let desiredStake = new BigNumber(0);
+  let stake = new BigNumber(0);
   let toStake = new BigNumber(0);
   let toUnstake = new BigNumber(0);
 
   // try to parse the provided inital staking amount
   try {
-    desiredStake = new BigNumber(this.desiredStake).multipliedBy(10 ** 9);
+    stake = new BigNumber(this.stake).multipliedBy(10 ** 9);
 
-    if (desiredStake.toString() === "NaN") {
-      this.logger.error("Could not parse initial stake. Exiting ...");
+    if (stake.toString() === "NaN") {
+      this.logger.error("Could not parse stake. Exiting ...");
       process.exit(1);
     }
   } catch (error) {
-    this.logger.error("Could not parse initial stake. Exiting ...");
+    this.logger.error("Could not parse stake. Exiting ...");
     this.logger.debug(error);
     process.exit(1);
   }
@@ -49,20 +49,20 @@ export async function setupStake(this: Node): Promise<void> {
     );
 
   // check if node operator stakes more than the required minimum stake
-  if (desiredStake.lte(minimumStake)) {
+  if (stake.lte(minimumStake)) {
     this.logger.error(
       `Minimum stake is ${toHumanReadable(
         minimumStake.toString()
       )} $KYVE - desired stake only ${toHumanReadable(
-        desiredStake.toString()
+        stake.toString()
       )} $KYVE. Please provide a higher staking amount. Exiting ...`
     );
     process.exit(1);
   }
 
   // calculate amount to stake
-  if (desiredStake.gt(currentStake)) {
-    toStake = desiredStake.minus(currentStake);
+  if (stake.gt(currentStake)) {
+    toStake = stake.minus(currentStake);
 
     // check if node operator has enough balance to stake
     if (balance.lt(toStake)) {
@@ -80,17 +80,21 @@ export async function setupStake(this: Node): Promise<void> {
   }
 
   // calculate amount to unstake
-  if (desiredStake.lt(currentStake)) {
-    toUnstake = currentStake.minus(desiredStake);
+  if (stake.lt(currentStake)) {
+    toUnstake = currentStake.minus(stake);
 
     // unstake from pool
-    await this.unstakePool(toUnstake.toString());
+    this.logger.info(
+      `Node is already staked with ${toHumanReadable(
+        toUnstake.toString()
+      )} more $KYVE than specified.`
+    );
   }
 
   if (status === "STAKER_STATUS_ACTIVE") {
     this.logger.info(
       `Node is ACTIVE and running with a stake of ${toHumanReadable(
-        desiredStake.toString()
+        stake.toString()
       )} $KYVE`
     );
     this.logger.debug(`Node is already staked. Continuing ...\n`);
@@ -99,7 +103,7 @@ export async function setupStake(this: Node): Promise<void> {
   if (status === "STAKER_STATUS_INACTIVE") {
     this.logger.info(
       `Node is INACTIVE and running with a stake of ${toHumanReadable(
-        desiredStake.toString()
+        stake.toString()
       )} $KYVE`
     );
     this.logger.debug(`Node is already staked. Continuing ...\n`);

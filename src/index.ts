@@ -69,7 +69,7 @@ export class Node {
   protected poolId: number;
   protected mnemonic: string;
   protected keyfile: string;
-  protected desiredStake: string;
+  protected stake: string;
   protected network: string;
   protected verbose: boolean;
 
@@ -118,7 +118,7 @@ export class Node {
     this.poolId = options.poolId;
     this.mnemonic = options.mnemonic;
     this.keyfile = options.keyfile;
-    this.desiredStake = options.initialStake; // TODO: change after IT
+    this.stake = options.initialStake; // TODO: change after IT
     this.network = options.network;
     this.verbose = options.verbose;
 

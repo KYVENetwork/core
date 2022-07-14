@@ -32,7 +32,7 @@ export declare class Node {
     protected poolId: number;
     protected mnemonic: string;
     protected keyfile: string;
-    protected desiredStake: string;
+    protected stake: string;
     protected network: string;
     protected verbose: boolean;
     protected asyncSetup: typeof asyncSetup;
