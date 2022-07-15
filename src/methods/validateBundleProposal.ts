@@ -149,11 +149,14 @@ export async function validateBundleProposal(
     const proposedBundleHash = this.pool.bundle_proposal!.bundle_hash;
     const validationBundleHash = hash(standardizeJSON(validationBundle));
 
-    console.log("---");
-    console.log(JSON.stringify(standardizeJSON(proposedBundle)));
-    console.log("---");
-    console.log(JSON.stringify(standardizeJSON(validationBundle)));
-    console.log("---");
+    this.cache.put(
+      `proposed-${this.pool.bundle_proposal!.storage_id}`,
+      JSON.stringify(standardizeJSON(proposedBundle))
+    );
+    this.cache.put(
+      `validation-${this.pool.bundle_proposal!.storage_id}`,
+      JSON.stringify(standardizeJSON(validationBundle))
+    );
 
     this.logger.debug(`Validating bundle proposal by key and value`);
     this.logger.debug(`Uploaded:     ${uploadedKey} ${uploadedValue}`);
