@@ -1,5 +1,5 @@
 import { Node } from "..";
-import { sleep } from "../utils";
+import { sleep, standardizeJSON } from "../utils";
 import { VOTE } from "../utils/constants";
 import { DataItem } from "../types";
 import hash from "object-hash";
@@ -145,9 +145,9 @@ export async function validateBundleProposal(
     const proposedByteSize = +this.pool.bundle_proposal!.byte_size;
     const validationByteSize = validationBundleCompressed.byteLength;
 
-    const uploadedBundleHash = hash(proposedBundleCompressed);
+    const uploadedBundleHash = hash(standardizeJSON(proposedBundle));
     const proposedBundleHash = this.pool.bundle_proposal!.bundle_hash;
-    const validationBundleHash = hash(validationBundleCompressed);
+    const validationBundleHash = hash(standardizeJSON(validationBundle));
 
     this.logger.debug(`Validating bundle proposal by key and value`);
     this.logger.debug(`Uploaded:     ${uploadedKey} ${uploadedValue}`);

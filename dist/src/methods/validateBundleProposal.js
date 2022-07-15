@@ -89,9 +89,9 @@ async function validateBundleProposal(createdAt) {
         const uploadedByteSize = proposedBundleCompressed.byteLength;
         const proposedByteSize = +this.pool.bundle_proposal.byte_size;
         const validationByteSize = validationBundleCompressed.byteLength;
-        const uploadedBundleHash = (0, object_hash_1.default)(proposedBundleCompressed);
+        const uploadedBundleHash = (0, object_hash_1.default)((0, utils_1.standardizeJSON)(proposedBundle));
         const proposedBundleHash = this.pool.bundle_proposal.bundle_hash;
-        const validationBundleHash = (0, object_hash_1.default)(validationBundleCompressed);
+        const validationBundleHash = (0, object_hash_1.default)((0, utils_1.standardizeJSON)(validationBundle));
         this.logger.debug(`Validating bundle proposal by key and value`);
         this.logger.debug(`Uploaded:     ${uploadedKey} ${uploadedValue}`);
         this.logger.debug(`Proposed:     ${proposedKey} ${proposedValue}`);

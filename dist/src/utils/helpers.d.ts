@@ -19,8 +19,5 @@ declare type onEachErrorRetryerType = (value: Error, ctx: {
 export declare function callWithBackoffStrategy<T>(execution: () => Promise<T>, option: OptionsRetryerType, onEachError?: onEachErrorRetryerType): Promise<T>;
 export declare const toBytes: (input: string) => Buffer;
 export declare const fromBytes: (input: string) => string;
-export declare const dataSizeOfString: (string: string) => number;
-export declare const dataSizeOfBinary: (binary: ArrayBuffer) => number;
-export declare const formatBundle: (input: Buffer[]) => Buffer;
-export declare const parseBundle: (input: Buffer) => Buffer[];
+export declare const standardizeJSON: (object: any) => any;
 export {};

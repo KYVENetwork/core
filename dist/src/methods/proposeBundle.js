@@ -28,8 +28,8 @@ async function proposeBundle(createdAt) {
                 // upload bundle to Arweave
                 this.logger.info(`Created bundle of length ${bundleProposal.bundle.length}`);
                 this.logger.debug(`Compressing bundle with compression type ${this.compression.name}`);
+                const bundleHash = (0, object_hash_1.default)((0, utils_1.standardizeJSON)(bundleProposal.bundle));
                 const bundleCompressed = await this.compression.compress(bundleProposal.bundle);
-                const bundleHash = (0, object_hash_1.default)(bundleCompressed);
                 const tags = [
                     ["Application", "KYVE"],
                     ["Network", this.network],
