@@ -93,9 +93,9 @@ async function validateBundleProposal(createdAt) {
         const proposedBundleHash = this.pool.bundle_proposal.bundle_hash;
         const validationBundleHash = (0, object_hash_1.default)((0, utils_1.standardizeJSON)(validationBundle));
         console.log("---");
-        JSON.stringify((0, utils_1.standardizeJSON)(proposedBundle));
+        console.log(JSON.stringify((0, utils_1.standardizeJSON)(proposedBundle)));
         console.log("---");
-        JSON.stringify((0, utils_1.standardizeJSON)(validationBundle));
+        console.log(JSON.stringify((0, utils_1.standardizeJSON)(validationBundle)));
         console.log("---");
         this.logger.debug(`Validating bundle proposal by key and value`);
         this.logger.debug(`Uploaded:     ${uploadedKey} ${uploadedValue}`);

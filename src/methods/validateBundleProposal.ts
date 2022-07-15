@@ -150,9 +150,9 @@ export async function validateBundleProposal(
     const validationBundleHash = hash(standardizeJSON(validationBundle));
 
     console.log("---");
-    JSON.stringify(standardizeJSON(proposedBundle));
+    console.log(JSON.stringify(standardizeJSON(proposedBundle)));
     console.log("---");
-    JSON.stringify(standardizeJSON(validationBundle));
+    console.log(JSON.stringify(standardizeJSON(validationBundle)));
     console.log("---");
 
     this.logger.debug(`Validating bundle proposal by key and value`);
