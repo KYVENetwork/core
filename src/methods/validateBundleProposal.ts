@@ -151,11 +151,11 @@ export async function validateBundleProposal(
 
     this.cache.put(
       `proposed-${this.pool.bundle_proposal!.storage_id}`,
-      JSON.stringify(standardizeJSON(proposedBundle))
+      standardizeJSON(proposedBundle)
     );
     this.cache.put(
       `validation-${this.pool.bundle_proposal!.storage_id}`,
-      JSON.stringify(standardizeJSON(validationBundle))
+      standardizeJSON(validationBundle)
     );
 
     this.logger.debug(`Validating bundle proposal by key and value`);
