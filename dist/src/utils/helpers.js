@@ -3,9 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.standardizeJSON = exports.fromBytes = exports.toBytes = exports.callWithBackoffStrategy = exports.sleep = exports.toHumanReadable = exports.toBN = void 0;
+exports.sha256 = exports.standardizeJSON = exports.fromBytes = exports.toBytes = exports.callWithBackoffStrategy = exports.sleep = exports.toHumanReadable = exports.toBN = void 0;
 const base64url_1 = __importDefault(require("base64url"));
 const bignumber_js_1 = require("bignumber.js");
+const crypto_1 = __importDefault(require("crypto"));
 const toBN = (amount) => {
     return new bignumber_js_1.BigNumber(amount);
 };
@@ -97,3 +98,8 @@ const fromBytes = (input) => {
 exports.fromBytes = fromBytes;
 const standardizeJSON = (object) => JSON.parse(JSON.stringify(object));
 exports.standardizeJSON = standardizeJSON;
+const sha256 = (object) => {
+    const sha256Hasher = crypto_1.default.createHmac("sha256", "");
+    return sha256Hasher.update(JSON.stringify(object)).digest("hex");
+};
+exports.sha256 = sha256;

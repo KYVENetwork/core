@@ -20,4 +20,5 @@ export declare function callWithBackoffStrategy<T>(execution: () => Promise<T>, 
 export declare const toBytes: (input: string) => Buffer;
 export declare const fromBytes: (input: string) => string;
 export declare const standardizeJSON: (object: any) => any;
+export declare const sha256: (object: any) => string;
 export {};

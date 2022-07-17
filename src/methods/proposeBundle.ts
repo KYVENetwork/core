@@ -1,7 +1,6 @@
 import { Node } from "..";
 import { KYVE_NO_DATA_BUNDLE } from "../utils/constants";
-import hash from "object-hash";
-import { sleep, standardizeJSON } from "../utils";
+import { sleep, standardizeJSON, sha256 } from "../utils";
 
 export async function proposeBundle(
   this: Node,
@@ -37,7 +36,7 @@ export async function proposeBundle(
           `Compressing bundle with compression type ${this.compression.name}`
         );
 
-        const bundleHash = hash(standardizeJSON(bundleProposal.bundle));
+        const bundleHash = sha256(standardizeJSON(bundleProposal.bundle));
         const bundleCompressed = await this.compression.compress(
           bundleProposal.bundle
         );

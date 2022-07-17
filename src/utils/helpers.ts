@@ -1,5 +1,6 @@
 import base64url from "base64url";
 import { BigNumber } from "bignumber.js";
+import crypto from "crypto";
 
 export const toBN = (amount: string) => {
   return new BigNumber(amount);
@@ -121,3 +122,8 @@ export const fromBytes = (input: string): string => {
 
 export const standardizeJSON = (object: any) =>
   JSON.parse(JSON.stringify(object));
+
+export const sha256 = (object: any) => {
+  const sha256Hasher = crypto.createHmac("sha256", "");
+  return sha256Hasher.update(JSON.stringify(object)).digest("hex");
+};

@@ -1,11 +1,7 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.proposeBundle = void 0;
 const constants_1 = require("../utils/constants");
-const object_hash_1 = __importDefault(require("object-hash"));
 const utils_1 = require("../utils");
 async function proposeBundle(createdAt) {
     const fromHeight = +this.pool.bundle_proposal.to_height || +this.pool.current_height;
@@ -28,7 +24,7 @@ async function proposeBundle(createdAt) {
                 // upload bundle to Arweave
                 this.logger.info(`Created bundle of length ${bundleProposal.bundle.length}`);
                 this.logger.debug(`Compressing bundle with compression type ${this.compression.name}`);
-                const bundleHash = (0, object_hash_1.default)((0, utils_1.standardizeJSON)(bundleProposal.bundle));
+                const bundleHash = (0, utils_1.sha256)((0, utils_1.standardizeJSON)(bundleProposal.bundle));
                 const bundleCompressed = await this.compression.compress(bundleProposal.bundle);
                 const tags = [
                     ["Application", "KYVE"],

@@ -1,8 +1,7 @@
 import { Node } from "..";
-import { sleep, standardizeJSON } from "../utils";
+import { sleep, standardizeJSON, sha256 } from "../utils";
 import { VOTE } from "../utils/constants";
 import { DataItem } from "../types";
-import hash from "object-hash";
 
 export async function validateBundleProposal(
   this: Node,
@@ -145,9 +144,9 @@ export async function validateBundleProposal(
     const proposedByteSize = +this.pool.bundle_proposal!.byte_size;
     const validationByteSize = validationBundleCompressed.byteLength;
 
-    const uploadedBundleHash = hash(standardizeJSON(proposedBundle));
+    const uploadedBundleHash = sha256(standardizeJSON(proposedBundle));
     const proposedBundleHash = this.pool.bundle_proposal!.bundle_hash;
-    const validationBundleHash = hash(standardizeJSON(validationBundle));
+    const validationBundleHash = sha256(standardizeJSON(validationBundle));
 
     this.cache.put(
       `proposed-${this.pool.bundle_proposal!.storage_id}`,
@@ -187,17 +186,11 @@ export async function validateBundleProposal(
       valuesEqual = true;
     }
 
-    if (
-      uploadedByteSize === proposedByteSize &&
-      proposedByteSize === validationByteSize
-    ) {
+    if (uploadedByteSize === proposedByteSize) {
       byteSizesEqual = true;
     }
 
-    if (
-      uploadedBundleHash === proposedBundleHash &&
-      proposedBundleHash === validationBundleHash
-    ) {
+    if (uploadedBundleHash === validationBundleHash) {
       hashesEqual = true;
     }
 

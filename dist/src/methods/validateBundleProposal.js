@@ -1,12 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateBundleProposal = void 0;
 const utils_1 = require("../utils");
 const constants_1 = require("../utils/constants");
-const object_hash_1 = __importDefault(require("object-hash"));
 async function validateBundleProposal(createdAt) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     this.logger.info(`Validating bundle "${this.pool.bundle_proposal.storage_id}"`);
@@ -89,9 +85,9 @@ async function validateBundleProposal(createdAt) {
         const uploadedByteSize = proposedBundleCompressed.byteLength;
         const proposedByteSize = +this.pool.bundle_proposal.byte_size;
         const validationByteSize = validationBundleCompressed.byteLength;
-        const uploadedBundleHash = (0, object_hash_1.default)((0, utils_1.standardizeJSON)(proposedBundle));
+        const uploadedBundleHash = (0, utils_1.sha256)((0, utils_1.standardizeJSON)(proposedBundle));
         const proposedBundleHash = this.pool.bundle_proposal.bundle_hash;
-        const validationBundleHash = (0, object_hash_1.default)((0, utils_1.standardizeJSON)(validationBundle));
+        const validationBundleHash = (0, utils_1.sha256)((0, utils_1.standardizeJSON)(validationBundle));
         this.cache.put(`proposed-${this.pool.bundle_proposal.storage_id}`, (0, utils_1.standardizeJSON)(proposedBundle));
         this.cache.put(`validation-${this.pool.bundle_proposal.storage_id}`, (0, utils_1.standardizeJSON)(validationBundle));
         this.logger.debug(`Validating bundle proposal by key and value`);
@@ -112,12 +108,10 @@ async function validateBundleProposal(createdAt) {
         if (uploadedValue === proposedValue && proposedValue === validationValue) {
             valuesEqual = true;
         }
-        if (uploadedByteSize === proposedByteSize &&
-            proposedByteSize === validationByteSize) {
+        if (uploadedByteSize === proposedByteSize) {
             byteSizesEqual = true;
         }
-        if (uploadedBundleHash === proposedBundleHash &&
-            proposedBundleHash === validationBundleHash) {
+        if (uploadedBundleHash === validationBundleHash) {
             hashesEqual = true;
         }
         if (keysEqual && valuesEqual && byteSizesEqual && hashesEqual) {
