@@ -7,6 +7,8 @@ export async function runNode(this: Node): Promise<void> {
 
     const createdAt = +this.pool.bundle_proposal!.created_at;
 
+    this.validateRuntime();
+    this.validateVersion();
     this.validateActiveNode();
 
     if (this.shouldIdle()) {
