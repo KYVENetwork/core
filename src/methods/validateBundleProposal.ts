@@ -128,70 +128,56 @@ export async function validateBundleProposal(
   }
 
   try {
+    const uploadedBundleHash = sha256(standardizeJSON(proposedBundle));
+    const proposedBundleHash = this.pool.bundle_proposal!.bundle_hash;
+    const validationBundleHash = sha256(standardizeJSON(validationBundle));
+
+    const uploadedByteSize = proposedBundleCompressed.byteLength;
+    const proposedByteSize = +this.pool.bundle_proposal!.byte_size;
+
     const uploadedKey = proposedBundle!.at(-1)?.key ?? "";
     const proposedKey = this.pool.bundle_proposal!.to_key;
-    const validationKey = validationBundle!.at(-1)?.key ?? "";
 
     const uploadedValue = await this.runtime.formatValue(
       proposedBundle!.at(-1)?.value ?? ""
     );
     const proposedValue = this.pool.bundle_proposal!.to_value;
-    const validationValue = await this.runtime.formatValue(
-      validationBundle!.at(-1)?.value ?? ""
-    );
 
-    const uploadedByteSize = proposedBundleCompressed.byteLength;
-    const proposedByteSize = +this.pool.bundle_proposal!.byte_size;
-    const validationByteSize = validationBundleCompressed.byteLength;
+    this.logger.debug(`Validating bundle proposal by hash and byte size`);
+    this.logger.debug(`Uploaded:     ${uploadedBundleHash}`);
+    this.logger.debug(`Proposed:     ${proposedBundleHash}`);
+    this.logger.debug(`Validation:   ${validationBundleHash}\n`);
 
-    const uploadedBundleHash = sha256(standardizeJSON(proposedBundle));
-    const proposedBundleHash = this.pool.bundle_proposal!.bundle_hash;
-    const validationBundleHash = sha256(standardizeJSON(validationBundle));
-
-    this.cache.put(
-      `proposed-${this.pool.bundle_proposal!.storage_id}`,
-      standardizeJSON(proposedBundle)
-    );
-    this.cache.put(
-      `validation-${this.pool.bundle_proposal!.storage_id}`,
-      standardizeJSON(validationBundle)
-    );
-
-    this.logger.debug(`Validating bundle proposal by key and value`);
-    this.logger.debug(`Uploaded:     ${uploadedKey} ${uploadedValue}`);
-    this.logger.debug(`Proposed:     ${proposedKey} ${proposedValue}`);
-    this.logger.debug(`Validation:   ${validationKey} ${validationValue}\n`);
-
-    this.logger.debug(`Validating bundle proposal by byte size and hash`);
+    this.logger.debug(`Validating bundle proposal by byte size, key and value`);
     this.logger.debug(
-      `Uploaded:     ${uploadedByteSize} ${uploadedBundleHash}`
+      `Uploaded:     ${uploadedByteSize} ${uploadedKey} ${uploadedValue}`
     );
     this.logger.debug(
-      `Proposed:     ${proposedByteSize} ${proposedBundleHash}`
-    );
-    this.logger.debug(
-      `Validation:   ${validationByteSize} ${validationBundleHash}\n`
+      `Proposed:     ${proposedByteSize} ${proposedKey} ${proposedValue}\n`
     );
 
+    let hashesEqual = false;
+    let byteSizesEqual = false;
     let keysEqual = false;
     let valuesEqual = false;
-    let byteSizesEqual = false;
-    let hashesEqual = false;
 
-    if (uploadedKey === proposedKey && proposedKey === validationKey) {
-      keysEqual = true;
-    }
-
-    if (uploadedValue === proposedValue && proposedValue === validationValue) {
-      valuesEqual = true;
+    if (
+      uploadedBundleHash === proposedBundleHash &&
+      proposedBundleHash === validationBundleHash
+    ) {
+      hashesEqual = true;
     }
 
     if (uploadedByteSize === proposedByteSize) {
       byteSizesEqual = true;
     }
 
-    if (uploadedBundleHash === validationBundleHash) {
-      hashesEqual = true;
+    if (uploadedKey === proposedKey) {
+      keysEqual = true;
+    }
+
+    if (uploadedValue === proposedValue) {
+      valuesEqual = true;
     }
 
     if (keysEqual && valuesEqual && byteSizesEqual && hashesEqual) {

@@ -4,7 +4,7 @@ exports.validateBundleProposal = void 0;
 const utils_1 = require("../utils");
 const constants_1 = require("../utils/constants");
 async function validateBundleProposal(createdAt) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+    var _a, _b, _c, _d, _e;
     this.logger.info(`Validating bundle "${this.pool.bundle_proposal.storage_id}"`);
     let hasVotedAbstain = (_a = this.pool.bundle_proposal) === null || _a === void 0 ? void 0 : _a.voters_abstain.includes(this.client.account.address);
     let proposedBundle = [];
@@ -76,43 +76,38 @@ async function validateBundleProposal(createdAt) {
         }
     }
     try {
-        const uploadedKey = (_c = (_b = proposedBundle.at(-1)) === null || _b === void 0 ? void 0 : _b.key) !== null && _c !== void 0 ? _c : "";
-        const proposedKey = this.pool.bundle_proposal.to_key;
-        const validationKey = (_e = (_d = validationBundle.at(-1)) === null || _d === void 0 ? void 0 : _d.key) !== null && _e !== void 0 ? _e : "";
-        const uploadedValue = await this.runtime.formatValue((_g = (_f = proposedBundle.at(-1)) === null || _f === void 0 ? void 0 : _f.value) !== null && _g !== void 0 ? _g : "");
-        const proposedValue = this.pool.bundle_proposal.to_value;
-        const validationValue = await this.runtime.formatValue((_j = (_h = validationBundle.at(-1)) === null || _h === void 0 ? void 0 : _h.value) !== null && _j !== void 0 ? _j : "");
-        const uploadedByteSize = proposedBundleCompressed.byteLength;
-        const proposedByteSize = +this.pool.bundle_proposal.byte_size;
-        const validationByteSize = validationBundleCompressed.byteLength;
         const uploadedBundleHash = (0, utils_1.sha256)((0, utils_1.standardizeJSON)(proposedBundle));
         const proposedBundleHash = this.pool.bundle_proposal.bundle_hash;
         const validationBundleHash = (0, utils_1.sha256)((0, utils_1.standardizeJSON)(validationBundle));
-        this.cache.put(`proposed-${this.pool.bundle_proposal.storage_id}`, (0, utils_1.standardizeJSON)(proposedBundle));
-        this.cache.put(`validation-${this.pool.bundle_proposal.storage_id}`, (0, utils_1.standardizeJSON)(validationBundle));
-        this.logger.debug(`Validating bundle proposal by key and value`);
-        this.logger.debug(`Uploaded:     ${uploadedKey} ${uploadedValue}`);
-        this.logger.debug(`Proposed:     ${proposedKey} ${proposedValue}`);
-        this.logger.debug(`Validation:   ${validationKey} ${validationValue}\n`);
-        this.logger.debug(`Validating bundle proposal by byte size and hash`);
-        this.logger.debug(`Uploaded:     ${uploadedByteSize} ${uploadedBundleHash}`);
-        this.logger.debug(`Proposed:     ${proposedByteSize} ${proposedBundleHash}`);
-        this.logger.debug(`Validation:   ${validationByteSize} ${validationBundleHash}\n`);
+        const uploadedByteSize = proposedBundleCompressed.byteLength;
+        const proposedByteSize = +this.pool.bundle_proposal.byte_size;
+        const uploadedKey = (_c = (_b = proposedBundle.at(-1)) === null || _b === void 0 ? void 0 : _b.key) !== null && _c !== void 0 ? _c : "";
+        const proposedKey = this.pool.bundle_proposal.to_key;
+        const uploadedValue = await this.runtime.formatValue((_e = (_d = proposedBundle.at(-1)) === null || _d === void 0 ? void 0 : _d.value) !== null && _e !== void 0 ? _e : "");
+        const proposedValue = this.pool.bundle_proposal.to_value;
+        this.logger.debug(`Validating bundle proposal by hash and byte size`);
+        this.logger.debug(`Uploaded:     ${uploadedBundleHash}`);
+        this.logger.debug(`Proposed:     ${proposedBundleHash}`);
+        this.logger.debug(`Validation:   ${validationBundleHash}\n`);
+        this.logger.debug(`Validating bundle proposal by byte size, key and value`);
+        this.logger.debug(`Uploaded:     ${uploadedByteSize} ${uploadedKey} ${uploadedValue}`);
+        this.logger.debug(`Proposed:     ${proposedByteSize} ${proposedKey} ${proposedValue}\n`);
+        let hashesEqual = false;
+        let byteSizesEqual = false;
         let keysEqual = false;
         let valuesEqual = false;
-        let byteSizesEqual = false;
-        let hashesEqual = false;
-        if (uploadedKey === proposedKey && proposedKey === validationKey) {
-            keysEqual = true;
-        }
-        if (uploadedValue === proposedValue && proposedValue === validationValue) {
-            valuesEqual = true;
+        if (uploadedBundleHash === proposedBundleHash &&
+            proposedBundleHash === validationBundleHash) {
+            hashesEqual = true;
         }
         if (uploadedByteSize === proposedByteSize) {
             byteSizesEqual = true;
         }
-        if (uploadedBundleHash === validationBundleHash) {
-            hashesEqual = true;
+        if (uploadedKey === proposedKey) {
+            keysEqual = true;
+        }
+        if (uploadedValue === proposedValue) {
+            valuesEqual = true;
         }
         if (keysEqual && valuesEqual && byteSizesEqual && hashesEqual) {
             await this.voteBundleProposal(this.pool.bundle_proposal.storage_id, constants_1.VOTE.VALID);
