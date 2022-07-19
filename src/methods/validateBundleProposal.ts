@@ -19,7 +19,6 @@ export async function validateBundleProposal(
   let proposedBundleCompressed: Buffer;
 
   let validationBundle: DataItem[] = [];
-  let validationBundleCompressed: Buffer;
 
   while (true) {
     await this.syncPoolState();
@@ -46,7 +45,13 @@ export async function validateBundleProposal(
         this.logger.warn(
           ` Failed to retrieve bundle from ${this.storageProvider.name}. Retrying in 10s ...\n`
         );
-        this.logger.debug(error);
+        if (!hasVotedAbstain) {
+          await this.voteBundleProposal(
+            this.pool.bundle_proposal!.storage_id,
+            VOTE.ABSTAIN
+          );
+          hasVotedAbstain = true;
+        }
 
         await sleep(10 * 1000);
         continue;
@@ -100,9 +105,6 @@ export async function validateBundleProposal(
     // check if bundle length is equal to request bundle
     if (bundle.length === toHeight - currentHeight) {
       validationBundle = bundle;
-      validationBundleCompressed = await this.compression.compress(
-        validationBundle
-      );
 
       this.logger.info(
         `Successfully loaded local bundle from ${currentHeight} to ${toHeight}\n`
