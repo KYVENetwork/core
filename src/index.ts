@@ -226,7 +226,7 @@ export class Node {
 // export types
 export * from "./types";
 
-// export types
+// export utils
 export * from "./utils";
 
 // export storage providers

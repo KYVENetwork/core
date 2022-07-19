@@ -176,6 +176,8 @@ class Node {
 exports.Node = Node;
 // export types
 __exportStar(require("./types"), exports);
+// export utils
+__exportStar(require("./utils"), exports);
 // export storage providers
 __exportStar(require("./storage"), exports);
 // export compression types

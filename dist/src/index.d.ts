@@ -10,13 +10,6 @@ import { kyve } from "@kyve/proto";
  * @constructor
  */
 export declare class Node {
-    /**
-     * My property description.  Like other pieces of your comment blocks,
-     * this can span multiple lines.
-     *
-     * @property runtime
-     * @type {IRuntime}
-     */
     protected runtime: IRuntime;
     protected storageProvider: IStorageProvider;
     protected compression: ICompression;
@@ -128,6 +121,7 @@ export declare class Node {
     start(): Promise<void>;
 }
 export * from "./types";
+export * from "./utils";
 export * from "./storage";
 export * from "./compression";
 export * from "./cache";
