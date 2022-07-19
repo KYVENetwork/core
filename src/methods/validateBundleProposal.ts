@@ -170,8 +170,8 @@ export async function validateBundleProposal(
     if (valid) {
       valid = await this.runtime.validate(
         this,
-        uploadedBundle,
-        validationBundle
+        standardizeJSON(uploadedBundle),
+        standardizeJSON(validationBundle)
       );
     }
 
