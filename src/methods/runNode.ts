@@ -33,7 +33,7 @@ export async function runNode(this: Node): Promise<void> {
     }
 
     if (await this.canVote()) {
-      this.validateBundleProposal(createdAt);
+      await this.validateBundleProposal(createdAt);
     }
 
     const timeRemaining = this.remainingUploadInterval();

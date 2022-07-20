@@ -99,7 +99,7 @@ async function validateBundleProposal(createdAt) {
             valid = true;
         }
         if (valid) {
-            valid = await this.runtime.validate(this, uploadedBundle, validationBundle);
+            valid = await this.runtime.validate(this, (0, utils_1.standardizeJSON)(uploadedBundle), (0, utils_1.standardizeJSON)(validationBundle));
         }
         if (valid) {
             await this.voteBundleProposal(this.pool.bundle_proposal.storage_id, constants_1.VOTE.VALID);

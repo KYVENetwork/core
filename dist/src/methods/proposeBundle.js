@@ -67,12 +67,18 @@ async function proposeBundle(createdAt) {
         }
         if (storageId) {
             const bundleHash = (0, utils_1.sha256)((0, utils_1.standardizeJSON)(bundleProposal.bundle));
-            await this.submitBundleProposal(storageId, bundleCompressed.byteLength, fromHeight, fromHeight + bundleProposal.bundle.length, fromKey, bundleProposal.toKey, bundleProposal.toValue, bundleHash);
+            const isSubmitted = await this.submitBundleProposal(storageId, bundleCompressed.byteLength, fromHeight, fromHeight + bundleProposal.bundle.length, fromKey, bundleProposal.toKey, bundleProposal.toValue, bundleHash);
+            if (isSubmitted) {
+                break;
+            }
         }
         else {
             this.logger.info(`Creating new bundle proposal of type ${constants_1.KYVE_NO_DATA_BUNDLE}`);
             storageId = `KYVE_NO_DATA_BUNDLE_${this.poolId}_${Math.floor(Date.now() / 1000)}`;
-            await this.submitBundleProposal(storageId, 0, fromHeight, fromHeight, fromKey, "", "", "");
+            const isSubmitted = await this.submitBundleProposal(storageId, 0, fromHeight, fromHeight, fromKey, "", "", "");
+            if (isSubmitted) {
+                break;
+            }
         }
     }
 }

@@ -23,7 +23,7 @@ async function runNode() {
             this.logger.info(`Starting bundle proposal round ${this.pool.total_bundles} as VALIDATOR`);
         }
         if (await this.canVote()) {
-            this.validateBundleProposal(createdAt);
+            await this.validateBundleProposal(createdAt);
         }
         const timeRemaining = this.remainingUploadInterval();
         this.logger.debug(`Waiting for remaining upload interval = ${timeRemaining
